@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ClientUpdate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Version>1.0.0.0</Version>
+  <UpdateTime>2019-10-12</UpdateTime>
+  <Conent>
+      1.当前软件版本。
+  </Conent>
+  <VersionType>Beta</VersionType>
+  <IsOpen>true</IsOpen>
+  <URL>http://192.168.20.53:18888/</URL>
+  <Path>ServiceUpdate.xml</Path>
+</ClientUpdate>

@@ -1,0 +1,198 @@
+﻿<UserControl x:Class="OSKernel.Presentation.CustomControl.CaseProcess"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.CustomControl"
+             x:Name="caseProcessUC"
+             mc:Ignorable="d"
+             UseLayoutRounding="True">
+    <UserControl.Resources>
+        <local:CaseContentConverter x:Key="CaseContentConverter" />
+    </UserControl.Resources>
+    <!--方案进度-->
+    <CheckBox IsChecked="{Binding IsStart,Mode=TwoWay}"
+              Command="{Binding DataContext.CaseCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ItemsControl}}"
+              CommandParameter="{Binding}"
+              MouseMove="cb_control_MouseMove"
+              MouseLeave="cb_control_MouseLeave"
+              Unchecked="cb_control_Unchecked"
+              Name="cb_control">
+        <CheckBox.ContextMenu>
+            <ContextMenu Visibility="{Binding IsStart,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <!--<MenuItem Header="困难信息"
+                          Command="{Binding DiffcultyCommand}"
+                          Visibility="{Binding Task.ShowDifficulty,Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+                <MenuItem Header="错误信息"
+                          Command="{Binding ClashingCommand}"
+                          Visibility="{Binding Task.ShowClash,Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </ContextMenu>
+        </CheckBox.ContextMenu>
+        <CheckBox.Template>
+            <ControlTemplate TargetType="{x:Type CheckBox}">
+                <Grid Background="White"
+                      Name="bg_sp"
+                      ToolTipService.ShowOnDisabled="True"
+                      ToolTipService.IsEnabled="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock Opacity="0.7"
+                                           Margin="5">
+                                    <Run>Task ID:</Run>
+                                    <Run Text="{Binding Task.TaskID}" />
+                                </TextBlock>
+
+                                <TextBlock Opacity="0.7"
+                                           Margin="5">
+                                    <Run>开始时间: </Run>
+                                    <Run Text="{Binding Task.StartTime,StringFormat='yyyy年MM月dd日 HH:mm:ss'}" />
+                                </TextBlock>
+
+                                <TextBlock Opacity="0.7"
+                                           Margin="5">
+                                    <Run>最大时间: </Run>
+                                    <Run Text="{Binding Task.MaxValueTimeString}" />
+                                </TextBlock>
+
+                                <TextBlock Opacity="0.7"
+                                           Margin="5">
+                                    <Run>运行时间: </Run>
+                                    <Run Text="{Binding Task.RunTimeString}" />
+                                </TextBlock>
+
+                                <StackPanel Margin="5"
+                                            Orientation="Horizontal">
+
+                                    <TextBlock Margin="2"
+                                               Text=" 当前："
+                                               Foreground="#59C4FB"
+                                               Opacity="0.7"
+                                               Width="35" />
+
+                                    <Rectangle Width="10"
+                                               Height="10"
+                                               Fill="#59C4FB" />
+
+                                    <TextBlock Margin="2"
+                                               Text="{Binding Task.PercentCurrent,StringFormat={}{0:P2}}"
+                                               Foreground="#59C4FB"
+                                               Opacity="0.7"
+                                               Width="auto" />
+
+                                    <TextBlock Margin="2"
+                                               Text="{Binding Task.CurrentProcess,StringFormat='N0'}"
+                                               HorizontalAlignment="Left"
+                                               Foreground="#59C4FB"
+                                               Opacity="0.7" />
+
+                                    <TextBlock Margin="2"
+                                               Text=" 最大："
+                                               Foreground="#F65548"
+                                               Opacity="0.7"
+                                               Width="35" />
+
+                                    <Rectangle Width="10"
+                                               Height="10"
+                                               Fill="#F65548" />
+
+                                    <TextBlock Margin="2"
+                                               Text="{Binding Task.PercentMax,StringFormat={}{0:P2}}"
+                                               Foreground="#F65548"
+                                               Opacity="0.7" />
+
+                                    <TextBlock Margin="2"
+                                               Text="{Binding Task.MaxProcess,StringFormat='N0'}"
+                                               Foreground="#F65548"
+                                               Opacity="0.7"
+                                               Width="auto" />
+
+                                    <TextBlock Margin="2"
+                                               Opacity="0.7">
+                                        总: <Run Text="{Binding Task.TotalProcess,StringFormat='N0'}" />
+                                    </TextBlock>
+
+                                </StackPanel>
+                            </StackPanel>
+
+                        </ToolTip>
+                    </Grid.ToolTip>
+                    <Grid>
+                        <!--状态信息-->
+                        <StackPanel VerticalAlignment="Center"
+                                    Visibility="Collapsed"
+                                    Name="sp_process"
+                                    HorizontalAlignment="Center">
+
+                            <ContentControl Template="{Binding IsAuto,Converter={StaticResource CaseContentConverter}}"
+                                            Grid.Column="1" />
+
+                            <TextBlock Text="{Binding Task.StatusString}"
+                                       HorizontalAlignment="Center"
+                                       Name="txt_process"
+                                       Margin="5"
+                                       Opacity="0.7"
+                                       FontWeight="Heavy"
+                                       Visibility="Collapsed"
+                                       FontSize="13" />
+                        </StackPanel>
+
+                        <!--启动按钮-->
+                        <Grid  Width="40"
+                               x:Name="CIRCLE___PLAY"
+                               Height="40">
+                            <Ellipse Stroke="{DynamicResource main_lightgroud}"
+                                     Fill="{DynamicResource main_background}" />
+                            <Path x:Name="PLAY"
+                                  Data="F1M57,33C57,35.199 55.816,37.121 54.052,38.166 54.052,38.166 54.053,38.166 54.053,38.166 54.053,38.166 10.123,64.125 10.123,64.125 10.107,64.134 10.091,64.143 10.075,64.152 10.075,64.152 10.052,64.166 10.052,64.166 9.158,64.695 8.115,65 7,65 3.686,65 1,62.314 1,59 1,59 1,7 1,7 1,3.687 3.686,1 7,1 8.115,1 9.158,1.305 10.052,1.835 10.052,1.835 10.075,1.848 10.075,1.848 10.091,1.858 10.107,1.867 10.123,1.876 10.123,1.876 54.053,27.835 54.053,27.835 54.053,27.835 54.052,27.835 54.052,27.835 55.816,28.88 57,30.801 57,33z"
+                                  Fill="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Margin="2,1,0,0"
+                                  Width="15"
+                                  Height="15"
+                                  Stretch="Fill" />
+                        </Grid>
+                        <!--停止-->
+                        <Grid  Width="40"
+                               x:Name="CIRCLE___STOP"
+                               Visibility="Collapsed"
+                               Height="40">
+                            <Ellipse Stroke="{DynamicResource main_lightgroud}"
+                                     Fill="{DynamicResource main_background}" />
+                            <Path x:Name="STOP"
+                                  Data="F1M51,57C51,57 7,57 7,57 3.686,57 1,54.314 1,51.001 1,51.001 1,7 1,7 1,3.687 3.686,1 7,1 7,1 51,1 51,1 54.314,1 57,3.687 57,7 57,7 57,51.001 57,51.001 57,54.314 54.314,57 51,57z"
+                                  Fill="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Width="15"
+                                  Height="15"
+                                  Stretch="Fill" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked"
+                             Value="true">
+                        <Setter Property="Visibility"
+                                TargetName="CIRCLE___PLAY"
+                                Value="Hidden" />
+                        <Setter Property="Visibility"
+                                TargetName="sp_process"
+                                Value="Visible" />
+                        <Setter Property="Visibility"
+                                TargetName="txt_process"
+                                Value="Visible" />
+                        <Setter Property="ToolTipService.IsEnabled"
+                                TargetName="bg_sp"
+                                Value="True" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </CheckBox.Template>
+    </CheckBox>
+</UserControl>

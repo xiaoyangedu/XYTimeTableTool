@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Views.BaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--基础数据-->
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <xy:TitleBar Title="请添加学校名称，并选择排课学段。" />
+
+        <ScrollViewer Grid.Row="1"
+                      Background="White">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="20,5,20,0">
+                    <TextBlock Text="学校名称:"
+                               Margin="2"
+                               FontSize="15"
+                               Opacity="0.5"
+                               VerticalAlignment="Center" />
+                    <TextBox Text="{Binding School}"
+                             Width="300"
+                             HorizontalAlignment="Left"
+                             Height="30"
+                             Margin="2" />
+
+                    <TextBlock Text="学段:"
+                               Margin="2"
+                               FontSize="15"
+                               Opacity="0.5"
+                               VerticalAlignment="Center" />
+                    <ComboBox ItemsSource="{Binding Periods}"
+                              DisplayMemberPath="Key"
+                              SelectedValuePath="Value"
+                              Height="30"
+                              Width="300"
+                              HorizontalAlignment="Left"
+                              Text="{Binding PeriodSelectString}"
+                              SelectedValue="{Binding SelectLearningPeriod}"
+                              Margin="2,0,2,5" />
+
+                </StackPanel>
+
+                <!--<Rectangle Grid.Row="2"
+                           Height="1"
+                           Fill="{StaticResource CB_Separation}"
+                           VerticalAlignment="Top"
+                           Margin="5,0" />-->
+
+                <Grid Grid.Row="2"
+                      Margin="20,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="偏好设置:"
+                               Margin="2"
+                               FontSize="15"
+                               Opacity="0.5"
+                               VerticalAlignment="Center" />
+
+                    <CheckBox Content="任教2个班级且多课时的学科需要尽量考虑每天上课班级的先后顺序。"
+                              FontSize="15"
+                              Grid.Row="1"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTeacherClassBalance}"
+                              Opacity="0.5" />
+
+                    <CheckBox Content="每天上午第1节、最后1节和下午第1节需要考虑尽量保证每个老师课时的均衡。"
+                              Grid.Row="2"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTeacherPositionBalance}"
+                              Opacity="0.5"/>
+
+                    <CheckBox Content="体育课可以排在每天的最后一节（考虑秋冬季节天黑早不利于教学）。"
+                              Grid.Row="3"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsPEAllowLast}"
+                              Opacity="0.5"/>
+
+                    <CheckBox Content="教师任教2个班级的连排课需要排课同天。"
+                              Grid.Row="4"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTeacherContinousSameDay}"
+                              Opacity="0.5" />
+
+                    <CheckBox Content="教师任教2个班级的课程同天内间隔尽量不超过1-2节课。"
+                              Grid.Row="5"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTeacherDayGapsLimit}"
+                              Opacity="0.5"/>
+
+
+
+                    <CheckBox Content="教师任教多个班级，需要尽量保证同一教案集中在半天内完成教学。"
+                              FontSize="15"
+                              Grid.Row="6"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTeacherHalfDay}"
+                              Opacity="0.5" />
+
+                    <CheckBox Content="若学科课时为2课时，那么这2课时需要间隔1天。"
+                              Grid.Row="7"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsTwoClassHourLimit}"
+                              Opacity="0.5" />
+
+                    <CheckBox Content="若学科课时为3课时，那么3个课时中至少有2个课时需要间隔1天。"
+                              Grid.Row="8"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsThreeClassHourLimit}"
+                              Opacity="0.5"/>
+
+                    <CheckBox Content="主科目的教案齐头需要尽量满足在同天内。"
+                              Grid.Row="9"
+                              FontSize="15"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding IsMajorCourseSameDay}"
+                              Opacity="0.5"/>
+                </Grid>
+
+                <Rectangle Grid.Row="3"
+                           Height="1"
+                           Fill="{StaticResource CB_Separation}"
+                           VerticalAlignment="Top"
+                           Margin="5,0" />
+
+                <Button Style="{StaticResource OpratorButtonStyle}"
+                        Command="{Binding SaveCommand}"
+                        Content="保存"
+                        HorizontalAlignment="Left"
+                        Grid.Row="3"
+                        Width="70"
+                        Height="30"
+                        Margin="20,5,5,10" />
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

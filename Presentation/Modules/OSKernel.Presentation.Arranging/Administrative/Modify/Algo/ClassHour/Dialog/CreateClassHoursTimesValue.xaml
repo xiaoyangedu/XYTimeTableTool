@@ -1,0 +1,136 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Algo.ClassHour.Dialog.CreateClassHoursTimesValue"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Algo.ClassHour.Dialog"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   mc:Ignorable="d"
+                   Title="{Binding TitleString}"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   Width="800"
+                   Height="600"
+                   x:Name="win">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="课时-Step1"
+                     Foreground="#5C5C5C">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <local:FilterView  Grid.ColumnSpan="2"/>
+
+                    <ListBox Grid.Row="1"
+                             Name="source_list"
+                             DisplayMemberPath="Display"
+                             ItemsSource="{Binding ClassHours}"
+                             Margin="5">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=source_list}"
+                                                       Command="{Binding DataContext.SourceCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding SelectedAllListCommand}"
+                                          Header="全选" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+
+                    <ListBox Grid.Row="1"
+                             Grid.Column="1"
+                             DisplayMemberPath="Display"
+                             Name="target_list"
+                             ItemsSource="{Binding TargetHours}"
+                             Margin="5">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=target_list}"
+                                                       Command="{Binding DataContext.TargetCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding ClearAllListCommand}"
+                                          Header="清除" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="课位-Step2"
+                     Foreground="#5C5C5C">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer Margin="5"
+                                  VerticalScrollBarVisibility="Auto">
+                        <xy:Week Periods="{Binding Periods}" />
+                    </ScrollViewer>
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal">
+
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding ShowMaxNumber,Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="占用的最大数量"
+                                       VerticalAlignment="Center" />
+                            <TextBox Margin="5"
+                                     Width="100"
+                                     Text="{Binding MaxOccupyNumber,UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding ShowSameMaxNumber,Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="最大同时开课数"
+                                       VerticalAlignment="Center" />
+                            <TextBox Margin="5"
+                                     Width="100"
+                                     Text="{Binding MaxConcurrencyNumber,UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <TextBlock Text="启用"
+                                   VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="2"
+                                  IsChecked="{Binding IsActive}"
+                                  Margin="5" />
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0,20"
+                    HorizontalAlignment="Center">
+            <Button Content="保存"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5,0" />
+            <Button Content="取消"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5,0" />
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

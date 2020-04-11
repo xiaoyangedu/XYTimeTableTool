@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:OSKernel.Presentation.CustomControl.Loading">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingArcs.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingArcsRing.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingDoubleBounce.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingFlipPlane.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingPulse.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingRing.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingThreeDots.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingWave.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;component/Loading/Style/LoadingOneRing.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Color x:Key="LoadingHighLightColor">#5576BD</Color>
+    <SolidColorBrush x:Key="HighlightColorBrush" Color="{StaticResource LoadingHighLightColor}"/>
+
+    <Style x:Key="LoadingIndicatorArcsStyle"  TargetType="{x:Type controls:LoadingArcs}" BasedOn="{StaticResource LoadingIndicatorArcsStyleKey}"/>
+    <Style x:Key="LoadingIndicatorArcsRingStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorArcsRingStyleKey}"/>
+    <Style x:Key="LoadingIndicatorDoubleBounceStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorDoubleBounceStyleKey}"/>
+    <Style x:Key="LoadingIndicatorFlipPlaneStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorFlipPlaneStyleKey}"/>
+    <Style x:Key="LoadingIndicatorPulseStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorPulseStyleKey}"/>
+    <Style x:Key="LoadingIndicatorRingStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorRingStyleKey}"/>
+    <Style x:Key="LoadingIndicatorThreeDotsStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorThreeDotsStyleKey}"/>
+    <Style x:Key="LoadingIndicatorWaveStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorWaveStyleKey}"/>
+    
+    <Style TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorWaveStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingArcs}" BasedOn="{StaticResource LoadingIndicatorArcsStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingArcsRing}" BasedOn="{StaticResource LoadingIndicatorArcsRingStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingDoubleBounce}" BasedOn="{StaticResource LoadingIndicatorDoubleBounceStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingFlipPlane}" BasedOn="{StaticResource LoadingIndicatorFlipPlaneStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingRing}" BasedOn="{StaticResource LoadingIndicatorRingStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingThreeDots}" BasedOn="{StaticResource LoadingIndicatorThreeDotsStyle}"/>
+    <Style TargetType="{x:Type controls:LoadingWave}" BasedOn="{StaticResource LoadingIndicatorWaveStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingPulse}" BasedOn="{StaticResource LoadingIndicatorPulseStyleKey}"/>
+    <Style TargetType="{x:Type controls:LoadingOneRing}" BasedOn="{StaticResource LoadingIndicatorOneRingStyle}"/>
+    
+</ResourceDictionary>

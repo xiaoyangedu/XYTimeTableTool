@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/ImagesDictionary.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/Combobox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/DataGrid.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/RadioButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/ScrollView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/PasswordBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/ToolTip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/Menu.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/ScrollView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/CheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/ProgressBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/TreeView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Controls/Expander.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,42 @@
+﻿using OSKernel.Presentation.Models.Rule;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using XYKernel.OS.Common.Enums;
+
+namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.Teacher.Model
+{
+    /// <summary>
+    /// 师徒跟随规则
+    /// </summary>
+    public class UIMasterApprenttice : UIRuleBase
+    {
+        /// <summary>
+        /// 课程ID
+        /// </summary>
+        public string CourseID { get; set; }
+
+        public string Course { get; set; }
+
+        public string MasterID { get; set; }
+
+        public string ApprentticeID { get; set; }
+
+        /// <summary>
+        /// 师傅
+        /// </summary>
+        public string Master { get; set; }
+
+        /// <summary>
+        /// 徒弟
+        /// </summary>
+        public string Apprenttice { get; set; }
+
+        /// <summary>
+        /// 跟随方式
+        /// </summary>
+        public MasterApprenticeFollow FollowMode { get; set; }
+    }
+}

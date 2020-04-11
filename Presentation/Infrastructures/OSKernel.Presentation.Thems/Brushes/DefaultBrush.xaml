@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Thems.Brushes">
+
+    <!--基础色值-->
+
+    <Color x:Key="color1">#5576BD</Color>
+    <Color x:Key="color2">#E8F0FF</Color>
+    <Color x:Key="color3">#59ABF4</Color>
+    <Color x:Key="color4">#FAFAFA</Color>
+    <Color x:Key="color5">#F3F3F3</Color>
+
+    <SolidColorBrush x:Key="dialog_backgroud"
+                     Color="{StaticResource color4}" />
+
+    <!--主色(首页菜单背景色)-->
+    <SolidColorBrush x:Key="main_background"
+                     Color="{StaticResource color1}" />
+    <!--浅色区块-->
+    <SolidColorBrush x:Key="main_lightgroud"
+                     Color="{StaticResource color2}" />
+
+    <!--日期控件禁止颜色-->
+    <SolidColorBrush x:Key="week_forbid"
+                     Color="{StaticResource color5}" />
+    <!--分割线-->
+    <SolidColorBrush x:Key="CB_Separation"
+                     Color="#EDEDED" />
+    <!--文本颜色-->
+    <SolidColorBrush x:Key="TB_Forground"
+                     Color="#D4D5D6" />
+    <!--ToolTip背景色-->
+    <SolidColorBrush x:Key="Tip_Background"
+                     Color="#3C4046" />
+
+    <!--红色（错误信息）-->
+    <SolidColorBrush x:Key="local_red"
+                     Color="#D93E41" />
+    <!--浅红色（错误课位）-->
+    <SolidColorBrush x:Key="local_lightRed"
+                     Color="#FF8A9C" />
+    <!--绿色（正确信息）-->
+    <SolidColorBrush x:Key="local_green"
+                     Color="#45BA57" />
+    <!--蓝色-->
+    <SolidColorBrush x:Key="local_blue"
+                     Color="#009ad6" />
+    <!--Menu-->
+    <SolidColorBrush x:Key="menu_isMouseOver"
+                     Color="#56B1FC" />
+
+    <SolidColorBrush x:Key="menu_isPressed"
+                     Color="#56B1FC" />
+
+    <SolidColorBrush x:Key="menu_isChecked"
+                     Color="#FFFFFF" />
+
+    <!--方案卡片样式-->
+    <SolidColorBrush x:Key="case_isMouseOver"
+                     Color="#99CFFC" />
+
+    <SolidColorBrush x:Key="case_play"
+                     Color="{StaticResource color3}" />
+
+</ResourceDictionary>

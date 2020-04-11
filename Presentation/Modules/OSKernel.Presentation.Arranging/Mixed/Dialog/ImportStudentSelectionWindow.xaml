@@ -1,0 +1,62 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Mixed.Dialog.ImportStudentSelectionWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Dialog"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   mc:Ignorable="d"
+                   Style="{StaticResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   ResizeMode="NoResize"
+                   Name="main"
+                   Title="导入选课"
+                   Height="270"
+                   Width="500">
+    <!--导入学生志愿-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="37" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <Grid Height="130"
+              AllowDrop="True"
+              Drop="Grid_Drop"
+              Margin="10">
+            <Rectangle  Fill="white"
+                        RadiusX="10"
+                        RadiusY="10"
+                        Margin="10"
+                        Stroke="sc#1.000000, 0.250141, 0.333404, 0.884413"
+                        StrokeDashArray="2" />
+            <StackPanel VerticalAlignment="Center">
+                <Button Style="{StaticResource UpLoadedButtonStyle}"
+                        Command="{Binding UploadFileCommand}"
+                        CommandParameter="{Binding ElementName=main}"
+                        ToolTip=" 上传" />
+                <TextBlock Text="点击上传或拖拽文件上传"
+                           Margin="2"
+                           Foreground="Gray"
+                           FontSize="13"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <xy:TitleBar Grid.Row="1" 
+                         Margin="0,3,0,0"
+                     Title="点击生成模板按钮，导出模板，在模板中按学生填写志愿，课程下设层的填层名称，不设层的填课程名称，不选的课不填；" />
+
+        <Rectangle Height="1"
+                   VerticalAlignment="Bottom"
+                   Margin="5,0"
+                   Fill="{StaticResource CB_Separation}" />
+
+        <Button Grid.Row="2"
+                Content="生成模板"
+                Command="{Binding CreateTemplateCommand}"
+                Style="{StaticResource OpratorButtonStyle}" />
+    </Grid>
+</metro:MetroWindow>

@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher.ArrangeContinuousPlanFlush"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--连排齐头-->
+    <activity:Interaction.Triggers>
+        <activity:EventTrigger EventName="Loaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="loaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+        <activity:EventTrigger EventName="Unloaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="unloaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+    </activity:Interaction.Triggers>
+    <!--连排齐头-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <DataGrid Margin="2"
+                      Name="dg"
+                      IsReadOnly="False"
+                      CanUserAddRows="False"
+                      ItemsSource="{Binding Rules}"
+                      ColumnHeaderHeight="65">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding NO}"
+                                        Header="序号"
+                                        IsReadOnly="True"
+                                        Width="auto" />
+
+                    <DataGridTextColumn Header="姓名"
+                                        IsReadOnly="True"
+                                        Width="100"
+                                        Binding="{Binding Teacher}" />
+
+                    <DataGridTemplateColumn Header="班级"
+                                            Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding Classes}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Display}"
+                                                          Margin="5,2"
+                                                          IsChecked="{Binding IsChecked}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--<DataGridTextColumn Header="课程"
+                                        Binding="{Binding CourseString}"
+                                        Width="*" />-->
+
+                    <DataGridTextColumn Width="100"
+                                        Binding="{Binding FlushDays,UpdateSourceTrigger=PropertyChanged}">
+                        <DataGridTextColumn.Header>
+                            <StackPanel>
+                                <TextBlock Text="齐头天数"
+                                           HorizontalAlignment="Center"
+                                           Margin="2" />
+                                <TextBox Width="80"
+                                         Text="{Binding DataContext.BatchFlushDays,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                         HorizontalContentAlignment="Center"
+                                         Margin="2" />
+                            </StackPanel>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Width="100"
+                                            SortMemberPath="Weight">
+                        <DataGridTemplateColumn.Header>
+                            <StackPanel>
+                                <TextBlock Text="权重"
+                                           HorizontalAlignment="Center"
+                                           Margin="2" />
+                                <ComboBox Width="80"
+                                          DisplayMemberPath="Key"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding DataContext.SelectWeight,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                          HorizontalContentAlignment="Center"
+                                          ItemsSource="{Binding DataContext.Weights,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                          Margin="2" />
+                            </StackPanel>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Weight,Converter={StaticResource WeightEnumConverter}}"
+                                           Margin="5" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Weights}"
+                                          DisplayMemberPath="Key"
+                                          Width="80"
+                                          Margin="5"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding Weight}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+        <xy:TitleBar Title="{Binding Comments}"
+                     Grid.Row="1" />
+        
+    </Grid>
+</UserControl>

@@ -1,0 +1,1250 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Thems.Controls">
+
+    <SolidColorBrush x:Key="Button.Static.Background"
+                     Color="#F8F8F8 " />
+    <SolidColorBrush x:Key="Button.Static.Border"
+                     Color="{DynamicResource color1}" />
+    <SolidColorBrush x:Key="Button.MouseOver.Background"
+                     Color="#FDFDFD" />
+    <SolidColorBrush x:Key="Button.MouseOver.Border"
+                     Color="#65AAFD" />
+    <SolidColorBrush x:Key="Button.Pressed.Background"
+                     Color="#FDFDFD" />
+    <SolidColorBrush x:Key="Button.Pressed.Border"
+                     Color="#3C86E4" />
+    <SolidColorBrush x:Key="Button.Disabled.Background"
+                     Color="#FFF4F4F4" />
+    <SolidColorBrush x:Key="Button.Disabled.Border"
+                     Color="#FFADB2B5" />
+    <SolidColorBrush x:Key="Button.Disabled.Foreground"
+                     Color="#FF838383" />
+
+    <Style x:Key="FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2"
+                               SnapsToDevicePixels="true"
+                               Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                               StrokeThickness="1"
+                               StrokeDashArray="1 2" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle"
+                Value="{StaticResource FocusVisual}" />
+        <Setter Property="Background"
+                Value="{StaticResource Button.Static.Background}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource Button.Static.Border}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="Width"
+                Value="100" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.MouseOver.Background}" />
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.MouseOver.Border}" />
+                            <Setter Property="Foreground"
+                                    Value="{StaticResource Button.MouseOver.Border}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Background}" />
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Border}" />
+                            <Setter Property="Foreground"
+                                    Value="{StaticResource Button.Pressed.Border}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Opacity"
+                                    Value="0.6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button"
+           x:Key="OpratorButtonStyle">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="BorderBrush"
+                Value="#B5DEFF" />
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="Width"
+                Value="100" />
+        <Setter Property="Background"
+                Value="{DynamicResource main_background}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.MouseOver.Border}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Border}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Opacity"
+                                    Value="0.6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CloudDownButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="25" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="ToolTip"
+                Value="下载" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Path x:Name="Cloud_Download"
+                          Data="{DynamicResource geometry_downfile}"
+                          Stretch="Fill"
+                          Opacity="1">
+                        <Path.Fill>
+                            <SolidColorBrush Color="#3981FF" />
+                        </Path.Fill>
+                    </Path>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="Cloud_Download"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="Cloud_Download"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="Cloud_Download"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="Cloud_Download"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="UpLoadedButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="25" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="ToolTip"
+                Value="上传" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Path x:Name="Cloud_Download"
+                          Data="{DynamicResource geometry_uploadefile}"
+                          Stretch="Fill"
+                          Opacity="1">
+                        <Path.Fill>
+                            <SolidColorBrush Color="#3981FF" />
+                        </Path.Fill>
+                    </Path>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="Cloud_Download"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="Cloud_Download"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="Cloud_Download"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="Cloud_Download"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SettingButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="批量设置" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="codPath"
+                              Data="{DynamicResource geometry_setting}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="codPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="codPath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModifyButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="编辑" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="modifyPath"
+                              Data="{DynamicResource geometry_modify}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="modifyPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="modifyPath"
+                                    Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DivitionLevelButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="走班分层排课" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="modifyPath"
+                              Data="{DynamicResource geometry_mixedLevel}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="modifyPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="modifyPath"
+                                    Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AnalysisButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="统计" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="chartPath"
+                              Data="{DynamicResource geometry_analysis}"
+                              Opacity="{TemplateBinding Opacity}"
+                              Fill="{TemplateBinding Foreground}"
+                              Stretch="Fill">
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="chartPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="chartPath"
+                                    Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CopyButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="复制" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="copyPath"
+                              Data="{DynamicResource geometry_copy}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="copyPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="copyPath"
+                                    Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ResultButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="排课结果" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="resultPath"
+                              Data="{DynamicResource geometry_result}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="resultPath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="resultPath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DeleteButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="删除" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_delete}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ReturnButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="18" />
+        <Setter Property="Height"
+                Value="18" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="returnPath"
+                              Data="{DynamicResource geometry_left}"
+                              Fill="{DynamicResource main_background}"
+                              Stretch="Fill">
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="returnPath"
+                                    Value="{DynamicResource main_lightgroud}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="returnPath"
+                                    Value="{DynamicResource main_background}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="DataGridDeleteButtonStyle">
+        <Setter Property="FocusVisualStyle"
+                Value="{StaticResource FocusVisual}" />
+        <Setter Property="Background"
+                Value="{StaticResource Button.Static.Background}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource Button.Static.Border}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource local_red}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="Width"
+                Value="100" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.MouseOver.Border}" />
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.MouseOver.Background}" />
+
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Border}" />
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Opacity"
+                                    Value="0.6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LoginButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="25" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="ToolTip"
+                Value="登录" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="White">
+                        <Path x:Name="loginButton_Path"
+                              Data="{DynamicResource geometry_rightarrowCircle}"
+                              Fill="Gray"
+                              Stretch="Fill" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="loginButton_Path"
+                                    Value="{DynamicResource ResourceKey=main_background}" />
+                            <Setter Property="Opacity"
+                                    TargetName="loginButton_Path"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="loginButton_Path"
+                                    Value="{DynamicResource ResourceKey=main_background}" />
+                            <Setter Property="Opacity"
+                                    TargetName="loginButton_Path"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="10" />
+        <Setter Property="Height"
+                Value="10" />
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="ToolTip"
+                Value="关闭" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Path x:Name="close_path"
+                          Data="{DynamicResource geometry_close}"
+                          Fill="{TemplateBinding Foreground}"
+                          SnapsToDevicePixels="True"
+                          Stretch="Fill" />
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="close_path"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="close_path"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="close_path"
+                                    Value="#F75353" />
+                            <Setter Property="Opacity"
+                                    TargetName="close_path"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="IntelligenceButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="22" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="22" />
+        <Setter Property="ToolTip"
+                Value="智能分班" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_intelligence}"
+                              Opacity="0.6"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StudentsStyleButton"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="30" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="30" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_student}"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PlusStyleButton"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="30" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="30" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_plus}"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MinusStyleButton"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="15" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_Minus}"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{DynamicResource color1}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CreateCaseButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="Height"
+                Value="40" />
+        <Setter Property="Width"
+                Value="160" />
+        <Setter Property="FontSize"
+                Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            CornerRadius="20"
+                            Background="#5576BD"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          Margin="{TemplateBinding Padding}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="#445E97" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="#445E97" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="PlusEllipseButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="18" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Ellipse Fill="#0087F4" />
+                        <Path x:Name="deletePath"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Data="{DynamicResource geometry_plus}"
+                              Width="12"
+                              Height="12"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MinusEllipseButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="18" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Ellipse Fill="#FF7D43" />
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_Minus}"
+                              Width="12"
+                              Height="2"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="UpEllipseButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="18" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Ellipse Fill="#0087F4" />
+                        <Path x:Name="deletePath"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Data="{DynamicResource geometry_up}"
+                              Width="10"
+                              Height="10"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DownEllipseButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="18" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="18" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Ellipse Fill="#FF7D43" />
+                        <Path x:Name="deletePath"
+                              Data="{DynamicResource geometry_down}"
+                              Width="10"
+                              Height="10"
+                              Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Opacity"
+                                    TargetName="deletePath"
+                                    Value="1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MoreButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Width"
+                Value="15" />
+        <Setter Property="Margin"
+                Value="5,0" />
+        <Setter Property="Height"
+                Value="15" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Grid Width="4"
+                              Height="15">
+                            <Path x:Name="more_path"
+                                  Data="F1M13.997,77.001C20.626,77.001 26,82.374 26,89.002 26,95.629 20.626,101.003 13.997,101.003 7.368,101.003 1.994,95.629 1.994,89.002 1.994,82.374 7.368,77.001 13.997,77.001z M13.997,39.001C20.626,39.001 26,44.374 26,51.002 26,57.63 20.626,63.003 13.997,63.003 7.368,63.003 1.994,57.63 1.994,51.002 1.994,44.374 7.368,39.001 13.997,39.001z M13.997,1.001C20.626,1.001 26,6.373 26,13.002 26,19.63 20.626,25.003 13.997,25.003 7.368,25.003 1.994,19.63 1.994,13.002 1.994,6.373 7.368,1.001 13.997,1.001z"
+                                  Fill="LightGray"
+                                  Stretch="Fill" />
+                        </Grid>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="more_path"
+                                    Value="{StaticResource main_background}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="more_path"
+                                    Value="{StaticResource main_background}" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

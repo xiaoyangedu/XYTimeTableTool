@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Login.LoginSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Login"
+             mc:Ignorable="d">
+    <!--登录设置界面 TODO-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--用户ID-->
+        <TextBlock Text="用户ID"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+
+        <TextBox Grid.Column="1"
+                 IsReadOnly="True"
+                 Margin="5"
+                 Text="{Binding UserID}" />
+
+        <!--加密类型-->
+        <TextBlock Text="加密类型"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+
+        <!--私钥-->
+        <TextBlock Text="私钥"
+                   Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+
+        <TextBox  Grid.Row="2"
+                  Height="100"
+                  Margin="5"
+                  IsReadOnly="True"
+                  TextWrapping="Wrap"
+                  AcceptsReturn="True"
+                  Text="{Binding PublicKey}"
+                  Grid.Column="1" />
+
+        <!--公钥-->
+        <TextBlock Text="公钥"
+                   Grid.Row="3"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+
+        <TextBox  Grid.Row="3"
+                  Height="100"
+                  Margin="5"
+                  IsReadOnly="True"
+                  TextWrapping="Wrap"
+                  AcceptsReturn="True"
+                  Text="{Binding PublicKey}"
+                  Grid.Column="1" />
+
+        <ComboBox  Grid.Row="1"
+                   ItemsSource="{Binding SecretTypes}"
+                   DisplayMemberPath="Key"
+                   SelectedValuePath="Value"
+                   SelectedValue="{Binding SelectSecretType}"
+                   Grid.Column="1" />
+
+        <StackPanel Grid.Row="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+
+            <Button  Content="生成密钥"
+                     Command="{Binding CreateKeyCommand}"
+                     Margin="5" />
+
+            <Button  Content="绑定密钥"
+                     Command="{Binding BindingKeyCommand}"
+                     Style="{StaticResource OpratorButtonStyle}"
+                     Margin="5" />
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

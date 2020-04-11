@@ -1,0 +1,160 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Views.TeacherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Views"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:metrol="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+       <xy:TitleBar Title="可通过点击右侧“添加”按钮录入教师信息。" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Background="White"
+                  Margin="0,10"
+                  Height="40">
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Margin="5,0"
+                            VerticalAlignment="Center">
+
+                    <Button Content="批量删除"
+                            Width="70"
+                            Height="30"
+                            Command="{Binding BatchDeleteCommand}"
+                            Margin="5,0" />
+
+                    <Button Content="添加"
+                            Width="70"
+                            Height="30"
+                            Command="{Binding CreateCommand}"
+                            Style="{StaticResource OpratorButtonStyle}" 
+                            Margin="5,0"/>
+
+                    <Button Content="保存"
+                            Width="70"
+                            Height="30"
+                            Command=""
+                            Style="{StaticResource OpratorButtonStyle}" Click="Button_Click" />
+
+                </StackPanel>
+
+                <!--搜索框-->
+                <TextBox  HorizontalAlignment="Left"
+                          metrol:TextBoxHelper.Watermark="搜索教师"
+                          Text="{Binding SearchTeacher,UpdateSourceTrigger=PropertyChanged}"
+                          Margin="10,0"
+                          Width="200" />
+            </Grid>
+
+            <Grid Margin="0,0,0,10"
+                  Grid.Row="1"
+                  Background="White">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <CheckBox Content=" 全选"
+                          Cursor="Hand"
+                          IsChecked="{Binding AllChecked}"
+                          HorizontalAlignment="Left"
+                          Margin="15,5,0,0" />
+
+                <ScrollViewer  Grid.Row="1">
+                    <ItemsControl Name="tst_itemControl"
+                                  ItemsSource="{Binding Teachers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Width="200"
+                                          IsChecked="{Binding IsChecked}"
+                                          ToolTip="{Binding ID}"
+                                          Margin="5"
+                                          Height="100">
+                                    <CheckBox.Template>
+                                        <ControlTemplate TargetType="CheckBox">
+                                            <Grid>
+                                                <Border Margin="5"
+                                                        Name="bd_background"
+                                                        CornerRadius="5"
+                                                        Background="White"
+                                                        BorderThickness="1">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect Color="#D4D5D6"
+                                                                          ShadowDepth="1"
+                                                                          Opacity="0.8"
+                                                                          BlurRadius="5" />
+                                                    </Border.Effect>
+                                                </Border>
+                                                <Grid Margin="5">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition  Width="70" />
+                                                        <ColumnDefinition Width="80*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox  HorizontalAlignment="Right"
+                                                               VerticalAlignment="Top"
+                                                               Grid.Column="1"
+                                                               IsChecked="{Binding IsChecked}"
+                                                               Margin="5" />
+
+                                                    <Image Source="{StaticResource icon_teacher}"
+                                                           Width="35"
+                                                           Height="35" />
+
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="{Binding Name}"
+                                                               Grid.Column="1"
+                                                               VerticalAlignment="Center"
+                                                               Opacity="0.7" />
+
+                                                </Grid>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="true">
+                                                    <Setter Property="BorderBrush"
+                                                            TargetName="bd_background"
+                                                            Value="{DynamicResource case_isMouseOver}" />
+                                                    <Setter Property="Cursor"
+                                                            Value="Hand" />
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </CheckBox.Template>
+                                </CheckBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,98 @@
+﻿<metro:MetroWindow  x:Class="OSKernel.Presentation.Arranging.Administrative.Dialog.CreateClassUnion"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
+                    Style="{StaticResource MetroWindowStyle}"
+                    WindowStartupLocation="CenterOwner"
+                    Name="win"
+                    mc:Ignorable="d"
+                    Title="创建合班"
+                    ResizeMode="CanResize"
+                    Height="400"
+                    Width="600">
+    <!--创建课程互斥-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!--排课列表-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="选择合班课程"
+                       Opacity="0.7"
+                       Margin="10"
+                       HorizontalAlignment="Left" />
+
+            <ListBox Grid.Row="1"
+                     Margin="10,0"
+                     Background="White"
+                     DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectCourse}"
+                     HorizontalContentAlignment="Center"
+                     ItemsSource="{Binding Courses}" />
+
+            <Rectangle Width="1"
+                       Grid.RowSpan="2"
+                       HorizontalAlignment="Right"
+                       Fill="{StaticResource CB_Separation}"/>
+
+            <TextBlock Text="选择合班班级"
+                       Opacity="0.7"
+                       Margin="10"
+                       Grid.Column="1"
+                       HorizontalAlignment="Left" />
+
+            <ListBox Grid.Row="1"
+                     Grid.Column="1"
+                     Background="White"
+                     ItemsSource="{Binding Classes}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding Name}"
+                                  IsChecked="{Binding IsChecked}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+
+        <Rectangle Height="1"
+                   Grid.Row="1"
+                   VerticalAlignment="Top"
+                   Fill="{StaticResource main_lightgroud}" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="3">
+
+            <Button Content="保存"
+                    Name="btn_save"
+                    Margin="5"
+                    IsDefault="True"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="取消"
+                    Name="btn_cancel"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5" />
+
+        </StackPanel>
+
+    </Grid>
+</metro:MetroWindow>

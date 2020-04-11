@@ -1,0 +1,304 @@
+﻿<UserControl x:Class="OSKernel.Presentation.CustomControl.Week"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.CustomControl"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="CheckBox"
+               x:Key="timeCheckBox">
+            <Setter Property="Cursor"
+                    Value="Hand" />
+            <Setter Property="IsChecked"
+                    Value="{Binding IsChecked,Mode=TwoWay, NotifyOnSourceUpdated=True,UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border Name="bg"
+                                Background="{DynamicResource local_red}">
+                            <Grid>
+                                <Path x:Name="path_uncheck"
+                                      Visibility="Hidden"
+                                      Data="F1M44,37C45.657,37 47.157,37.672 48.243,38.758 48.243,38.758 66,56.516 66,56.516 66,56.516 83.757,38.758 83.757,38.758 84.843,37.672 86.343,37 88,37 91.314,37 94,39.687 94,43 94,44.658 93.328,46.158 92.243,47.244 92.243,47.244 74.486,65 74.486,65 74.486,65 92.243,82.758 92.243,82.758 93.328,83.844 94,85.344 94,87.001 94,90.314 91.314,93 88,93 86.343,93 84.843,92.329 83.757,91.243 83.757,91.243 66,73.486 66,73.486 66,73.486 48.243,91.243 48.243,91.243 47.157,92.329 45.657,93 44,93 40.686,93 38,90.314 38,87.001 38,85.344 38.672,83.844 39.758,82.758 39.758,82.758 57.515,65 57.515,65 57.515,65 39.758,47.244 39.758,47.244 38.672,46.158 38,44.658 38,43 38,39.687 40.686,37 44,37z M66,13.001C37.281,13.001 14,36.281 14,65 14,93.719 37.281,117.001 66,117.001 94.719,117.001 118,93.719 118,65 118,36.281 94.719,13.001 66,13.001z M66,1C101.347,1 130,29.654 130,65 130,100.347 101.347,129.001 66,129.001 30.654,129.001 2,100.347 2,65 2,29.654 30.654,1 66,1z"
+                                      Fill="#FFFFFFFF"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Stretch="Fill"
+                                      Height="20"
+                                      Width="20" />
+                                <Path x:Name="path_check"
+                                      Visibility="Hidden"
+                                      Data="F1M89,43C92.314,43 95,45.686 95,49 95,50.657 94.329,52.157 93.243,53.243 93.243,53.243 61.243,85.243 61.243,85.243 60.157,86.329 58.657,87 57,87 55.343,87 53.843,86.329 52.758,85.243 52.758,85.243 34.757,67.243 34.757,67.243 33.672,66.157 33,64.657 33,63 33,59.687 35.686,57 39,57 40.657,57 42.157,57.672 43.243,58.758 43.243,58.758 57,72.515 57,72.515 57,72.515 84.758,44.758 84.758,44.758 85.843,43.672 87.343,43 89,43z M65,13.001C36.281,13.001 13,36.281 13,65 13,93.719 36.281,117.001 65,117.001 93.719,117.001 117,93.719 117,65 117,36.281 93.719,13.001 65,13.001z M65,1C100.346,1 129,29.654 129,65 129,100.347 100.346,129.001 65,129.001 29.654,129.001 1,100.347 1,65 1,29.654 29.654,1 65,1z"
+                                      Fill="#FFFFFFFF"
+                                      Stretch="Fill"
+                                      Height="20"
+                                      Width="20"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked}"
+                                         Value="True">
+                                <Setter Property="Background"
+                                        TargetName="bg"
+                                        Value="{DynamicResource local_green}" />
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="path_check" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsChecked}"
+                                         Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="path_uncheck" />
+                                <Setter Property="Visibility"
+                                        Value="Hidden"
+                                        TargetName="path_check" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer Grid.Row="1">
+        <Grid Margin="0,0,0,10">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="120" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <!--列头-->
+                <Border BorderThickness="1,1,1,1"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="课节"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="1"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown1"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期一"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="2"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown2"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期二"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="3"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown3"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期三"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="4"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown4"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期四"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="5"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown5"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期五"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="6"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown6"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期六"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <Border BorderThickness="0,1,1,1"
+                        Grid.Column="7"
+                        Cursor="Hand"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Border_MouseLeftButtonDown7"
+                        BorderBrush="{StaticResource CB_Separation}">
+                    <TextBlock Text="星期日"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+
+                <!--内容行-->
+                <ItemsControl Grid.Row="1"
+                              Name="itemControl_period"
+                              Grid.ColumnSpan="8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="40">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  MinWidth="120" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <!--默认-->
+                                <Border BorderThickness="1,0,1,1"
+                                        Name="border_norml"
+                                        Cursor="Hand"
+                                        Background="Transparent"
+                                        MouseLeftButtonDown="Border_norml_MouseLeftButtonDown"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Period.PeriodName}"
+                                                   Margin="15,5"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+
+                                <!--禁用-->
+                                <Border Grid.Column="1"
+                                        Grid.ColumnSpan="7"
+                                        Visibility="Collapsed"
+                                        Panel.ZIndex="1"
+                                        Name="border_forbid"
+                                        Background="{StaticResource week_forbid}"
+                                        BorderBrush="{StaticResource CB_Separation}" />
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="1"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Monday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="2"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Tuesday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="3"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Wednesday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="4"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Thursday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="5"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Friday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="6"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Saturday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                                <Border BorderThickness="0,0,1,1"
+                                        Grid.Column="7"
+                                        BorderBrush="{StaticResource CB_Separation}">
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              DataContext="{Binding Sunday}"
+                                              Style="{StaticResource timeCheckBox}" />
+                                </Border>
+
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <!--午休-->
+                                <DataTrigger Binding="{Binding PositionType}"
+                                             Value="Noon">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Visibility"
+                                                TargetName="border_forbid"
+                                                Value="Visible" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PositionType}"
+                                             Value="AB">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Visibility"
+                                                TargetName="border_forbid"
+                                                Value="Visible" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PositionType}"
+                                             Value="PB">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Visibility"
+                                                TargetName="border_forbid"
+                                                Value="Visible" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

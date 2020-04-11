@@ -1,0 +1,173 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour.Dialog.ModifyClassHourSameOpen"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour.Dialog"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   MaxWidth="800"
+                   MaxHeight="600"
+                   SizeToContent="WidthAndHeight"
+                   x:Name="main"
+                   mc:Ignorable="d"
+                   Title="调整班级课时"
+                   Style="{StaticResource MetroWindowStyle}"
+                   ResizeMode="CanResize"
+                   WindowStartupLocation="CenterOwner">
+    <metro:MetroWindow.Resources>
+        <local:CheckBoxTemplateSelector x:Key="CheckBoxSelector" />
+        <DataTemplate x:Key="GeneralCheckBox">
+            <Grid Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{StaticResource main_lightgroud}"
+                        Margin="1">
+                    <TextBlock Margin="5"
+                               VerticalAlignment="Center"
+                               Text="{Binding Display}"
+                               Opacity="0.8"
+                               FontSize="15">
+                    </TextBlock>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="{StaticResource main_lightgroud}"
+                        Margin="1" />
+
+                <ItemsControl Grid.Column="1"
+                              Margin="2"
+                              ItemsSource="{Binding HourIndexs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                                      FontSize="14"
+                                      Opacity="0.6"
+                                      Margin="21,5"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderCheckBox">
+            <Grid Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{StaticResource main_lightgroud}"
+                        Margin="1">
+                    <TextBlock Margin="5"
+                               VerticalAlignment="Center"
+                               Opacity="0.8"
+                               FontSize="15">
+                    </TextBlock>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="{StaticResource CB_Separation}"
+                        Margin="1" />
+
+                <ItemsControl Grid.Column="1"
+                              HorizontalAlignment="Left"
+                              Margin="2"
+                              ItemsSource="{Binding HourIndexs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                                      FontSize="14"
+                                      Opacity="0.6"
+                                      MinWidth="60"
+                                      Margin="2"
+                                      Cursor="Hand"
+                                      HorizontalAlignment="Left">
+                                <CheckBox.Template>
+                                    <ControlTemplate TargetType="CheckBox">
+                                        <Grid Name="main_grid"
+                                              Background="Transparent">
+                                            <TextBlock Text="{Binding Index}"
+                                                       FontSize="15"
+                                                       Opacity="0.8"
+                                                       Foreground="{TemplateBinding Foreground}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked"
+                                                     Value="true">
+                                                <Setter Property="Background"
+                                                        TargetName="main_grid"
+                                                        Value="{StaticResource main_background}" />
+                                                <Setter Property="Foreground"
+                                                        Value="White" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </CheckBox.Template>
+                            </CheckBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+
+    </metro:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Classes}"
+                          ItemTemplateSelector="{StaticResource CheckBoxSelector}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Rectangle Height="1"
+                   Grid.Row="1"
+                   VerticalAlignment="Top"
+                   Fill="{StaticResource main_lightgroud}" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+
+            <Button Content="保存"
+                    Name="btn_save"
+                    Margin="5"
+                    CommandParameter="{Binding ElementName=main}"
+                    Command="{Binding SaveCommand}"
+                    IsDefault="True"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="取消"
+                    Name="btn_cancel"
+                    CommandParameter="{Binding ElementName=main}"
+                    Command="{Binding CancelCommand}"
+                    Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

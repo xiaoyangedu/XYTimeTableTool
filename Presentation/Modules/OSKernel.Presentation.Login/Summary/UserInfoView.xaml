@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Login.Summary.UserInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Login.Summary"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--用户信息-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="10,0"
+                    VerticalAlignment="Center">
+            <!--用户信息部分-->
+            <Button Width="50"
+                    Command="{Binding LoginCommand}"
+                    Height="50">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Path Data="F1M65,13C36.281,13 13,36.282 13,65.001 13,78.431 18.136,90.632 26.494,99.859 34.026,96.216 31.26,99.248 41.113,95.192 51.197,91.047 53.586,89.601 53.586,89.601 53.586,89.601 53.68,80.046 53.68,80.046 53.68,80.046 49.904,77.179 48.731,68.189 46.367,68.867 45.587,65.435 45.448,63.25 45.321,61.14 44.08,54.548 46.963,55.143 46.373,50.741 45.95,46.772 46.157,44.67 46.88,37.288 54.043,29.576 65.077,29.012 78.055,29.574 83.197,37.282 83.918,44.663 84.128,46.767 83.665,50.739 83.075,55.133 85.959,54.545 84.705,61.127 84.565,63.237 84.438,65.423 83.639,68.843 81.282,68.166 80.104,77.155 76.328,80.001 76.328,80.001 76.328,80.001 76.416,89.506 76.416,89.506 76.416,89.506 78.804,90.859 88.887,95.005 98.741,99.061 95.975,96.208 103.506,99.859 111.865,90.633 117,78.431 117,65.001 117,36.282 93.719,13 65,13z M65,1C100.346,1 129,29.654 129,65.001 129,100.347 100.346,129.001 65,129.001 29.654,129.001 1,100.347 1,65.001 1,29.654 29.654,1 65,1z"
+                                  Fill="{StaticResource main_lightgroud}"
+                                  Stretch="Fill" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <StackPanel Margin="10,0">
+                <TextBlock FontSize="15"
+                           Foreground="Gray"
+                           Grid.Row="1"
+                           Margin="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center">
+                <Run Text="ID   :"
+                     FontWeight="Bold" />
+                <Run Text="{Binding Id}" />
+                </TextBlock>
+
+                <TextBlock FontSize="15"
+                           Foreground="Gray"
+                           Grid.Row="1"
+                           Margin="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left">
+                 <Run Text="用户:"  FontWeight="Bold"/>
+            <Run Text="{Binding Name}"/>
+                </TextBlock>
+
+            </StackPanel>
+            
+
+           
+        </StackPanel>
+
+        <Grid Grid.Row="1"
+              Margin="20"
+              Background="White">
+
+        </Grid>
+
+        <Button  Grid.Row="2"
+                 Content="修改信息"
+                 Margin="0,0,20,0"
+                 Width="100"
+                 HorizontalAlignment="Right"
+                 Command="{Binding ModifyCommand}"
+                 Style="{StaticResource CreateCaseButtonStyle}" />
+    </Grid>
+</UserControl>

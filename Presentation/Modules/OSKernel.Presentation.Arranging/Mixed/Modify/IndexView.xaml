@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.IndexView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify"
+             xmlns:views="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--走班基础信息-->
+    <Grid>
+        <TabControl Grid.Row="1"
+                    BorderThickness="0,1,0,0">
+
+            <TabItem Header="基础数据">
+                <views:BaseView />
+            </TabItem>
+
+            <TabItem Header="作息时间">
+                <views:TimeView DataContext="{Binding TimeVM}" />
+            </TabItem>
+
+            <TabItem Header="标签信息"
+                     Visibility="Collapsed">
+                <views:TagView  DataContext="{Binding TagVM}" />
+            </TabItem>
+
+            <TabItem Header="课程信息">
+                <views:CourseView  DataContext="{Binding CourseVM}" />
+            </TabItem>
+
+            <TabItem Header="教师信息">
+                <views:TeacherView  DataContext="{Binding TeacherVM}" />
+            </TabItem>
+
+            <TabItem Header="学生信息">
+                <views:StudentView  DataContext="{Binding StudentVM}" />
+            </TabItem>
+
+            <TabItem Header="开班设置">
+                <views:ClassView  DataContext="{Binding ClassVM}" />
+            </TabItem>
+
+            <TabItem Header="排课规则">
+                <views:RuleView  DataContext="{Binding RuleVM}" />
+            </TabItem>
+
+        </TabControl>
+
+        <!--当前模式-->
+        <StackPanel HorizontalAlignment="Right"
+                    Margin="5,3,5,3"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top">
+
+            <Button Content="模式"
+                    ToolTip="选择模式"
+                    Command="{Binding SettingPatternCommand}"
+                    Style="{StaticResource SettingButtonStyle}" />
+
+            <ContentControl Visibility="{Binding HasPattern,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ContentControl.Content>
+                    <Border Background="{StaticResource main_lightgroud}">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="15,0,10,0">
+                            <TextBlock Text="{Binding PatternName}"
+                                       FontSize="14"
+                                       Foreground="{StaticResource main_background}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+
+                            <Button Command="{Binding DeleteCurrentPatternCommand}"
+                                    Margin="5,0,0,0"
+                                    Foreground="{StaticResource local_red}"
+                                    Style="{StaticResource CloseButtonStyle}" />
+
+                        </StackPanel>
+                    </Border>
+                </ContentControl.Content>
+            </ContentControl>
+
+        </StackPanel>
+    </Grid>
+
+</UserControl>

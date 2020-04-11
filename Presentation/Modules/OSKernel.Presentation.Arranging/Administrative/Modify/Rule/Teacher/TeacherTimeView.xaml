@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher.TeacherTimeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight">
+    <activity:Interaction.Triggers>
+        <activity:EventTrigger EventName="Loaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="loaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+        <activity:EventTrigger EventName="Unloaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="unloaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+    </activity:Interaction.Triggers>
+    <!--教师排课时间-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="200"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!--教师列表-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBox Margin="10"
+                         Visibility="Collapsed"
+                         metro:TextBoxHelper.Watermark="教师名称" />
+<!--左侧导航-->
+                <!--左侧导航-->
+                <DataGrid Grid.Row="1"
+                          Margin="5,10"
+                          ColumnHeaderHeight="65"
+                          Name="dg"
+                          IsReadOnly="False"
+                          CanUserAddRows="False"
+                          ItemsSource="{Binding Teachers}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="auto">
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox IsChecked="{Binding DataContext.IsAllChecked,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="教师"
+                                            Binding="{Binding Name}" />
+
+                        <DataGridTemplateColumn Width="100"
+                                                SortMemberPath="Weight">
+                            <DataGridTemplateColumn.Header>
+                                <StackPanel>
+                                    <TextBlock Text="权重"
+                                               HorizontalAlignment="Center"
+                                               Margin="2" />
+                                    <ComboBox Width="80"
+                                              DisplayMemberPath="Key"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding DataContext.SelectWeight,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                              HorizontalContentAlignment="Center"
+                                              ItemsSource="{Binding DataContext.Weights,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                              Margin="2" />
+                                </StackPanel>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Weight,Converter={StaticResource WeightEnumConverter}}"
+                                               Margin="5" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Weights}"
+                                              DisplayMemberPath="Key"
+                                              Width="80"
+                                              Margin="5"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding Weight}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="状态">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ModifyButtonStyle}"
+                                            Margin="5"
+                                            Grid.Column="1"
+                                            Width="20"
+                                            Height="20"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.ModifyCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            Visibility="{Binding HasOperation,Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--<ScrollViewer Grid.Row="1"
+                              Margin="5,10">
+                    <ItemsControl ItemsSource="{Binding Teachers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+
+                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                              Content="{Binding Name}"
+                                              MinWidth="120"
+                                              Margin="2" />
+
+                                    <Button Style="{StaticResource ModifyButtonStyle}"
+                                            Grid.Column="1"
+                                            Width="20"
+                                            Height="20"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.ModifyCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            Visibility="{Binding HasOperation,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>                        
+                    </ItemsControl>
+                </ScrollViewer>-->
+                
+                
+            </Grid>
+
+            <Rectangle Width="1"
+                       HorizontalAlignment="Right"
+                       Fill="{StaticResource CB_Separation}"/>
+
+            <!--课位调整区域-->
+            <xy:TwoStatusWeek Grid.Column="1"
+                              Periods="{Binding Periods}" />
+
+        </Grid>
+
+        <xy:TitleBar Title="用于禁止或固定把某位教师的课排在某些位置上，鼠标左键是必须、右键是禁止；"
+                     Grid.Row="1" />
+    </Grid>
+</UserControl>

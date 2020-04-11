@@ -1,0 +1,246 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Modify.Views.RuleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Modify.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:OSKernel.Presentation.Arranging.Converters"
+             xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+             mc:Ignorable="d"
+             d:DesignHeight="768"
+             d:DesignWidth="1024">
+    <activity:Interaction.Triggers>
+        <activity:EventTrigger EventName="Loaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="loaded"
+                                Command="{Binding WindowCommand}" />
+        </activity:EventTrigger>
+        <activity:EventTrigger EventName="Closed">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="closed"
+                                Command="{Binding WindowCommand}" />
+        </activity:EventTrigger>
+        <activity:EventTrigger EventName="Unloaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="unloaded"
+                                Command="{Binding WindowCommand}" />
+        </activity:EventTrigger>
+    </activity:Interaction.Triggers>
+    <UserControl.Resources>
+        <converters:RuleCategoryToStringConverter x:Key="RuleCategoryToStringConverter" />
+    </UserControl.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <xy:TitleBar Title="可根据自身需求，找到对应规则进行设置，满足学校个性化需求；" />
+
+        <CheckBox HorizontalAlignment="Right"
+                  Name="cb_rule"
+                  Margin="0,2,10,2"
+                  Content="高级" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,10"
+                  Grid.Row="1"
+                  Background="White">
+                <!--规则-->
+                <DataGrid Margin="2"
+                          Name="dg_rule"
+                          ItemsSource="{Binding Rules}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=dg_rule}"
+                                                   Command="{Binding DataContext.SetRuleCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background"
+                                    Value="White" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="LightGray" />
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#90F670" />
+                                    <Setter Property="Foreground"
+                                            Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="序号"
+                                            Binding="{Binding NO}"
+                                            Width="100" />
+                        <DataGridTextColumn Header="类别"
+                                            Binding="{Binding Category,Converter={StaticResource RuleCategoryToStringConverter}}"
+                                            Width="100" />
+                        <DataGridTemplateColumn Header="规则"
+                                                MinWidth="200"
+                                                Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+
+                                        <TextBlock Text="{Binding Name}"
+                                                   Margin="5,5,20,5" />
+                                        <Grid Background="{StaticResource local_green}"
+                                              Visibility="{Binding ShowCount,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                              MinWidth="20"
+                                              Height="20">
+                                            <TextBlock Text="{Binding Record}"
+                                                       ToolTip="规则数量"
+                                                       Cursor="Hand"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="White"
+                                                       Margin="5" />
+                                        </Grid>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="备注"
+                                                Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Comment}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="调整"
+                                                Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="10,5,0,5"
+                                               ToolTip="设置"
+                                               Foreground="#FF7D43"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
+                                                <Hyperlink Cursor="Hand"
+                                                           CommandParameter="{Binding}"
+                                                           Command="{Binding DataContext.SetRuleCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}">
+                                                           设置
+                                                </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--高级-->
+                <DataGrid Margin="2"
+                          Name="dg_algo"
+                          ItemsSource="{Binding AlgoRules}"
+                          Visibility="{Binding IsChecked,ElementName=cb_rule,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=dg_algo}"
+                                                   Command="{Binding DataContext.SetAlgoRuleCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background"
+                                    Value="White" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="LightGray" />
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#90F670" />
+                                    <Setter Property="Foreground"
+                                            Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="序号"
+                                            Binding="{Binding NO}"
+                                            Width="100" />
+                        <DataGridTextColumn Header="类别"
+                                            Binding="{Binding Category,Converter={StaticResource RuleCategoryToStringConverter}}"
+                                            Width="100" />
+                        <DataGridTemplateColumn Header="规则"
+                                                MinWidth="200"
+                                                Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+
+                                        <TextBlock Text="{Binding Name}"
+                                                   Margin="5,5,20,5" />
+                                        <Grid Background="{StaticResource local_green}"
+                                              Visibility="{Binding ShowCount,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                              MinWidth="20"
+                                              Height="20">
+                                            <TextBlock Text="{Binding Record}"
+                                                       ToolTip="规则数量"
+                                                       Cursor="Hand"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="White"
+                                                       Margin="5" />
+                                        </Grid>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="备注"
+                                                Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Comment}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="调整"
+                                                Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="10,5,0,5"
+                                               ToolTip="设置"
+                                               Foreground="#FF7D43"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
+                                                <Hyperlink Cursor="Hand"
+                                                           CommandParameter="{Binding}"
+                                                           Command="{Binding DataContext.SetAlgoRuleCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}">
+                                                           设置
+                                                </Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

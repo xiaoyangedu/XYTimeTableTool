@@ -1,0 +1,434 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Mixed.Result.AdjustResult"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Result"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="CanResize"
+                   WindowState="Maximized"
+                   Title="调整结果"
+                   mc:Ignorable="d"
+                   d:DesignWidth="900">
+    <metro:MetroWindow.Resources>
+        <Style TargetType="Label"
+               x:Key="ItemStyle">
+            <!--<Setter Property="Cursor"
+                    Value="Hand" />-->
+            <Setter Property="FontSize"
+                    Value="13" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource main_background}" />
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Label">
+                        <Border Name="bg"
+                                BorderThickness="1"
+                                BorderBrush="LightGray"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter  HorizontalAlignment="Center"
+                                               Margin="2"
+                                               VerticalAlignment="Center" />
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <local:AdjustResultConverter x:Key="AdjustResultConverter" />
+    </metro:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <RadioButton Style="{StaticResource switch_leftStyle}"
+                         Name="radio_grade"
+                         Content="年级课表"
+                         IsChecked="True"
+                         Height="40"
+                         Width="100" />
+
+            <RadioButton Style="{StaticResource switch_centerStyle}"
+                         Name="radio_Class"
+                         Content="班级列表"
+                         Height="40"
+                         Width="100" />
+
+            <RadioButton Style="{StaticResource switch_rightStyle}"
+                         Name="radio_teacher"
+                         Content="教师课表"
+                         Height="40"
+                         Width="100" />
+        </StackPanel>
+
+        <Rectangle Height="1"
+                   Fill="{StaticResource CB_Separation}"
+                   VerticalAlignment="Bottom" />
+
+        <!--年级课表-->
+        <Grid Name="grid_grade"
+              Visibility="{Binding IsChecked,ElementName=radio_grade,Converter={StaticResource BooleanToVisibilityConverter}}"
+              Margin="1"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!--调整课位-->
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Rectangle Fill="{StaticResource main_lightgroud}" />
+
+                <TextBlock Text="*基础数据发生更改当前结果任意调整(不做校验)!"
+                           VerticalAlignment="Center"
+                           Margin="10,0"
+                           Foreground="{StaticResource local_red}"
+                           Visibility="{Binding ShowCanNotDrag,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Margin="0,0,5,0">
+
+                    <Border Background="White"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            Visibility="Collapsed"
+                            Width="20"
+                            Height="20"
+                            Margin="2"
+                            ToolTip="空白" />
+
+                    <Border Background="{StaticResource main_lightgroud}"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            Visibility="Collapsed"
+                            Width="20"
+                            Height="20"
+                            Margin="2"
+                            ToolTip="可调整位置" />
+
+                    <Border Background="{StaticResource week_forbid}"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            Visibility="Collapsed"
+                            Width="20"
+                            Height="20"
+                            Margin="2"
+                            ToolTip="不可调整位置" />
+
+                </StackPanel>
+
+                <!--课位-->
+                <xy:AdjustResultWeek Grid.Row="1"
+                                     Background="White"
+                                     Periods="{Binding Results}" />              
+
+            </Grid>
+
+            <!--操作区域-->
+            <Border  Margin="2,10"
+                     Grid.Column="1"
+                     CornerRadius="5"
+                     Background="White">
+                <TabControl Grid.Column="1"
+                            BorderThickness="0"
+                            Margin="5">
+
+                    <TabItem Header="课程框"
+                             IsSelected="True">
+                        <Grid AllowDrop="True"
+                              Drop="Grid_Drop">
+                            <xy:EmptyView ShowMessage="False"
+                                          Visibility="{Binding ShowCourseFrame,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding CourseFrames}"
+                                              Background="Transparent">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid MinHeight="50"
+                                                  Margin="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="30"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <!--拖拽背景色-->
+                                                <Border BorderBrush="{StaticResource main_lightgroud}"
+                                                        Background="White"
+                                                        BorderThickness="2"
+                                                        Grid.ColumnSpan="2" />
+                                                <Rectangle Fill="{StaticResource main_lightgroud}"
+                                                           MouseMove="Rectangle_MouseMove"
+                                                           Cursor="Hand"
+                                                           MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" />
+
+                                                <ItemsControl Grid.Column="1"
+                                                              ItemsSource="{Binding Details}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ContentControl Content="{Binding Converter={StaticResource AdjustResultConverter}}" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="调课记录"
+                             Visibility="Collapsed">
+                        <Grid>
+
+                            <ListBox ItemsSource="{Binding AdjustmentRecords}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                            <!--班级名称-->
+                                            <TextBlock Margin="10,5">
+                                            <Run Text="班级:" />
+                                            <Run Text="{Binding ClassName}"
+                                                 Foreground="{StaticResource main_background}" />
+                                            </TextBlock>
+                                            <!--原始-->
+                                            <TextBlock Margin="5">
+                                            <Run Text="原始:" />   
+                                            <Run Text="{Binding StartClassHour.CourseName}"
+                                                 Foreground="{StaticResource local_green}" />
+                                            </TextBlock>
+
+                                            <!--目标-->
+                                            <TextBlock Margin="5">
+                                              <Run Text="目标:" />
+                                            <Run Text="{Binding EndClassHour.CourseName}"
+                                                 Foreground="{StaticResource local_red}" />
+                                            </TextBlock>
+
+                                            <!--调整类型-->
+                                            <TextBlock Text="{Binding AdjustType}"
+                                                       Margin="10,5" />
+
+                                            <!--调整时间-->
+                                            <TextBlock Text="{Binding AdjustmentTime,StringFormat='yyyy-MM-dd HH:mm:ss'}"
+                                                       Foreground="DarkGray"
+                                                       Margin="10,5" />
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <!--显示调课记录-->
+                            <xy:EmptyView  Visibility="{Binding ShowRecord,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        </Grid>
+                    </TabItem>
+
+                </TabControl>
+            </Border>
+
+            <GridSplitter  Margin="0,0,-5,0" />
+
+            <xy:TitleBar Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         Title="点击课程方块，显示可互换课程；拖动课程方块，进行调课，系统会校验冲突并提示；" />
+
+        </Grid>
+
+        <!--教师课表-->
+        <Grid Name="grid_teacher"
+              Visibility="{Binding IsChecked,ElementName=radio_teacher,Converter={StaticResource BooleanToVisibilityConverter}}"
+              Margin="10"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Rectangle Fill="{StaticResource main_lightgroud}" />
+
+            <ComboBox Width="150"
+                      MaxWidth="300"
+                      DisplayMemberPath="Name"
+                      HorizontalAlignment="Left"
+                      ItemsSource="{Binding Teachers}"
+                      SelectedItem="{Binding SelectTeacher}" />
+
+            <xy:ResultWeek  Grid.Row="1"
+                            Background="White"
+                            Periods="{Binding TeacherResults}" />
+
+            <xy:TitleBar Grid.Row="2"
+                         Title="" />
+
+
+        </Grid>
+
+        <!--班级列表-->
+        <Grid Name="grid_class"
+              Visibility="{Binding IsChecked,ElementName=radio_Class,Converter={StaticResource BooleanToVisibilityConverter}}"
+              Margin="10"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1">
+                <DataGrid ItemsSource="{Binding Classes}"
+                          SelectedItem="{Binding SelectClass}"
+                          Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="班级"
+                                            Binding="{Binding Display}"
+                                            Width="*" />
+                        <DataGridTextColumn Header="人数"
+                                            Binding="{Binding Count}"
+                                            Width="auto" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Rectangle Width="1"
+                       Grid.Row="1"
+                       HorizontalAlignment="Right"
+                       Fill="{StaticResource CB_Separation}" />
+
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="200" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            Grid.ColumnSpan="2"
+                            Opacity="0.7"
+                            Margin="10,5">
+                    <TextBlock Text="班级："
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding SelectClass.Display}"
+                               Margin="0,0,5,0"
+                               Foreground="Blue" />
+                    <TextBlock Text="人数："
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding SelectClass.Count}"
+                               Margin="0,0,5,0"
+                               Foreground="Blue" />
+                </StackPanel>
+
+                <DataGrid Grid.Row="1"
+                          ColumnHeaderHeight="35"
+                          SelectionMode="Extended"
+                          ItemsSource="{Binding Students}"
+                          Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="auto">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding DataContext.CheckedAllStudent,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="姓名"
+                                            Binding="{Binding Name}"
+                                            Width="33*" />
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+                <Button Grid.Column="1"
+                        Grid.Row="1"
+                        Style="{StaticResource OpratorButtonStyle}"
+                        Command="{Binding AssignCommand}"
+                        Content=">>"
+                        Width="50"
+                        ToolTip="将选中学生调整到目标班级"
+                        Height="30" />
+
+                <DataGrid Grid.Row="1"
+                          ColumnHeaderHeight="35"
+                          ItemsSource="{Binding AdjustClasses}"
+                          SelectedItem="{Binding SelectAdjustClass}"
+                          Grid.Column="2"
+                          Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="班级"
+                                            Binding="{Binding Display}"
+                                            Width="*" />
+                        <DataGridTextColumn Header="人数"
+                                            Binding="{Binding Count}"
+                                            Width="100" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Rectangle Fill="{StaticResource main_lightgroud}" Height="30" Grid.ColumnSpan="3"/>
+
+            <xy:TitleBar Grid.Row="2"
+                         Grid.ColumnSpan="3"
+                         Title="" />
+
+        </Grid>
+
+        <!--刷新按钮-->
+        <Button  Command="{Binding RefreshCommand}"
+                 Content="重置"
+                 Cursor="Hand"
+                 Margin="15"
+                 Width="60"
+                 HorizontalAlignment="Left"
+                 Style="{StaticResource OpratorButtonStyle}"
+                 Visibility="{Binding ShowRefreshButton,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+    </Grid>
+</metro:MetroWindow>

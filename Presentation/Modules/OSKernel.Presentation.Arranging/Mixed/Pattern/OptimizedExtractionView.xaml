@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Mixed.Pattern.OptimizedExtractionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Pattern"
+             mc:Ignorable="d">
+    <!--抽样排课优化-->
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="排课结果"
+                           Opacity="0.7"
+                           VerticalAlignment="Center" />
+                <ComboBox MinWidth="220"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding Results}"
+                          SelectedItem="{Binding SelectResult}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Top">
+                <TextBlock Text="班额增加"
+                           Opacity="0.7"
+                           VerticalAlignment="Center" />
+                <TextBox Width="40"
+                         HorizontalContentAlignment="Center"
+                         Text="{Binding ClassCapacity}"
+                         Margin="5" />
+                <TextBlock Text="人"
+                           Opacity="0.7"
+                           VerticalAlignment="Center" />
+
+                <TextBlock Text="（建议0-3）"
+                           Opacity="0.7"
+                           VerticalAlignment="Center" />
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

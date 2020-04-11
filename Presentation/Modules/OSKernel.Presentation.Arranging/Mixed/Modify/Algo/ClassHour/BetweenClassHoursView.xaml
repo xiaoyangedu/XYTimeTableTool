@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour.BetweenClassHoursView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+             xmlns:bindingProxy="clr-namespace:OSKernel.Presentation.Arranging.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <activity:Interaction.Triggers>
+        <activity:EventTrigger EventName="Loaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="loaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+        <activity:EventTrigger EventName="Unloaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="unloaded"
+                                Command="{Binding UserControlCommand}" />
+        </activity:EventTrigger>
+    </activity:Interaction.Triggers>
+    <!--多个课时间隔天数-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBox Width="200"
+                     Height="30"
+                     metro:TextBoxHelper.Watermark="课时"
+                     Visibility="Collapsed"
+                     Margin="5" />
+            <Button Content="创建"
+                    Margin="2"
+                    Command="{Binding CreateCommand}"
+                    Style="{StaticResource OpratorButtonStyle}" />
+        </StackPanel>
+        <Grid Background="White"
+              Grid.Row="1"
+              Height="auto">
+            <DataGrid Name="dg"
+                      ItemsSource="{Binding Rules}">
+                <DataGrid.Resources>
+                    <bindingProxy:BindingProxy x:Key="proxy"
+                                               Data="{Binding}" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="序号"
+                                        Binding="{Binding NO}"
+                                        Width="100" />
+                    <DataGridTextColumn Header="课时"
+                                        Binding="{Binding ClassHourString}"
+                                        Width="*" />
+                    <DataGridTextColumn Header="课时数"
+                                        Binding="{Binding ClassHourCount}"
+                                        Width="*" />
+                    <DataGridTextColumn Header="最小天数"
+                                        Binding="{Binding MinDays}"
+                                        Width="100"
+                                        Visibility="{Binding Data.ShowMinDay, Source={StaticResource proxy},Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <DataGridTextColumn Header="最大天数"
+                                        Binding="{Binding MaxDays}"
+                                        Width="100"
+                                        Visibility="{Binding Data.ShowMaxDay, Source={StaticResource proxy},Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <DataGridTextColumn Header="权重"
+                                        Binding="{Binding Weight}"
+                                        Width="100" />
+                    <DataGridCheckBoxColumn Header="状态"
+                                            Binding="{Binding IsActive}"
+                                            Width="100" />
+                    <DataGridTemplateColumn Header="操作"
+                                            Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Margin="2"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.ModifyCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            Style="{StaticResource ModifyButtonStyle}" />
+                                    <Button Margin="2"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            Style="{StaticResource MinusEllipseButtonStyle}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <xy:TitleBar Title="{Binding Comments}"
+                     Grid.Row="2" />
+    </Grid>
+</UserControl>

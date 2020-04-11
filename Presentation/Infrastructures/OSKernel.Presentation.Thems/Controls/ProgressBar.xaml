@@ -1,0 +1,292 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:OSKernel.Presentation.Thems.Converters"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Thems.Controls">
+    <Style x:Name="CircleProgressBar"
+           TargetType="{x:Type ProgressBar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <ControlTemplate.Resources>
+                        <converter:CircleProgressCenterConverter x:Key="CircleProgressCenterConverter" />
+                        <converter:CircleProgressRadiusConverter x:Key="CircleProgressRadiusConverter" />
+                        <converter:CircleProgressValueConverter x:Key="CircleProgressValueConverter" />
+                    </ControlTemplate.Resources>
+                    <Grid>
+                        <Path Fill="{TemplateBinding Background}"
+                              Stroke="{TemplateBinding BorderBrush}"
+                              StrokeThickness="{TemplateBinding BorderThickness}">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <EllipseGeometry RadiusX="{Binding Width, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CircleProgressRadiusConverter}}"
+                                                     RadiusY="{Binding Height, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CircleProgressRadiusConverter}}">
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource CircleProgressCenterConverter}">
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Height" />
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Width" />
+                                            </MultiBinding>
+                                        </EllipseGeometry.Center>
+                                    </EllipseGeometry>
+                                    <EllipseGeometry>
+                                        <EllipseGeometry.Center>
+                                            <MultiBinding Converter="{StaticResource CircleProgressCenterConverter}">
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Height" />
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Width" />
+                                            </MultiBinding>
+                                        </EllipseGeometry.Center>
+                                        <EllipseGeometry.RadiusX>
+                                            <MultiBinding Converter="{StaticResource CircleProgressRadiusConverter}">
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Width" />
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Tag" />
+                                            </MultiBinding>
+                                        </EllipseGeometry.RadiusX>
+                                        <EllipseGeometry.RadiusY>
+                                            <MultiBinding Converter="{StaticResource CircleProgressRadiusConverter}">
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Height" />
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                         Path="Tag" />
+                                            </MultiBinding>
+                                        </EllipseGeometry.RadiusY>
+                                    </EllipseGeometry>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                        <Path Fill="{TemplateBinding Foreground}">
+                            <Path.Data>
+                                <MultiBinding Converter="{StaticResource CircleProgressValueConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Value" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Minimum" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Maximum" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Height" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Width" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                             Path="Tag" />
+                                </MultiBinding>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <SolidColorBrush x:Key="ProgressBar.Progress"
+                     Color="#4C9FFB" />
+    <SolidColorBrush x:Key="ProgressBar.Background"
+                     Color="#FFE6E6E6" />
+    <SolidColorBrush x:Key="ProgressBar.Border"
+                     Color="#FFBCBCBC" />
+    <!--自动更新进度条-->
+    <Style x:Key="UpdateProgressBar"
+           TargetType="{x:Type ProgressBar}">
+        <Setter Property="Foreground"
+                Value="{StaticResource main_background}" />
+        <Setter Property="Background"
+                Value="{StaticResource ProgressBar.Background}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource ProgressBar.Border}" />
+        <Setter Property="Height"
+                Value="20" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid x:Name="TemplateRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Determinate" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                       Storyboard.TargetName="Animation">
+                                            <EasingDoubleKeyFrame KeyTime="0"
+                                                                  Value="0.25" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1"
+                                                                  Value="0.25" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:2"
+                                                                  Value="0.25" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)"
+                                                                      Storyboard.TargetName="Animation">
+                                            <EasingPointKeyFrame KeyTime="0"
+                                                                 Value="-0.5,0.5" />
+                                            <EasingPointKeyFrame KeyTime="0:0:1"
+                                                                 Value="0.5,0.5" />
+                                            <EasingPointKeyFrame KeyTime="0:0:2"
+                                                                 Value="1.5,0.5" />
+                                        </PointAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}">
+                            <Border.Effect>
+                                <DropShadowEffect Direction="1"
+                                                  Color="LightBlue"
+                                                  BlurRadius="5"
+                                                  ShadowDepth="0" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="PART_Track"
+                                CornerRadius="10"
+                                Background="#FFFBFBFB" />
+                        <Grid x:Name="PART_Indicator"
+                              ClipToBounds="true"
+                              HorizontalAlignment="Left">
+                            <Border x:Name="Indicator"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Foreground}" />
+                            <Border x:Name="Animation"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Foreground}"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation"
+                                 Value="Vertical">
+                            <Setter Property="LayoutTransform"
+                                    TargetName="TemplateRoot">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsIndeterminate"
+                                 Value="true">
+                            <Setter Property="Visibility"
+                                    TargetName="Indicator"
+                                    Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--排课进度条-->
+    <Style x:Key="TableProgressBar"
+           TargetType="{x:Type ProgressBar}">
+        <Setter Property="Foreground"
+                Value="{StaticResource ProgressBar.Progress}" />
+        <Setter Property="Background"
+                Value="{StaticResource main_lightgroud}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource ProgressBar.Border}" />
+        <Setter Property="Height"
+                Value="20" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid x:Name="TemplateRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Determinate" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                       Storyboard.TargetName="Animation">
+                                            <EasingDoubleKeyFrame KeyTime="0"
+                                                                  Value="0.25" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1"
+                                                                  Value="0.25" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:2"
+                                                                  Value="0.25" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)"
+                                                                      Storyboard.TargetName="Animation">
+                                            <EasingPointKeyFrame KeyTime="0"
+                                                                 Value="-0.5,0.5" />
+                                            <EasingPointKeyFrame KeyTime="0:0:1"
+                                                                 Value="0.5,0.5" />
+                                            <EasingPointKeyFrame KeyTime="0:0:2"
+                                                                 Value="1.5,0.5" />
+                                        </PointAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}">
+                            <Border.Effect>
+                                <DropShadowEffect Direction="1"
+                                                  Color="LightBlue"
+                                                  BlurRadius="5"
+                                                  ShadowDepth="0" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="PART_Track"
+                                CornerRadius="10"
+                                Background="{StaticResource main_lightgroud}" />
+                        <Grid x:Name="PART_Indicator"
+                              ClipToBounds="true"
+                              HorizontalAlignment="Left">
+                            <Border x:Name="Indicator"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Foreground}" />
+                            <Border x:Name="Animation"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Foreground}"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation"
+                                 Value="Vertical">
+                            <Setter Property="LayoutTransform"
+                                    TargetName="TemplateRoot">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsIndeterminate"
+                                 Value="true">
+                            <Setter Property="Visibility"
+                                    TargetName="Indicator"
+                                    Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

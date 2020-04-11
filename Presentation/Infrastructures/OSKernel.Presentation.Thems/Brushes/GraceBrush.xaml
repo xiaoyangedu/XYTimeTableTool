@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Thems.Brushes">
+
+    <!--基础色值-->
+    <Color x:Key="color1">#FF99CC</Color>
+    <Color x:Key="color2">#FFCCCC</Color>
+    <Color x:Key="color3">#CCCCFF</Color>
+    <Color x:Key="color4">#FAFAFA</Color>
+
+    <SolidColorBrush x:Key="dialog_backgroud"
+                     Color="{StaticResource color4}" />
+
+    <!--主色(首页菜单背景色)-->
+    <SolidColorBrush x:Key="main_background"
+                     Color="{StaticResource color1}" />
+    <!--浅色区块-->
+    <SolidColorBrush x:Key="main_lightgroud"
+                     Color="{StaticResource color2}" />
+    <!--分割线-->
+    <SolidColorBrush x:Key="CB_Separation"
+                     Color="#EDEDED" />
+    <!--文本颜色-->
+    <SolidColorBrush x:Key="TB_Forground"
+                     Color="#D4D5D6" />
+    <!--ToolTip背景色-->
+    <SolidColorBrush x:Key="Tip_Background"
+                     Color="#3C4046" />
+
+    <!--红色（错误信息）-->
+    <SolidColorBrush x:Key="local_red"
+                     Color="#D93E41" />
+    <!--绿色（正确信息）-->
+    <SolidColorBrush x:Key="local_green"
+                     Color="#45BA57" />
+
+    <!--Menu-->
+    <SolidColorBrush x:Key="menu_isMouseOver"
+                     Color="#56B1FC" />
+
+    <SolidColorBrush x:Key="menu_isPressed"
+                     Color="#56B1FC" />
+
+    <SolidColorBrush x:Key="menu_isChecked"
+                     Color="#FFFFFF" />
+
+    <!--方案卡片样式-->
+    <SolidColorBrush x:Key="case_isMouseOver"
+                     Color="#99CFFC" />
+
+    <SolidColorBrush x:Key="case_play"
+                     Color="{StaticResource color3}" />
+
+</ResourceDictionary>

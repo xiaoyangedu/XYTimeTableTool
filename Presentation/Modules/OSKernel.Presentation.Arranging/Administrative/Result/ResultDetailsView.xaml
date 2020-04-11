@@ -1,0 +1,82 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Administrative.Result.ResultDetailsView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Result"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="CanResize"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   mc:Ignorable="d"
+                   Height="450"
+                   Width="800">
+    <!--结果详细界面-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="auto" />
+            <RowDefinition  Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="5"
+                    HorizontalAlignment="Center">
+            <RadioButton  Style="{StaticResource switch_leftStyle}"
+                          x:Name="rb_class"
+                          IsChecked="True"
+                          Width="100"
+                          Height="35"
+                          Content="班级课表" />
+
+            <RadioButton  Style="{StaticResource switch_rightStyle}"
+                          x:Name="rb_teacher"
+                          Width="100"
+                          Height="35"
+                          Content="教师课表" />
+        </StackPanel>
+
+        <!--班级课表-->
+        <Grid Grid.Row="1"
+              Visibility="{Binding IsChecked,ElementName=rb_class,Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="300"
+                                  Width="auto" />
+                <ColumnDefinition  Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox ItemsSource="{Binding Classes}"
+                     SelectedItem="{Binding SelectClass}"
+                     DisplayMemberPath="Name"
+                     MinWidth="100"
+                     HorizontalContentAlignment="Center"
+                     Margin="5" />
+
+            <xy:ResultWeek  Grid.Column="1"
+                            Periods="{Binding Results}" />
+
+        </Grid>
+
+        <!--教师课表-->
+        <Grid Visibility="{Binding IsChecked,ElementName=rb_teacher,Converter={StaticResource BooleanToVisibilityConverter}}"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="300"
+                                  Width="auto" />
+                <ColumnDefinition  Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox ItemsSource="{Binding Teachers}"
+                     SelectedItem="{Binding SelectTeacher}"
+                     DisplayMemberPath="Name"
+                     MinWidth="100"
+                     HorizontalContentAlignment="Center"
+                     Margin="5" />
+
+            <xy:ResultWeek  Grid.Column="1"
+                            Periods="{Binding TeacherResults}" />
+
+        </Grid>
+
+    </Grid>
+</metro:MetroWindow>

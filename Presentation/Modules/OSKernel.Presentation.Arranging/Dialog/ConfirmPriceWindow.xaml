@@ -1,0 +1,73 @@
+﻿<metro:MetroWindow  x:Class="OSKernel.Presentation.Arranging.Dialog.ConfirmPriceWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
+                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    mc:Ignorable="d"
+                    Style="{StaticResource MetroWindowStyle}"
+                    WindowStartupLocation="CenterOwner"
+                    Title="排课消费金额预览"
+                    Height="220"
+                    Width="400">
+    <!--确认价格-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock  HorizontalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    VerticalAlignment="Center">
+            <Run Text="排课消费金额预览" />
+        </TextBlock>
+
+        <TextBlock  
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    FontSize="16"
+                    Margin="30,5"
+                    VerticalAlignment="Center">
+            <Run Text="本次排课消费金额共计" />
+            <Run Text="0"
+                 Name="txt_price" />
+             <Run Text="元" />
+        </TextBlock>
+
+        <TextBlock Grid.Row="2"
+                   FontSize="15"
+                   Margin="55,5"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource local_blue}"
+                   Text="*实际扣费优先使用优惠券；排课不成功，本次排课不扣费。"/>
+
+        <Rectangle Grid.Row="2"
+                   Height="1"
+                   VerticalAlignment="Top"
+                   Fill="{StaticResource CB_Separation}" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="3">
+
+            <Button Content="确认排课"
+                    Name="btn_save"
+                    Margin="5"
+                    Click="Btn_save_Click"
+                    IsDefault="True"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="再想想"
+                    Name="btn_cancel"
+                    Click="Btn_cancel_Click"
+                    Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

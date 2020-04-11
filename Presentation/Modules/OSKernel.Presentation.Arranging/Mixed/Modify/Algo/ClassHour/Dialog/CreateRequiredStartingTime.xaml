@@ -1,0 +1,95 @@
+﻿<metro:MetroWindow  x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour.Dialog.CreateRequiredStartingTime"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour.Dialog"
+                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    mc:Ignorable="d"
+                    Title="{Binding TitleString}"
+                    Style="{DynamicResource MetroWindowStyle}"
+                    WindowStartupLocation="CenterOwner"
+                    Width="500"
+                    Height="450"
+                    x:Name="win"> 
+    <!--单个课时有一个优先开始时间-->
+    <Grid Margin="10">
+        <StackPanel>
+
+            <local:FilterView x:Name="filterControl"
+                              Visibility="{Binding ShowEdit,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <StackPanel>
+                <TextBlock Text="课时ID"
+                           Margin="5" />
+
+                <ComboBox Margin="5"
+                          ItemsSource="{Binding ClassHours}"
+                          DisplayMemberPath="Display"
+                          SelectedItem="{Binding SelectClassHour}"
+                          Visibility="{Binding ShowEdit,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <TextBlock Text="{Binding ClassHourString}"
+                           Visibility="{Binding ShowRead,Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Margin="5" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="优先开始时间"
+                           Margin="5" />
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <TextBlock Text="星期"
+                                   Margin="5" />
+                        <ComboBox Width="150"
+                                  ItemsSource="{Binding Days}"
+                                  SelectedValue="{Binding SelectDay}"
+                                  DisplayMemberPath="Key"
+                                  SelectedValuePath="Value"
+                                  Text="{Binding Day}"
+                                  Margin="5" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="节次"
+                                   Margin="5" />
+                        <ComboBox Width="150"
+                                  DisplayMemberPath="PeriodName"
+                                  ItemsSource="{Binding Periods}"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  SelectedItem="{Binding SelectPeriod}"
+                                  Margin="5" />
+                    </StackPanel>
+
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="权重(%)(推荐：0-100)"
+                           Margin="5" />
+                <TextBox Text="{Binding Weight,UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5" />
+            </StackPanel>
+
+            <CheckBox Name="cb_checked"
+                      Content="启用"
+                      IsChecked="{Binding IsActive}"
+                      Margin="5" />
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,20"
+                        HorizontalAlignment="Center">
+                <Button Content="保存"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding ElementName=win}"
+                        Margin="5,0" />
+                <Button Content="取消"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding ElementName=win}"
+                        Margin="5,0" />
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.Views.StudentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Views"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             xmlns:metrol="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+             xmlns:loading="clr-namespace:OSKernel.Presentation.CustomControl.Loading;assembly=OSKernel.Presentation.CustomControl"
+             Name="main"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <!--动态列模板-->
+        <!--<DataTemplate x:Key="dynamicColumnDataTemplate">
+            <CheckBox IsChecked="{Binding IsChecked,UpdateSourceTrigger=PropertyChanged}"
+                      Loaded=""
+                      ToolTip="{Binding}"/>
+        </DataTemplate>-->
+    </UserControl.Resources>
+    <activity:Interaction.Triggers>
+        <activity:EventTrigger EventName="Loaded">
+            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                CommandParameter="{Binding ElementName=main}"
+                                Command="{Binding WindowCommand}" />
+        </activity:EventTrigger>
+    </activity:Interaction.Triggers>
+    <!--学生信息-->
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <xy:TitleBar Title="可通过导入学生志愿的形式同时导入学生及学生选课结果，导入时会清除已导入的结果，导入文件中应包含本次排课的所有学生及其选课结果。" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Background="White"
+                  Margin="0,10"
+                  Height="40">
+                <StackPanel HorizontalAlignment="Left"
+                            Orientation="Horizontal"
+                            Margin="5,0"
+                            VerticalAlignment="Center">
+
+                    <!--搜索框-->
+                    <TextBox  HorizontalAlignment="Left"
+                              metrol:TextBoxHelper.Watermark="搜索学生"
+                              Text="{Binding SearchStudent,UpdateSourceTrigger=PropertyChanged}"
+                              Margin="10,0"
+                              Width="200" />
+
+                    <Button Content="添加学生"
+                            Width="70"
+                            Height="30"
+                            Command="{Binding CreateCommand}"
+                            Style="{StaticResource OpratorButtonStyle}" />
+
+                    <Button Content="统计"
+                            Width="40"
+                            Height="30"
+                            Margin="5,0"
+                            ToolTip="统计科目选择人数"
+                            Command="{Binding StatisticsCommand}" />
+
+                    <Button Content="导入学生志愿"
+                            Command="{Binding ImportStudentSelectionsCommand}"
+                            Height="30"
+                            Margin="5,0" />
+
+                    <Button Content="导出学生志愿"
+                            Command="{Binding ExportStudentSelectionsCommand}"
+                            Height="30"
+                            Margin="5,0" />
+
+                </StackPanel>
+
+                <Button Style="{StaticResource OpratorButtonStyle}"
+                        Command="{Binding SaveCommand}"
+                        HorizontalAlignment="Right"
+                        Grid.ColumnSpan="8"
+                        Grid.Row="2"
+                        Content="保存"
+                        Width="70"
+                        Height="30"
+                        Margin="5,5,25,5" />
+            </Grid>
+
+            <!--承载区域-->
+            <Grid Margin="0,0,0,10"
+                  Grid.Row="1"
+                  Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <!--<ScrollViewer HorizontalScrollBarVisibility="Visible"
+                              PreviewMouseWheel="Dg_PreviewMouseWheel"
+                              VerticalScrollBarVisibility="Auto">-->
+                    <DataGrid Name="dg">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="序号"
+                                                Binding="{Binding NO}" />
+                            <DataGridTemplateColumn Header="操作"
+                                                    Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Margin="2"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="{Binding ID}"
+                                                Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                Style="{StaticResource MinusEllipseButtonStyle}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="学生"
+                                                Binding="{Binding Name}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                <!--</ScrollViewer>-->
+            </Grid>
+
+        </Grid>
+
+        <!--<loading:LoadingArcs  Grid.RowSpan="2"
+                              Visibility="{Binding ShowLoading,Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+    </Grid>
+</UserControl>

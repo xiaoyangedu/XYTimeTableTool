@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Thems.Controls">
+
+    <!--<Style TargetType="TextBlock">
+        <Setter Property="FontSize"
+                Value="13" />
+        <Setter Property="Opacity"
+                Value="0.8" />
+        <Setter Property="TextOptions.TextFormattingMode"
+                Value="Display" />
+    </Style>-->
+
+    <Style TargetType="TextBlock"
+           x:Key="NoticeTextBlockStyle">
+        <Setter Property="Foreground"
+                Value="{DynamicResource local_red}" />
+        <Setter Property="Margin"
+                Value="10" />
+    </Style>
+
+</ResourceDictionary>

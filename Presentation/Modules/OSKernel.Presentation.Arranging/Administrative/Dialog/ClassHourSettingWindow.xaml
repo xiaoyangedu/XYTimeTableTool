@@ -1,0 +1,74 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Administrative.Dialog.ClassHourSettingWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   Style="{StaticResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   mc:Ignorable="d"
+                   Title="课时详细"
+                   ResizeMode="CanResize"
+                   Height="400"
+                   Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <DataGrid Name="dg_classHour">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="序号"
+                                    Binding="{Binding No}" />
+                <DataGridTextColumn Header="班级"
+                                    Binding="{Binding Class}" />
+                <DataGridTextColumn Header="课程"
+                                    Binding="{Binding Course}" />
+                <DataGridTextColumn Header="教师"
+                                    Binding="{Binding TeacherString}"
+                                    Width="*" />
+                <DataGridTemplateColumn Header="设置">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="..."
+                                    Foreground="{StaticResource main_background}"
+                                    CommandParameter="{Binding}"
+                                    Command="{Binding DataContext.SetTeacherCommand,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                    FontWeight="Bold"
+                                    Margin="5"
+                                    ToolTip="设置教师"
+                                    HorizontalAlignment="Right"
+                                    Height="20"
+                                    Width="20" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <xy:TitleBar Grid.Row="1"
+                     Title="可通过点击课时后面的设置按钮单独对一个课时设置教师；"/>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2">
+
+            <Button Content="保存"
+                    Name="btn_save"
+                    Margin="5"
+                    Click="Btn_save_Click"
+                    IsDefault="True"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="取消"
+                    Name="btn_cancel"
+                    Click="Btn_cancel_Click"
+                    Margin="5" />
+
+        </StackPanel>
+
+    </Grid>
+</metro:MetroWindow>

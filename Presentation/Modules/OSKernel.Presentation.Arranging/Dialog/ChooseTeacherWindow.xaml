@@ -1,0 +1,140 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Dialog.ChooseTeacherWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   Style="{StaticResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   xmlns:metrol="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   mc:Ignorable="d"
+                   Title="选择教师"
+                   Name="win"
+                   ResizeMode="CanResize"
+                   Height="400"
+                   Width="600">
+    <!--选择教师-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left">
+
+            <CheckBox  Margin="5"
+                       IsChecked="{Binding CheckedAll}"
+                       Content="全选" />
+
+            <!--搜索框-->
+            <TextBox  HorizontalAlignment="Left"
+                      metrol:TextBoxHelper.Watermark="搜索教师"
+                      Text="{Binding SearchTeacher,UpdateSourceTrigger=PropertyChanged}"
+                      Margin="5"
+                      Width="200" />
+        </StackPanel>
+
+        <Rectangle Height="1"
+                   VerticalAlignment="Bottom"
+                   Margin="2,0"
+                   Fill="{StaticResource CB_Separation}" />
+
+
+        <ScrollViewer  Grid.Row="1"
+                       Margin="5">
+            <ItemsControl ItemsSource="{Binding Teachers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Width="180"
+                                  IsChecked="{Binding IsChecked}"
+                                  Margin="5"
+                                  Height="60">
+                            <CheckBox.Template>
+                                <ControlTemplate TargetType="CheckBox">
+                                    <Grid>
+                                        <Border Margin="5"
+                                                Name="bd_background"
+                                                CornerRadius="5"
+                                                Background="White"
+                                                BorderThickness="1">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="#D4D5D6"
+                                                                  ShadowDepth="1"
+                                                                  Opacity="0.8"
+                                                                  BlurRadius="5" />
+                                            </Border.Effect>
+                                        </Border>
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <CheckBox  HorizontalAlignment="Right"
+                                                       VerticalAlignment="Top"
+                                                       IsChecked="{Binding IsChecked}"
+                                                       Margin="5" />
+
+                                            <TextBlock FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Text="{Binding Name}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Opacity="0.7" />
+
+                                        </Grid>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="true">
+                                            <Setter Property="BorderBrush"
+                                                    TargetName="bd_background"
+                                                    Value="{DynamicResource case_isMouseOver}" />
+                                            <Setter Property="Cursor"
+                                                    Value="Hand" />
+                                        </Trigger>
+
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </CheckBox.Template>
+                        </CheckBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <xy:TitleBar Grid.Row="2"
+                     Title="请勾选您需要的教师，然后点击保存退出即可。" />
+
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="3">
+
+            <Button Content="保存"
+                    Name="btn_save"
+                    Margin="5"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    IsDefault="True"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="取消"
+                    Name="btn_cancel"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

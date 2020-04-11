@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Arranging.Administrative.Result.ResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Result"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--结果界面-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <DataGrid Margin="10,20"
+                  IsReadOnly="False"
+                  CanUserAddRows="False"
+                  ItemsSource="{Binding Results}">
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="CellEditEnding">
+                    <cmd:EventToCommand PassEventArgsToCommand="True"
+                                        Command="{Binding CellEdingCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding NO}"
+                                    Header="序号"
+                                    IsReadOnly="True"
+                                    Width="auto" />
+                <DataGridTextColumn Header="任务ID"
+                                    Width="150"
+                                    IsReadOnly="True"
+                                    Binding="{Binding TaskID}" />
+                <DataGridTextColumn Header="结果名称"
+                                    Width="*"
+                                    Binding="{Binding Name}" />
+                <DataGridTextColumn Header="生成时间"
+                                    IsReadOnly="True"
+                                    Width="150"
+                                    Binding="{Binding CreateTime,StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                <DataGridTemplateColumn Header="操作"
+                                        Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <!--<Button Content="查看"
+                                        Command="{Binding DataContext.ViewCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Width="40"
+                                        Margin="2" />-->
+
+                                <Button Content="调整"
+                                        Command="{Binding DataContext.AdjustCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Width="40"
+                                        Margin="2" />
+                                <Button Content="上传"
+                                        Command="{Binding DataContext.UploadCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        IsEnabled="{Binding DataContext.CanUpload,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        Width="40"
+                                        Margin="2" />
+                                <Button Content="导出"
+                                        Command="{Binding DataContext.ExportCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Width="40"
+                                        Margin="2" />
+                                <Button Content="删除"
+                                        Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Width="40"
+                                        Margin="2" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,1445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA4FAC75-B605-4B4E-98D9-3AC760CEA278}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>OSKernel.Presentation.Arranging</RootNamespace>
+    <AssemblyName>OSKernel.Presentation.Arranging</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
+    <OutputPath>bin\Publish\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyHttp, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EasyHttp.1.7.0\lib\net40\EasyHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=4.1.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Unity.5.10.3\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.10.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Unity.5.10.3\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="XY.Common, Version=2.5.0.0, Culture=neutral, PublicKeyToken=b23983cedf27e712, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dlls\XY.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="XYKernel.Application.OS.Data">
+      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="XYKernel.Application.OS.DataValidation">
+      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.DataValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="XYKernel.Application.OS.Models">
+      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Administrative\AdministrativeDataHelper.cs" />
+    <Compile Include="Administrative\CPExtend.cs" />
+    <Compile Include="Administrative\Dialog\BatchTeacherWindow.xaml.cs">
+      <DependentUpon>BatchTeacherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\BatchTeacherWindowModel.cs" />
+    <Compile Include="Administrative\Dialog\ChooseClassHourWindow.xaml.cs">
+      <DependentUpon>ChooseClassHourWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\ClassHourSettingWindow.xaml.cs">
+      <DependentUpon>ClassHourSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\ClassHourSettingWindowModel.cs" />
+    <Compile Include="Administrative\Dialog\CreateOddDualWeekModel.cs" />
+    <Compile Include="Administrative\Dialog\CreateOddDualWeek.xaml.cs">
+      <DependentUpon>CreateOddDualWeek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\CreateClassUnion.xaml.cs">
+      <DependentUpon>CreateClassUnion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\CreateMutexGroup.xaml.cs">
+      <DependentUpon>CreateMutexGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\CreateClassUnionModel.cs" />
+    <Compile Include="Administrative\Dialog\CreateMutexGroupModel.cs" />
+    <Compile Include="Administrative\Dialog\CreateStudentWindow.xaml.cs">
+      <DependentUpon>CreateStudentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\StudentWindow.xaml.cs">
+      <DependentUpon>StudentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\StudentWindowModel.cs" />
+    <Compile Include="Administrative\Dialog\SystemCourseWindow.xaml.cs">
+      <DependentUpon>SystemCourseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Dialog\SystemCourseWindowModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\BetweenClassHoursView.xaml.cs">
+      <DependentUpon>BetweenClassHoursView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\BetweenClassHoursViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHoursRequiredTimes.xaml.cs">
+      <DependentUpon>ClassHoursRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHoursRequiredTimesModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHourRequiredTimesModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHoursTimesValueModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValue.xaml.cs">
+      <DependentUpon>CreateClassHoursTimesValue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimes.xaml.cs">
+      <DependentUpon>CreateClassHoursRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimes.xaml.cs">
+      <DependentUpon>CreateClassHourRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValueModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimesModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHours.xaml.cs">
+      <DependentUpon>CreateMultipyClassHours.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHours.xaml.cs">
+      <DependentUpon>CreateBetweenClassHours.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHoursModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimesModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTime.xaml.cs">
+      <DependentUpon>CreateRequiredStartingTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTimeModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateNoOverlapModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHoursModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateNoOverlap.xaml.cs">
+      <DependentUpon>CreateNoOverlap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateSameStarting.xaml.cs">
+      <DependentUpon>CreateSameStarting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateSameStartingModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Dialog\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\HoursNotOverlapView.xaml.cs">
+      <DependentUpon>HoursNotOverlapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\RequiredStartingTimeViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\HoursNotOverlapViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHoursTimesValue.xaml.cs">
+      <DependentUpon>ClassHoursTimesValue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\HoursSameStartingView.xaml.cs">
+      <DependentUpon>HoursSameStartingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\HoursSameStartingViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\Model\UIClassHourRule.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\MultipyClassHoursView.xaml.cs">
+      <DependentUpon>MultipyClassHoursView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\MultipyClassHoursViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\ClassHour\ClassHourRequiredTimes.xaml.cs">
+      <DependentUpon>ClassHourRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\ClassHour\RequiredStartingTimeView.xaml.cs">
+      <DependentUpon>RequiredStartingTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeek.xaml.cs">
+      <DependentUpon>CreateMaxDaysPerWeek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDay.xaml.cs">
+      <DependentUpon>CreateMaxGapsPerDay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxHoursDaily.xaml.cs">
+      <DependentUpon>CreateMaxHoursDaily.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeekModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDayModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxHoursDailyModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliable.xaml.cs">
+      <DependentUpon>CreateTeacherNoAvaliable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliableModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxDaysPerWeekViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxGapsPerDayViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxHoursDailyViewModel.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\Model\UITeacherRule.cs" />
+    <Compile Include="Administrative\Modify\Algo\Teacher\NotAvailableTimesViewModel.cs" />
+    <Compile Include="Administrative\Modify\HostView.xaml.cs">
+      <DependentUpon>HostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxDaysPerWeekView.xaml.cs">
+      <DependentUpon>MaxDaysPerWeekView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxGapsPerDayView.xaml.cs">
+      <DependentUpon>MaxGapsPerDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\MaxHoursDailyView.xaml.cs">
+      <DependentUpon>MaxHoursDailyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Algo\Teacher\NotAvailableTimesView.xaml.cs">
+      <DependentUpon>NotAvailableTimesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\IndexView.xaml.cs">
+      <DependentUpon>IndexView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\IndexViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Dialog\CheckBoxTemplateSelector.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\ClassHourAverageView.xaml.cs">
+      <DependentUpon>ClassHourAverageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\ClassHour\ClassHourAverageViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\ClassHourSameOpenView.xaml.cs">
+      <DependentUpon>ClassHourSameOpenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\ClassHour\ClassHourSameOpenViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpen.xaml.cs">
+      <DependentUpon>ModifyClassHourSameOpen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenView.xaml.cs">
+      <DependentUpon>CreateClassHourSameOpenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpenModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Model\UIClassHourAverage.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\AmPmClassHourView.xaml.cs">
+      <DependentUpon>AmPmClassHourView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\AmPmClassHourViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\ClassUnionView.xaml.cs">
+      <DependentUpon>ClassUnionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\ClassUnionViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\CourseArrangeContinuous.xaml.cs">
+      <DependentUpon>CourseArrangeContinuous.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\CourseArrangeContinuousModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\CourseLimitView.xaml.cs">
+      <DependentUpon>CourseLimitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\CourseLimitViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\CourseTimeView.xaml.cs">
+      <DependentUpon>CourseTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\CourseTimeViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Dialog\CourseLimitPosition.xaml.cs">
+      <DependentUpon>CourseLimitPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\Dialog\CourseLimitPositionModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\LockedCourseView.xaml.cs">
+      <DependentUpon>LockedCourseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\LockedCourseViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UIAmPm.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UIAmPmClassHour.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UIClassUnion.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UICourseClass.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UICourseLimit.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UILockedItem.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UIMutextGroup.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\Model\UIOddDualWeek.cs" />
+    <Compile Include="Administrative\Modify\Rule\ClassHour\Model\UISameOpenTime.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\MutexGroupView.xaml.cs">
+      <DependentUpon>MutexGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\MutexGroupViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Course\OddDualWeekView.xaml.cs">
+      <DependentUpon>OddDualWeekView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Course\OddDualWeekViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\AmPmNoContinuesView.xaml.cs">
+      <DependentUpon>AmPmNoContinuesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\AmPmNoContinuesViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\ArrangeContinuousPlanFlush.xaml.cs">
+      <DependentUpon>ArrangeContinuousPlanFlush.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\ArrangeContinuousPlanFlushModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindow.xaml.cs">
+      <DependentUpon>CreateMasterApprentticeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindowModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\MasterApprentticeView.xaml.cs">
+      <DependentUpon>MasterApprentticeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\MasterApprentticeViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxDaysPerWeekView.xaml.cs">
+      <DependentUpon>MaxDaysPerWeekView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxDaysPerWeekViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxGapsPerDayView.xaml.cs">
+      <DependentUpon>MaxGapsPerDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxGapsPerDayViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxHoursDailyView.xaml.cs">
+      <DependentUpon>MaxHoursDailyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\MaxHoursDailyViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UIMasterApprenttice.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UIMaxGapsPerDay.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UIMaxDaysPerWeek.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UIMaxHoursDaily.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UIPlanFlush.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UITeacherHalfDayWork.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\Model\UITeacherPriorityBalance.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\PlanFlushView.xaml.cs">
+      <DependentUpon>PlanFlushView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\PlanFlushViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherHalfDayWorkView.xaml.cs">
+      <DependentUpon>TeacherHalfDayWorkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherHalfDayWorkViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherPriorityBalanceView.xaml.cs">
+      <DependentUpon>TeacherPriorityBalanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherPriorityBalanceViewModel.cs" />
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherTimeView.xaml.cs">
+      <DependentUpon>TeacherTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Rule\Teacher\TeacherTimeViewModel.cs" />
+    <Compile Include="Administrative\Modify\Views\BaseView.xaml.cs">
+      <DependentUpon>BaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\BaseViewModel.cs" />
+    <Compile Include="Administrative\Modify\Views\CourseSettingView.xaml.cs">
+      <DependentUpon>CourseSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\CourseSettingViewModel.cs" />
+    <Compile Include="Administrative\Modify\Views\CourseView.xaml.cs">
+      <DependentUpon>CourseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\CourseViewModel.cs" />
+    <Compile Include="Administrative\Result\ResultExtend.cs" />
+    <Compile Include="Administrative\Result\AdjustLogic.cs" />
+    <Compile Include="Administrative\Result\AdjustResult.xaml.cs">
+      <DependentUpon>AdjustResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\AdjustResultViewModel.cs" />
+    <Compile Include="Administrative\Result\ExportTypeWindow.xaml.cs">
+      <DependentUpon>ExportTypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\ResultDetailsView.xaml.cs">
+      <DependentUpon>ResultDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\ResultDetailsViewModel.cs" />
+    <Compile Include="Administrative\Result\ResultView.xaml.cs">
+      <DependentUpon>ResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\ResultViewModel.cs" />
+    <Compile Include="Converters\BindingProxy.cs" />
+    <Compile Include="Converters\RuleCategoryToStringConverter.cs" />
+    <Compile Include="Administrative\Dialog\ChooseClassHourWindowModel.cs" />
+    <Compile Include="Dialog\ChooseCourseWindowModel.cs" />
+    <Compile Include="Dialog\ChooseTeacherWindowModel.cs" />
+    <Compile Include="Dialog\ConfirmPriceWindow.xaml.cs">
+      <DependentUpon>ConfirmPriceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\SetCapacityWindow.xaml.cs">
+      <DependentUpon>SetCapacityWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DragDropAdorner.cs" />
+    <Compile Include="Mixed\CLExtend.cs" />
+    <Compile Include="Mixed\Dialog\BatchTeacherWindow.xaml.cs">
+      <DependentUpon>BatchTeacherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\BatchTeacherWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\ChooseClassHourWindow.xaml.cs">
+      <DependentUpon>ChooseClassHourWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\ChooseClassHourWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\AutoCreateClassWindow.xaml.cs">
+      <DependentUpon>AutoCreateClassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\CreateClassWindow.xaml.cs">
+      <DependentUpon>CreateClassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\ImportStudentSelectionWindow.xaml.cs">
+      <DependentUpon>ImportStudentSelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\ImportStudentSelectionWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\ModifyLevelWindow.xaml.cs">
+      <DependentUpon>ModifyLevelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\SetPatternWindow.xaml.cs">
+      <DependentUpon>SetPatternWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\SetPatternWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\StatisticStudentSelectionWindow.xaml.cs">
+      <DependentUpon>StatisticStudentSelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\StatisticStudentSelectionWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\SystemCourseWindow.xaml.cs">
+      <DependentUpon>SystemCourseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\SystemCourseWindowModel.cs" />
+    <Compile Include="Mixed\MixedDataHelper.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\BetweenClassHoursView.xaml.cs">
+      <DependentUpon>BetweenClassHoursView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\BetweenClassHoursViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHourRequiredTimes.xaml.cs">
+      <DependentUpon>ClassHourRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHourRequiredTimesModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHoursRequiredTimes.xaml.cs">
+      <DependentUpon>ClassHoursRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHoursRequiredTimesModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHoursTimesValue.xaml.cs">
+      <DependentUpon>ClassHoursTimesValue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\ClassHoursTimesValueModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHours.xaml.cs">
+      <DependentUpon>CreateBetweenClassHours.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHoursModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimes.xaml.cs">
+      <DependentUpon>CreateClassHourRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimesModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimes.xaml.cs">
+      <DependentUpon>CreateClassHoursRequiredTimes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimesModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValue.xaml.cs">
+      <DependentUpon>CreateClassHoursTimesValue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValueModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHours.xaml.cs">
+      <DependentUpon>CreateMultipyClassHours.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHoursModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateNoOverlap.xaml.cs">
+      <DependentUpon>CreateNoOverlap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateNoOverlapModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTime.xaml.cs">
+      <DependentUpon>CreateRequiredStartingTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTimeModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateSameStarting.xaml.cs">
+      <DependentUpon>CreateSameStarting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateSameStartingModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\FilterHelper.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Dialog\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\HoursNotOverlapView.xaml.cs">
+      <DependentUpon>HoursNotOverlapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\HoursNotOverlapViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\HoursSameStartingView.xaml.cs">
+      <DependentUpon>HoursSameStartingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\HoursSameStartingViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\Model\UIClassHourRule.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\MultipyClassHoursView.xaml.cs">
+      <DependentUpon>MultipyClassHoursView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\MultipyClassHoursViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\ClassHour\RequiredStartingTimeView.xaml.cs">
+      <DependentUpon>RequiredStartingTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\ClassHour\RequiredStartingTimeViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeek.xaml.cs">
+      <DependentUpon>CreateMaxDaysPerWeek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeekModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDay.xaml.cs">
+      <DependentUpon>CreateMaxGapsPerDay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDayModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxHoursDaily.xaml.cs">
+      <DependentUpon>CreateMaxHoursDaily.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxHoursDailyModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliable.xaml.cs">
+      <DependentUpon>CreateTeacherNoAvaliable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliableModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxDaysPerWeekView.xaml.cs">
+      <DependentUpon>MaxDaysPerWeekView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxDaysPerWeekViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxGapsPerDayView.xaml.cs">
+      <DependentUpon>MaxGapsPerDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxGapsPerDayViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxHoursDailyView.xaml.cs">
+      <DependentUpon>MaxHoursDailyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\MaxHoursDailyViewModel.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\Model\UITeacherRule.cs" />
+    <Compile Include="Mixed\Modify\Algo\Teacher\NotAvailableTimesView.xaml.cs">
+      <DependentUpon>NotAvailableTimesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Algo\Teacher\NotAvailableTimesViewModel.cs" />
+    <Compile Include="Mixed\Modify\HostView.xaml.cs">
+      <DependentUpon>HostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\IndexViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\ClassHourAverageView.xaml.cs">
+      <DependentUpon>ClassHourAverageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\ClassHour\ClassHourAverageViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\ClassHourSameOpenView.xaml.cs">
+      <DependentUpon>ClassHourSameOpenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\ClassHour\ClassHourSameOpenViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Dialog\CheckBoxTemplateSelector.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenView.xaml.cs">
+      <DependentUpon>CreateClassHourSameOpenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpen.xaml.cs">
+      <DependentUpon>ModifyClassHourSameOpen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpenModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Model\UIClassHourAverage.cs" />
+    <Compile Include="Mixed\Modify\Rule\ClassHour\Model\UISameOpenTime.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\AmPmClassHourView.xaml.cs">
+      <DependentUpon>AmPmClassHourView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Course\AmPmClassHourViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\CourseArrangeContinuous.xaml.cs">
+      <DependentUpon>CourseArrangeContinuous.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Course\CourseArrangeContinuousModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\CourseLimitView.xaml.cs">
+      <DependentUpon>CourseLimitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Course\CourseLimitViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\CourseTimeView.xaml.cs">
+      <DependentUpon>CourseTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Course\CourseTimeViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Dialog\CourseLimitPosition.xaml.cs">
+      <DependentUpon>CourseLimitPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Course\Dialog\CourseLimitPositionModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Model\UIAmPm.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Model\UIAmPmClassHour.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Model\UIClassUnion.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Model\UICourseClass.cs" />
+    <Compile Include="Mixed\Modify\Rule\Course\Model\UICourseLimit.cs" />
+    <Compile Include="Mixed\Modify\Rule\Room\AvaliableRoomView.xaml.cs">
+      <DependentUpon>AvaliableRoomView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Room\AvaliableRoomViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindow.xaml.cs">
+      <DependentUpon>CreateMasterApprentticeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindowModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxDaysPerWeekView.xaml.cs">
+      <DependentUpon>MaxDaysPerWeekView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxDaysPerWeekViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxGapsPerDayView.xaml.cs">
+      <DependentUpon>MaxGapsPerDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxGapsPerDayViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxHoursDailyView.xaml.cs">
+      <DependentUpon>MaxHoursDailyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Teacher\MaxHoursDailyViewModel.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Model\UIMasterApprenttice.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Model\UIMaxDaysPerWeek.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Model\UIMaxGapsPerDay.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Model\UIMaxHoursDaily.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\Model\UIPlanFlush.cs" />
+    <Compile Include="Mixed\Modify\Rule\Teacher\TeacherTimeView.xaml.cs">
+      <DependentUpon>TeacherTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Rule\Teacher\TeacherTimeViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\BaseView.xaml.cs">
+      <DependentUpon>BaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\BaseViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\ClassView.xaml.cs">
+      <DependentUpon>ClassView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\ClassViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\Model\SaveCourseLevel.cs" />
+    <Compile Include="Mixed\Modify\Views\Model\UIStudentPreselection.cs" />
+    <Compile Include="Administrative\Modify\Views\RuleView.xaml.cs">
+      <DependentUpon>RuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\RuleViewModel.cs" />
+    <Compile Include="Administrative\Modify\Views\TeacherView.xaml.cs">
+      <DependentUpon>TeacherView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\TeacherViewModel.cs" />
+    <Compile Include="Administrative\Modify\Views\TimeView.xaml.cs">
+      <DependentUpon>TimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Modify\Views\TimeViewModel.cs" />
+    <Compile Include="ArrangeView.xaml.cs">
+      <DependentUpon>ArrangeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArrangeViewModel.cs" />
+    <Compile Include="Converters\CaseToStringConverter.cs" />
+    <Compile Include="Dialog\ChooseCourseWindow.xaml.cs">
+      <DependentUpon>ChooseCourseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\ChooseTeacherWindow.xaml.cs">
+      <DependentUpon>ChooseTeacherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\ClassHourSettingWindowModel.cs" />
+    <Compile Include="Dialog\CreateCaseWindow.xaml.cs">
+      <DependentUpon>CreateCaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\CreateClassWindow.xaml.cs">
+      <DependentUpon>CreateClassWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\CreateCourseWindow.xaml.cs">
+      <DependentUpon>CreateCourseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\CreateStudentWindow.xaml.cs">
+      <DependentUpon>CreateStudentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\CreateTeacherWindow.xaml.cs">
+      <DependentUpon>CreateTeacherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\CreateLevelWindow.xaml.cs">
+      <DependentUpon>CreateLevelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\CreateTagWindow.xaml.cs">
+      <DependentUpon>CreateTagWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\IndexView.xaml.cs">
+      <DependentUpon>IndexView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\CourseView.xaml.cs">
+      <DependentUpon>CourseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\CourseViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\RuleView.xaml.cs">
+      <DependentUpon>RuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\RuleViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\StudentView.xaml.cs">
+      <DependentUpon>StudentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\StudentViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\TagView.xaml.cs">
+      <DependentUpon>TagView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\TagViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\TeacherView.xaml.cs">
+      <DependentUpon>TeacherView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\TeacherViewModel.cs" />
+    <Compile Include="Mixed\Modify\Views\TimeView.xaml.cs">
+      <DependentUpon>TimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Modify\Views\TimeViewModel.cs" />
+    <Compile Include="Mixed\Pattern\CompressionView.xaml.cs">
+      <DependentUpon>CompressionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\CompressionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\ExtractionView.xaml.cs">
+      <DependentUpon>ExtractionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\ExtractionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\Model\UICombination.cs" />
+    <Compile Include="Mixed\Pattern\Model\UIOptimizedExtraction.cs" />
+    <Compile Include="Mixed\Pattern\Model\UIValidation.cs" />
+    <Compile Include="Mixed\Pattern\NormalView.xaml.cs">
+      <DependentUpon>NormalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\NormalViewModel.cs" />
+    <Compile Include="Mixed\Pattern\Operator\ClassCapacityView.xaml.cs">
+      <DependentUpon>ClassCapacityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\Operator\ClassCapacityViewModel.cs" />
+    <Compile Include="Mixed\Pattern\Operator\PositionView.xaml.cs">
+      <DependentUpon>PositionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\Operator\PositionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\Operator\RemoveCombinationView.xaml.cs">
+      <DependentUpon>RemoveCombinationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\Operator\RemoveCombinationViewModel.cs" />
+    <Compile Include="Mixed\Pattern\OptimizedCompressionView.xaml.cs">
+      <DependentUpon>OptimizedCompressionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\OptimizedCompressionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\OptimizedExtractionView.xaml.cs">
+      <DependentUpon>OptimizedExtractionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\OptimizedExtractionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\UIPattern.cs" />
+    <Compile Include="Mixed\Pattern\UIPatternOperator.cs" />
+    <Compile Include="Mixed\Pattern\ValidationView.xaml.cs">
+      <DependentUpon>ValidationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Pattern\ValidationViewModel.cs" />
+    <Compile Include="Mixed\Result\AdjustAnalysisWindow.xaml.cs">
+      <DependentUpon>AdjustAnalysisWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Result\AdjustLogic.cs" />
+    <Compile Include="Mixed\Result\AdjustResult.xaml.cs">
+      <DependentUpon>AdjustResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\AdjustResultConverter.cs" />
+    <Compile Include="Mixed\Result\AdjustResultConverter.cs" />
+    <Compile Include="Mixed\Result\AdjustResultViewModel.cs" />
+    <Compile Include="Mixed\Result\ResultDetailsView.xaml.cs">
+      <DependentUpon>ResultDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Result\ResultDetailsViewModel.cs" />
+    <Compile Include="Mixed\Result\ResultExtend.cs" />
+    <Compile Include="Mixed\Result\ResultView.xaml.cs">
+      <DependentUpon>ResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Result\ResultViewModel.cs" />
+    <Compile Include="PathHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RuleExtend.cs" />
+    <Compile Include="SignLogic.cs" />
+    <Compile Include="Utilities\TimeOperation.cs" />
+    <Compile Include="Win32.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Administrative\Dialog\BatchTeacherWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Dialog\ChooseClassHourWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Dialog\ClassHourSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Dialog\CreateOddDualWeek.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Dialog\CreateClassUnion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Dialog\CreateMutexGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Dialog\CreateStudentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Dialog\StudentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Dialog\SystemCourseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\BetweenClassHoursView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\ClassHoursRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHours.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHours.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateNoOverlap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\CreateSameStarting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\Dialog\FilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\HoursNotOverlapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\ClassHoursTimesValue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\HoursSameStartingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\MultipyClassHoursView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\ClassHourRequiredTimes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\ClassHour\RequiredStartingTimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeek.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\Dialog\CreateMaxHoursDaily.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\HostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\MaxDaysPerWeekView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\MaxGapsPerDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\MaxHoursDailyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Algo\Teacher\NotAvailableTimesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\IndexView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\ClassHour\ClassHourAverageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\ClassHour\ClassHourSameOpenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\AmPmClassHourView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\ClassUnionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\CourseArrangeContinuous.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\CourseLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\CourseTimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\Dialog\CourseLimitPosition.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\LockedCourseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\MutexGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Course\OddDualWeekView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\AmPmNoContinuesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\ArrangeContinuousPlanFlush.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\MasterApprentticeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\MaxDaysPerWeekView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\MaxGapsPerDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\MaxHoursDailyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\PlanFlushView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\TeacherHalfDayWorkView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\TeacherPriorityBalanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Rule\Teacher\TeacherTimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Views\BaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Views\CourseSettingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Modify\Views\CourseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Administrative\Result\AdjustResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Result\ExportTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Result\ResultDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Result\ResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\ConfirmPriceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\SetCapacityWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Dialog\BatchTeacherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\ChooseClassHourWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Dialog\AutoCreateClassWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Dialog\CreateClassWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Dialog\ImportStudentSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\ModifyLevelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\SetPatternWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\StatisticStudentSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\SystemCourseWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\BetweenClassHoursView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\ClassHourRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\ClassHoursRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\ClassHoursTimesValue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateBetweenClassHours.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHourRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursRequiredTimes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateClassHoursTimesValue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateMultipyClassHours.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateNoOverlap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateRequiredStartingTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\CreateSameStarting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\Dialog\FilterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\HoursNotOverlapView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\HoursSameStartingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\MultipyClassHoursView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\ClassHour\RequiredStartingTimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxDaysPerWeek.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxGapsPerDay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\Dialog\CreateMaxHoursDaily.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\Dialog\CreateTeacherNoAvaliable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\MaxDaysPerWeekView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\MaxGapsPerDayView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\MaxHoursDailyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Algo\Teacher\NotAvailableTimesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\HostView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\ClassHour\ClassHourAverageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\ClassHour\ClassHourSameOpenView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\ClassHour\Dialog\CreateClassHourSameOpenView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\ClassHour\Dialog\ModifyClassHourSameOpen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Course\AmPmClassHourView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Course\CourseArrangeContinuous.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Course\CourseLimitView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Course\CourseTimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Course\Dialog\CourseLimitPosition.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Room\AvaliableRoomView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Teacher\Dialog\CreateMasterApprentticeWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Teacher\MaxDaysPerWeekView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Teacher\MaxGapsPerDayView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Teacher\MaxHoursDailyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Rule\Teacher\TeacherTimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Views\BaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\ClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Views\RuleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Views\TeacherView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administrative\Modify\Views\TimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ArrangeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\ChooseCourseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\ChooseTeacherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\CreateCaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\CreateClassWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\CreateCourseWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\CreateStudentWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\CreateTeacherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\CreateLevelWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Dialog\CreateTagWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\IndexView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\CourseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\RuleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Modify\Views\StudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\TagView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\TeacherView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Modify\Views\TimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Pattern\CompressionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\ExtractionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\NormalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\Operator\ClassCapacityView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\Operator\PositionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\Operator\RemoveCombinationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\OptimizedCompressionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\OptimizedExtractionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Pattern\ValidationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Result\AdjustAnalysisWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Result\AdjustResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Result\ResultDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mixed\Result\ResultView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\XYKernel.OS.Common\XYKernel.OS.Common.csproj">
+      <Project>{0854a627-a0e6-493d-ab31-f3ded37a6540}</Project>
+      <Name>XYKernel.OS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.Core\OSKernel.Presentation.Core.csproj">
+      <Project>{459E774C-1A09-4008-8CDF-765B467EACEA}</Project>
+      <Name>OSKernel.Presentation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.CustomControl\OSKernel.Presentation.CustomControl.csproj">
+      <Project>{c6a51b32-2a75-4b14-bd16-dca0c32dd470}</Project>
+      <Name>OSKernel.Presentation.CustomControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OSKernel.Presentation.Login\OSKernel.Presentation.Login.csproj">
+      <Project>{281d2716-edda-47bf-ac04-4e017433c315}</Project>
+      <Name>OSKernel.Presentation.Login</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.Models\OSKernel.Presentation.Models.csproj">
+      <Project>{6b950185-7fdf-431b-8c95-686956cfbfb9}</Project>
+      <Name>OSKernel.Presentation.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.Utilities\OSKernel.Presentation.Utilities.csproj">
+      <Project>{178bb25b-edac-4035-8d9d-55fc1af308c0}</Project>
+      <Name>OSKernel.Presentation.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

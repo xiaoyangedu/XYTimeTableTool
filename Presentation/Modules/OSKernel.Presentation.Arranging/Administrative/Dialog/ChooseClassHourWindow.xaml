@@ -1,0 +1,104 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Administrative.Dialog.ChooseClassHourWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   mc:Ignorable="d"
+                   Title="集中设置课时"
+                   Style="{StaticResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="CanResize"
+                   Height="500"
+                   Width="600"
+                   Name="win">
+    <!--选择科目-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <!--科目-->
+        <DataGrid ColumnHeaderHeight="65"
+                  Name="dg"
+                  IsReadOnly="False"
+                  CanUserAddRows="False"
+                  ItemsSource="{Binding Courses}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="auto">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox IsChecked="{Binding DataContext.IsCheckedAll,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked,UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="课程"
+                                    Width="*"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Name}" />
+
+                <DataGridTemplateColumn Width="100"
+                                        SortMemberPath="ClassHour">
+                    <DataGridTemplateColumn.Header>
+                        <StackPanel>
+                            <TextBlock Text="课时"
+                                       HorizontalAlignment="Center"
+                                       Margin="2" />
+                            <ComboBox Width="80"
+                                      SelectedItem="{Binding DataContext.SelectClassHourCount,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                      DisplayMemberPath="LessonString"
+                                      SelectedValuePath="Lessons"
+                                      HorizontalContentAlignment="Center"
+                                      ItemsSource="{Binding DataContext.ClassHours,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                      Margin="2" />
+                        </StackPanel>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Lessons,UpdateSourceTrigger=PropertyChanged}"
+                                       Margin="5" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Lessons}"
+                                      DisplayMemberPath="LessonString"
+                                      SelectedValuePath="Lessons"
+                                      ItemsSource="{Binding ClassHours}"
+                                      Width="80"
+                                      Margin="5" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <xy:TitleBar Grid.Row="1"
+                     Title="集中对所有班级的所有科目进行课时的设置，请您先选中要设置的课程，然后对相应课时进行调整，完成后点保存退出。"/>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2">
+
+            <Button Content="保存并继续"
+                    Margin="5"
+                    IsDefault="True"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Style="{StaticResource OpratorButtonStyle}" />
+
+            <Button Content="确认并关闭"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

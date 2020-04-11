@@ -1,0 +1,96 @@
+<Application x:Class="Client.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:Client"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d1p1:Ignorable="d"
+             xmlns:converters="clr-namespace:Client.Converters"
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/Brushes/DefaultBrush.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.Thems;Component/DefaultTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/OSKernel.Presentation.CustomControl;Component/Loading/Style/Loading.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="CloseButtonSytle"
+                   TargetType="{x:Type Button}">
+                <Setter Property="Foreground"
+                        Value="Gray" />
+                <Setter Property="Background"
+                        Value="White" />
+                <Setter Property="Width"
+                        Value="40" />
+                <Setter Property="Margin"
+                        Value="1" />
+                <Setter Property="BorderThickness"
+                        Value="0" />
+            </Style>
+
+            <Style TargetType="{x:Type metro:WindowButtonCommands}"
+                   BasedOn="{StaticResource {x:Type metro:WindowButtonCommands}}">
+                <Setter Property="LightMinButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+                <Setter Property="LightMaxButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+                <Setter Property="LightCloseButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+                <Setter Property="DarkMinButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+                <Setter Property="DarkMaxButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+                <Setter Property="DarkCloseButtonStyle"
+                        Value="{StaticResource CloseButtonSytle}" />
+            </Style>
+
+            <Style x:Key="MetroWindowStyle"
+                   TargetType="metro:MetroWindow">
+                <Setter Property="Topmost"
+                        Value="False" />
+                <Setter Property="ShowInTaskbar"
+                        Value="True" />
+                <Setter Property="GlowBrush"
+                        Value="LightGray" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="NonActiveGlowBrush"
+                        Value="#4C9FFB" />
+                <Setter Property="EnableDWMDropShadow"
+                        Value="False" />
+                <Setter Property="WindowTitleBrush"
+                        Value="White" />
+                <Setter Property="NonActiveWindowTitleBrush"
+                        Value="White" />
+                <Setter Property="SnapsToDevicePixels"
+                        Value="True" />
+                <Setter Property="TitlebarHeight"
+                        Value="40" />
+                <Setter Property="Background"
+                        Value="#FAFAFA" />
+                <Setter Property="ResizeMode"
+                        Value="NoResize" />
+            </Style>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:WeightEnumConverter x:Key="WeightEnumConverter" />
+            <converters:ColorStringToSolidColorBrushConverter x:Key="ColorStringConverter" />
+
+            <ControlTemplate x:Key="CaseRunProcess">
+                <TextBlock Text="{Binding Task.PercentCurrent,StringFormat={}{0:P2}}"
+                           Foreground="{StaticResource main_background}"
+                           FontSize="30"
+                           Opacity="0.9" />
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="CaseRunAutoProcess">
+                <TextBlock Text="{Binding Task.RunTimeString}"
+                           Foreground="{StaticResource main_background}"
+                           FontSize="30"
+                           Opacity="0.9" />
+            </ControlTemplate>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

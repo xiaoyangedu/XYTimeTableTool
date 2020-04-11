@@ -1,0 +1,79 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour.Dialog.CreateMultipyClassHours"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour.Dialog"
+                   mc:Ignorable="d"
+                   Title="{Binding TitleString}"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   Width="600"
+                   Height="450"
+                   x:Name="win">
+    <!--给3个课时分组-->
+    <Grid Margin="10">
+        <StackPanel>
+
+            <local:FilterView />
+
+            <StackPanel>
+                <TextBlock Text="第一课时"
+                           Margin="5" />
+
+                <ComboBox Margin="5"
+                          ItemsSource="{Binding FirstHours}"
+                          DisplayMemberPath="Display"
+                          SelectedItem="{Binding SelectFirstHour}" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="第二课时"
+                           Margin="5" />
+
+                <ComboBox Margin="5"
+                          ItemsSource="{Binding SecondHours}"
+                          DisplayMemberPath="Display"
+                          SelectedItem="{Binding SelectSecondHour}" />
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding ShowThirdHour,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="第三课时"
+                           Margin="5" />
+
+                <ComboBox Margin="5"
+                          ItemsSource="{Binding ThirdHours}"
+                          DisplayMemberPath="Display"
+                          SelectedItem="{Binding SelectThirdHour}" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="权重(%)(推荐：0-100)"
+                           Margin="5" />
+                <TextBox Text="{Binding Weight,UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5" />
+            </StackPanel>
+
+            <CheckBox Name="cb_checked"
+                      Content="启用"
+                      IsChecked="{Binding IsActive}"
+                      Margin="5" />
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,20"
+                        HorizontalAlignment="Center">
+                <Button Content="保存"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding ElementName=win}"
+                        Margin="5,0" />
+                <Button Content="取消"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding ElementName=win}"
+                        Margin="5,0" />
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>
