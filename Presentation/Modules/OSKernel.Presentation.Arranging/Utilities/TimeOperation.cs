@@ -36,16 +36,21 @@ namespace OSKernel.Presentation.Arranging.Utilities
         /// <param name="T2"></param>
         /// <returns></returns>
         public static List<DayPeriodModel> TimeSlotDiff(List<DayPeriodModel> T1, List<DayPeriodModel> T2)
-        {
+        { 
             T1 = T1 ?? new List<DayPeriodModel>() { };
             T2 = T2 ?? new List<DayPeriodModel>() { };
+            List<DayPeriodModel> result = new List<DayPeriodModel>() { };
+
+            T1.ForEach(t1 => {
+                result.Add(t1);
+            });
 
             T2.ForEach(t2 =>
             {
-                T1.RemoveAll(t => t.Day == t2.Day && t.PeriodName == t2.PeriodName);
+                result.RemoveAll(t => t.Day == t2.Day && t.PeriodName == t2.PeriodName);
             });
 
-            return T1;
+            return result;
         }
 
         /// <summary>
@@ -58,16 +63,22 @@ namespace OSKernel.Presentation.Arranging.Utilities
         {
             T1 = T1 ?? new List<DayPeriodModel>() { };
             T2 = T2 ?? new List<DayPeriodModel>() { };
+            List<DayPeriodModel> result = new List<DayPeriodModel>() { };
 
             T2.ForEach(t2 =>
             {
                 if (!T1.Exists(t1 => t1.PeriodName == t2.PeriodName && t1.Day == t2.Day))
                 {
-                    T1.Add(t2);
+                    result.Add(t2);
                 }
             });
 
-            return T1;
+            T1.ForEach(t1 =>
+            {
+                result.Add(t1);
+            });
+
+            return result;
         }
 
         public static string GetDateInfo(DayPeriodModel dayPeriod)

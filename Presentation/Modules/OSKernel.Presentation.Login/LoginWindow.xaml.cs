@@ -1,4 +1,5 @@
 ﻿using OSKernel.Presentation.Core;
+using OSKernel.Presentation.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,33 @@ namespace OSKernel.Presentation.Login
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private string userpasswordFile = "password.info";
+
+        public LoginWindowModel VM
+        {
+            get
+            {
+                return this.DataContext as LoginWindowModel;
+            }
+        }
+
         public LoginWindow()
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<LoginWindowModel>();
             this.MouseLeftButtonDown += Login_MouseLeftButtonDown;
             this.Closed += LoginWindow_Closed;
+            this.Loaded += LoginWindow_Loaded;
+        }
+
+        private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (System.IO.File.Exists(userpasswordFile.CombineCurrentDirectory()))
+            {
+                // 用户密码
+                this.pb_password.Password = userpasswordFile.CombineCurrentDirectory().DeSerializeObjectFromJson<string>();
+                VM.IsRememberPassWord = true;
+            }
         }
 
         private void LoginWindow_Closed(object sender, EventArgs e)

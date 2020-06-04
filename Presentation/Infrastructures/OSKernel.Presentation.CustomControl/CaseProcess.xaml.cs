@@ -36,6 +36,8 @@ namespace OSKernel.Presentation.CustomControl
             {
                 if (model.Task.TaskStatus == Models.Enums.MissionStateEnum.Completed
                     || model.Task.TaskStatus == Models.Enums.MissionStateEnum.Aborted
+                    || model.Task.TaskStatus == Models.Enums.MissionStateEnum.Cancelled
+                    || model.Task.TaskStatus == Models.Enums.MissionStateEnum.Stopped
                     || model.Task.TaskStatus == Models.Enums.MissionStateEnum.Failed)
                 {
                     start.Visibility = Visibility.Visible;

@@ -8,6 +8,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converters="clr-namespace:OSKernel.Presentation.Arranging.Converters"
              xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:utils="clr-namespace:OSKernel.Presentation.Arranging.Utilities"
              xmlns:cmd="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"
              d:DesignHeight="768"
@@ -98,7 +99,7 @@
                                         <Grid Background="{StaticResource local_green}"
                                               Visibility="{Binding ShowCount,Converter={StaticResource BooleanToVisibilityConverter}}"
                                               MinWidth="20"
-                                              Height="20">
+                                              Height="22">
                                             <TextBlock Text="{Binding Record}"
                                                        ToolTip="规则数量"
                                                        Cursor="Hand"
@@ -116,7 +117,10 @@
                                                 Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Comment}" />
+                                    <TextBlock Text="{Binding Comment}"
+                                               ToolTip="{Binding Comment}"
+                                               utils:TextTrmmingShowToolTip.IsToolTip="True"
+                                               TextTrimming="CharacterEllipsis" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -183,10 +187,10 @@
 
                                         <TextBlock Text="{Binding Name}"
                                                    Margin="5,5,20,5" />
-                                        <Grid Background="{StaticResource local_green}"
+                                        <Grid Background="{DynamicResource local_green}"
                                               Visibility="{Binding ShowCount,Converter={StaticResource BooleanToVisibilityConverter}}"
                                               MinWidth="20"
-                                              Height="20">
+                                              Height="22">
                                             <TextBlock Text="{Binding Record}"
                                                        ToolTip="规则数量"
                                                        Cursor="Hand"
@@ -204,7 +208,9 @@
                                                 Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Comment}" />
+                                    <TextBlock Text="{Binding Comment}"
+                                               utils:TextTrmmingShowToolTip.IsToolTip="True"
+                                               TextTrimming="CharacterEllipsis" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

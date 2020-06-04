@@ -80,6 +80,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XYKernel.OS.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\XYKernel.OS.Common.1.1.0\lib\netstandard2.0\XYKernel.OS.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaseLoadingView.xaml.cs">
@@ -241,10 +244,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\XYKernel.OS.Common\XYKernel.OS.Common.csproj">
-      <Project>{0854a627-a0e6-493d-ab31-f3ded37a6540}</Project>
-      <Name>XYKernel.OS.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSKernel.Presentation.Core\OSKernel.Presentation.Core.csproj">
       <Project>{459E774C-1A09-4008-8CDF-765B467EACEA}</Project>
       <Name>OSKernel.Presentation.Core</Name>

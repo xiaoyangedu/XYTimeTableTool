@@ -77,7 +77,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour.Dialog
                 var has = groups.Any(g => g.ToList().Count(gg => gg.IsChecked) == 1);
                 if (has)
                 {
-                    this.ShowDialog("提示信息", "只有选择两个以上才有效!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                    this.ShowDialog("提示信息", "单个课时不能设置同时开课!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                     return;
                 }
             }

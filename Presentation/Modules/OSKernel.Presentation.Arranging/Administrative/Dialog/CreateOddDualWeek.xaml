@@ -5,7 +5,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
-                    Style="{StaticResource MetroWindowStyle}"
+                    Style="{DynamicResource MetroWindowStyle}"
                     WindowStartupLocation="CenterOwner"
                     Name="win"
                     mc:Ignorable="d"
@@ -113,25 +113,25 @@
             <Rectangle Width="1"
                        Grid.RowSpan="2"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <Rectangle Width="1"
                        Grid.RowSpan="2"
                        Grid.Column="1"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <Rectangle Height="1"
                        Grid.Row="1"
                        VerticalAlignment="Top"
                        Grid.ColumnSpan="3"
-                       Fill="{StaticResource main_lightgroud}" />
+                       Fill="{DynamicResource main_lightgroud}" />
         </Grid>
 
         <Rectangle Height="1"
                    Grid.Row="1"
                    VerticalAlignment="Top"
-                   Fill="{StaticResource main_lightgroud}" />
+                   Fill="{DynamicResource main_lightgroud}" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
@@ -142,7 +142,7 @@
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Command="{Binding CancelCommand}"

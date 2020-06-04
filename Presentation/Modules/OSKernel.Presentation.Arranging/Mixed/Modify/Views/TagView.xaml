@@ -34,7 +34,7 @@
                             Width="70"
                             Height="30"
                             Command="{Binding CreateCommand}"
-                            Style="{StaticResource OpratorButtonStyle}" />
+                            Style="{DynamicResource OpratorButtonStyle}" />
 
                     <Button Content="批量删除"
                             Width="70"

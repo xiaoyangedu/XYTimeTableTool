@@ -1,6 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Threading;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
+using OSKernel.Presentation.Core.Http.User;
+using OSKernel.Presentation.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +19,14 @@ namespace OSKernel.Presentation.Arranging
     {
         public static bool SignCheck()
         {
-            var secret = OSHttpClient.Instance.SetSecret(CacheManager.Instance.LoginUser.PublickKey, 0, CacheManager.Instance.LoginUser.AccessToken);
+            // 注册Key.
+            var keyInfo = new KeyBodyInfo()
+            {
+                public_key = CacheManager.Instance.LoginUser.PublickKey,
+                secret_type = (int)SecretTypeEnum.RSA2
+            };
+
+            var secret = WebAPI.Instance.SetSecret(keyInfo, CacheManager.Instance.LoginUser.AccessToken);
             if (!secret.Item1)
             {
                 CustomControl.DialogWindowHelper.ShowDialog("提示信息", secret.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);

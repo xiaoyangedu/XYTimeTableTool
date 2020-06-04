@@ -127,14 +127,13 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Algo.ClassHour
 
             this.Comments = CommonDataManager.GetMixedAlgoComments(value);
 
-
             if (currentRuleEnum == MixedAlgoRuleEnum.MinDaysBetweenClassHours)
             {
-                this.ShowMaxDay = true;
+                this.ShowMaxDay = false;
             }
             else if (currentRuleEnum == MixedAlgoRuleEnum.MaxDaysBetweenClassHours)
             {
-                this.ShowMinDay = true;
+                this.ShowMinDay = false;
             }
         }
 

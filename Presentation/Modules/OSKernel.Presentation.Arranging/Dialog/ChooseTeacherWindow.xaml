@@ -5,7 +5,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    xmlns:metrol="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
@@ -42,7 +42,7 @@
         <Rectangle Height="1"
                    VerticalAlignment="Bottom"
                    Margin="2,0"
-                   Fill="{StaticResource CB_Separation}" />
+                   Fill="{DynamicResource CB_Separation}" />
 
 
         <ScrollViewer  Grid.Row="1"
@@ -127,7 +127,7 @@
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

@@ -22,6 +22,8 @@ namespace OSKernel.Presentation.Arranging.Dialog
 
         private string _searchTeacher;
 
+        private List<UITeacher> _searchTeachers = new List<UITeacher>();
+
         public bool CheckedAll
         {
             get
@@ -34,7 +36,24 @@ namespace OSKernel.Presentation.Arranging.Dialog
                 _checkedAll = value;
                 RaisePropertyChanged(() => CheckedAll);
 
-                this.Teachers.ForEach(t => t.IsChecked = _checkedAll);
+                if (_searchTeachers?.Count > 0)
+                {
+                    _searchTeachers?.ForEach(t =>
+                    {
+                        var first = this.Teachers.FirstOrDefault(tt => tt.ID.Equals(t.ID));
+                        if (first != null)
+                        {
+                            first.IsChecked = _checkedAll;
+                        }
+                    });
+                }
+                else
+                {
+                    this.Teachers.ForEach(t=> 
+                    {
+                        t.IsChecked = _checkedAll;
+                    });
+                }
             }
         }
 
@@ -52,6 +71,8 @@ namespace OSKernel.Presentation.Arranging.Dialog
             }
         }
 
+
+
         public string SearchTeacher
         {
             get
@@ -65,6 +86,8 @@ namespace OSKernel.Presentation.Arranging.Dialog
                 RaisePropertyChanged(() => SearchTeacher);
 
                 _teacherCollectionView.Refresh();
+
+                _searchTeachers = this.Teachers.Where(t => t.Name.IndexOf(this.SearchTeacher) != -1)?.ToList();
             }
         }
 

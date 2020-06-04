@@ -9,7 +9,7 @@ namespace OSKernel.Presentation.Models.Result
     /// <summary>
     /// 结果界面
     /// </summary>
-    public class UIResult
+    public class UIResult : GalaSoft.MvvmLight.ObservableObject
     {
         /// <summary>
         /// 序号
@@ -42,17 +42,41 @@ namespace OSKernel.Presentation.Models.Result
         public bool IsUploaded { get; set; }
 
         /// <summary>
-        /// 显示字段
+        /// 是否应用
         /// </summary>
-        //public string Display
-        //{
-        //    get
-        //    {
-        //        if (string.IsNullOrEmpty(Name))
-        //            return "全部排课结果";
-        //        else
-        //            return $"{Name}-{TaskID}-{CreateTime.ToString("yyyy-MM-dd")}";
-        //    }
-        //}
+        public bool IsUsed { get; set; }
+
+        /// <summary>
+        /// 显示常规操作
+        /// </summary>
+        public bool ShowNormalOption
+        {
+            get
+            {
+                return IsUsed;
+            }
+            set { }
+        }
+
+        /// <summary>
+        /// 显示结果预览
+        /// </summary>
+        public bool ShowPrecharge
+        {
+            get
+            {
+                return !IsUsed;
+            }
+            set
+            {
+
+            }
+        }
+
+        public void RaiseChanged()
+        {
+            this.RaisePropertyChanged(() => ShowNormalOption);
+            this.RaisePropertyChanged(() => ShowPrecharge);
+        }
     }
 }

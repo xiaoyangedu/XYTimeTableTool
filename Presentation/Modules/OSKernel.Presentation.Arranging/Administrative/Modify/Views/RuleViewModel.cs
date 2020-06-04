@@ -83,12 +83,10 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
         void setRule(object obj)
         {
             UIRule rule = obj as UIRule;
-
-            var adminRule = CommonDataManager.GetAminRule(base.LocalID);
-
             HostView ruleWindow = new HostView(rule.RuleEnum);
             ruleWindow.Closed += (s, arg) =>
             {
+                var adminRule = CommonDataManager.GetAminRule(base.LocalID);
                 switch (rule.RuleEnum)
                 {
                     case Models.Enums.AdministrativeRuleEnum.AmPmClassHour:
@@ -177,12 +175,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
         void setAlgo(object obj)
         {
-            var algoRule = CommonDataManager.GetAminAlgoRule(base.LocalID);
-
             UIAlgoRule algo = obj as UIAlgoRule;
             HostView algoWindow = new HostView(algo.RuleEnum);
             algoWindow.Closed += (s, arg) =>
             {
+                var algoRule = CommonDataManager.GetAminAlgoRule(base.LocalID);
                 switch (algo.RuleEnum)
                 {
                     case Models.Enums.AdministrativeAlgoRuleEnum.ClassHourRequiredStartingTime:

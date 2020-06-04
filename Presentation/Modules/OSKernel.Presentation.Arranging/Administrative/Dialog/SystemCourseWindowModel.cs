@@ -20,6 +20,8 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
     /// </summary>
     public class SystemCourseWindowModel : CommonViewModel, IInitilize
     {
+        private bool _isAllChecked;
+
         private List<UICourse> _systemCourses;
 
         /// <summary>
@@ -43,21 +45,21 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
         {
             this.SystemCourses = new List<UICourse>()
             {
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="语文", ColorString="#009ACD" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="数学",ColorString="#008B8B" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="英语",ColorString="#00CD00" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="语文", ColorString="#009ACD" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="数学",ColorString="#008B8B" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="英语",ColorString="#00CD00" },
 
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="物理",ColorString="#1C86EE" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="化学" ,ColorString="#8B3E2F"},
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="生物",ColorString="#8B475D" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="物理",ColorString="#1C86EE" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="化学" ,ColorString="#8B3E2F"},
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="生物",ColorString="#8B475D" },
 
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="历史",ColorString="#CD3333" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="地理",ColorString="#EE9572" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="政治",ColorString="#F5238D" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="历史",ColorString="#CD3333" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="地理",ColorString="#EE9572" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="政治",ColorString="#F5238D" },
 
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="音乐",ColorString="#F52337" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="体育",ColorString="#3DA26C" },
-                 new UICourse(){ IsChecked=true, Lessons=5, Name="美术",ColorString="#4E8B9C" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="音乐",ColorString="#F52337" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="体育",ColorString="#3DA26C" },
+                 new UICourse(){ IsChecked=false, Lessons=5, Name="美术",ColorString="#4E8B9C" },
             };
         }
 
@@ -85,6 +87,22 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
             }
         }
 
+        public bool IsAllChecked
+        {
+            get
+            {
+                return _isAllChecked;
+            }
+
+            set
+            {
+                _isAllChecked = value;
+                RaisePropertyChanged(() => IsAllChecked);
+
+                this.SystemCourses.ForEach(c => c.IsChecked = _isAllChecked);
+            }
+        }
+
         [InjectionMethod]
         public void Initilize()
         {
@@ -93,34 +111,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
 
         void setColorCommand(object obj)
         {
-            return;
-
-            UICourse model = obj as UICourse;
-            var local = CommonDataManager.GetLocalCase(base.LocalID);
-
-            ColorDialog colorDialog = new ColorDialog();
-            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                SolidBrush sb = new SolidBrush(colorDialog.Color);
-                SolidColorBrush solidColorBrush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B));
-
-                var colorString = solidColorBrush.ToString();
-
-                model.ColorString = colorString;
-
-                var has = local.CourseColors.ContainsKey(model.ID);
-                if (!has)
-                {
-                    local.CourseColors.Add(model.ID, colorString);
-                }
-                else
-                {
-                    local.CourseColors[model.ID] = colorString;
-                }
-
-                // 保存方案
-                local.Serialize();
-            }
+            
         }
 
         void save(object obj)

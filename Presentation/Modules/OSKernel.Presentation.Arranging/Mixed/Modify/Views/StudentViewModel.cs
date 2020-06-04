@@ -18,6 +18,8 @@ using System.Windows.Data;
 using OSKernel.Presentation.Arranging.Mixed.Dialog;
 using OSKernel.Presentation.Utilities;
 using System.Dynamic;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 {
@@ -33,6 +35,10 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
         private string _searchStudent;
 
         private ListCollectionView _studentCollectionView;
+
+        private List<UIStudent> _searchStudents;
+
+        private UIStudent _selectStudent;
 
         private ObservableCollection<UIStudent> _students;
 
@@ -109,6 +115,54 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             }
         }
 
+        public ICommand BatchDeleteCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(BatchDelete);
+            }
+        }
+
+        public ICommand CheckedAllCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(CheckedAll);
+            }
+        }
+
+        public ICommand UnCheckedAllCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(UnCheckedAll);
+            }
+        }
+
+        public ICommand AdjustStudentPreselectionCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<object>(AdjustStudentPreselection);
+            }
+        }
+
+        public ICommand ClearStudentPreselectionCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(ClearStudentPreselection);
+            }
+        }
+
+        public ICommand MouseDoubleCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(MouseDouble);
+            }
+        }
+
         /// <summary>
         /// 搜索学生
         /// </summary>
@@ -124,7 +178,26 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 _searchStudent = value;
                 RaisePropertyChanged(() => SearchStudent);
 
+                _searchStudents = this.Students.Where(t => t.Name.IndexOf(this.SearchStudent) != -1)?.ToList();
+
                 _studentCollectionView.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// 选择学生
+        /// </summary>
+        public UIStudent SelectStudent
+        {
+            get
+            {
+                return _selectStudent;
+            }
+
+            set
+            {
+                _selectStudent = value;
+                RaisePropertyChanged(() => SelectStudent);
             }
         }
 
@@ -136,10 +209,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
         [InjectionMethod]
         public void Initilize()
         {
+            Messenger.Default.Register<string>(this, Receive);
+
             var cl = base.GetClCase(base.LocalID);
 
             // 学生列表
             int no = 0;
+
+            this.ShowLoading = true;
 
             Task.Run(() =>
             {
@@ -176,9 +253,29 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                         _studentCollectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(this.Students);
                         _studentCollectionView.Filter = StudentContains;
                     });
+
+                    this.ShowLoading = false;
                 }
             });
+        }
 
+        public void Receive(string message)
+        {
+            if (message.Equals("clearPreselections"))
+            {
+                foreach (var s in this.Students)
+                {
+                    s.Preselections?.Clear();
+
+                    List<string> keys = new List<string>();
+                    keys.AddRange(s.ExpandoObject.Keys);
+
+                    foreach (var k in keys)
+                    {
+                        s.ExpandoObject[k] = string.Empty;
+                    }
+                }
+            }
         }
 
         bool StudentContains(object contain)
@@ -268,61 +365,43 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             window.ShowDialog();
         }
 
-        void batchDeleteCommand()
-        {
-            var cl = CommonDataManager.GetCLCase(base.LocalID);
-
-            var dialog = this.ShowDialog("提示信息", "确认删除?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
-            if (dialog == CustomControl.Enums.DialogResultType.OK)
-            {
-
-            }
-        }
-
         void windowCommand(object obj)
         {
             StudentView view = obj as StudentView;
             _dg = view.dg;
             _view = view;
 
-            if (_dg != null)
+            this.loadDataGrid();
+
+            this.RefreshStudentPreselections();
+
+            _dg.ItemsSource = this.Students;
+        }
+
+        void loadDataGrid()
+        {
+            if (_dg.Columns.Count > 4)
             {
-                if (_dg.Columns.Count > 3)
-                {
-                    var number = _dg.Columns.Count;
+                var number = _dg.Columns.Count;
 
-                    for (int i = number; i > 3; i--)
-                    {
-                        _dg.Columns.Remove(_dg.Columns[i - 1]);
-                    }
+                for (int i = number; i > 4; i--)
+                {
+                    _dg.Columns.Remove(_dg.Columns[i - 1]);
                 }
-
-                var cl = CommonDataManager.GetCLCase(base.LocalID);
-
-                cl.Courses.ForEach(c =>
-                {
-                    DataGridTextColumn dgtc = new DataGridTextColumn();
-                    dgtc.Header = c.Name;
-                    dgtc.Binding = new Binding($"ExpandoObject.{c.Name}");
-
-                    //DataTemplate dt = new DataTemplate();
-                    //FrameworkElementFactory factory = new FrameworkElementFactory(typeof(Label));
-                    //factory.SetValue(Label.TagProperty, c.Name);
-                    //factory.AddHandler(Label.LoadedEvent, new RoutedEventHandler(courseTextBlockLoaded));
-                    //dt.VisualTree = factory;
-
-                    //dgtc.CellTemplate = dt;
-
-                    GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        _dg.Columns.Add(dgtc);
-                    });
-                });
-
-                this.RefreshStudentPreselections();
-
-                _dg.ItemsSource = this.Students;
             }
+
+            var cl = base.GetClCase(base.LocalID);
+
+            cl.Courses.ForEach(c =>
+            {
+                DataGridTextColumn dgtc = new DataGridTextColumn();
+                dgtc.Header = c.Name;
+                dgtc.Binding = new Binding($"ExpandoObject.{c.Name}");
+                GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    _dg.Columns.Add(dgtc);
+                });
+            });
         }
 
         void deleteCommand(object obj)
@@ -331,7 +410,11 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             var result = this.ShowDialog("提示信息", "确认删除?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
             if (result == CustomControl.Enums.DialogResultType.OK)
             {
-                this.Students.Remove(student);
+                var removeStudent = this.Students.FirstOrDefault(s => s.ID.Equals(student.ID));
+                if (removeStudent != null)
+                {
+                    this.Students.Remove(removeStudent);
+                }
             }
         }
 
@@ -340,7 +423,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             var noChooseSameCourseOnly = this.Students.Any(s =>
               {
                   var courseGroups = s.Preselections.Where(p => p.IsChecked).GroupBy(p => p.CourseID);
-                  if (courseGroups.Count() > 1)
+                  if (courseGroups.Any(cg => cg.Count() > 1))
                       return true;
                   else
                       return false;
@@ -381,7 +464,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void importStudentSelectionsCommand()
         {
-            var cl = CommonDataManager.GetCLCase(base.LocalID);
+            var cl = base.GetClCase(base.LocalID);
 
             var preselections = (from c in cl.Courses
                                  from cc in c.Levels
@@ -398,86 +481,101 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             {
                 if (window.DialogResult.Value)
                 {
-                    // 清空当前志愿
-                    //foreach (var st in this.Students)
-                    //{
-                    //    st.Preselections?.Clear();
-                    //}
-
-                    //清空所有学生
-                    this.Students.Clear();
-
                     var tables = window.DT;
                     var columnsCount = tables.Columns.Count;
 
-                    // 内容
-                    for (int i = 1; i < tables.Rows.Count; i++)
+                    foreach (var st in this.Students)
                     {
-                        var name = tables.Rows[i][0].ToString();
+                        st.Preselections?.Clear();
+                    }
+                    this.Students.Clear();
 
-                        if (string.IsNullOrEmpty(name))
+                    this.ShowLoading = true;
+
+                    ObservableCollection<UIStudent> students = new ObservableCollection<UIStudent>();
+
+                    Task.Run(() =>
+                    {
+                        for (int i = 1; i < tables.Rows.Count; i++)
                         {
-                            continue;
-                        }
+                            var name = tables.Rows[i][0].ToString();
 
-                        var student = this.Students.FirstOrDefault(st => st.Name.Equals(name));
-
-                        if (student == null)
-                        {
-                            int number = this.Students.Count == 0 ? 0 : this.Students.Max(st => Convert.ToInt32(st.ID));
-                            int no = this.Students.Count == 0 ? 0 : this.Students.Max(st => st.NO);
-
-                            student = new UIStudent()
+                            if (string.IsNullOrEmpty(name))
                             {
-                                ID = (number + 1).ToString(),
-                                NO = no + 1,
-                                Name = name,
-                            };
+                                continue;
+                            }
 
-                            this.Students.Add(student);
-                        }
-
-                        // 遍历其它志愿
-                        for (int h = 1; h < columnsCount; h++)
-                        {
-                            var value = tables.Rows[i][h].ToString();
-                            if (!string.IsNullOrEmpty(value))
+                            var student = students.FirstOrDefault(st => st.Name.Equals(name));
+                            if (student == null)
                             {
-                                var columnName = tables.Rows[0][h].ToString();
+                                int number = students.Count == 0 ? 0 : students.Max(st => Convert.ToInt32(st.ID));
+                                int no = students.Count == 0 ? 0 : students.Max(st => st.NO);
 
-                                // 如果有层没有输入层的名字,直接输入科目的名字。
-                                var firstCourse = cl.Courses.FirstOrDefault(clc => clc.Name.Equals(value));
-                                if (firstCourse?.Levels?.Count > 1)
+                                student = new UIStudent()
                                 {
-                                    continue;
-                                }
+                                    ID = (number + 1).ToString(),
+                                    NO = no + 1,
+                                    Name = name,
+                                };
 
-                                UIPreselection selection;
-                                var selections = preselections.Where(p => p.Course.Equals(columnName))?.ToList();
+                                students.Add(student);
+                            }
 
-                                if (!columnName.Equals(value))
+                            // 遍历其它志愿
+                            for (int h = 1; h < columnsCount; h++)
+                            {
+                                var value = tables.Rows[i][h].ToString();
+                                if (!string.IsNullOrEmpty(value))
                                 {
-                                    selection = selections?.FirstOrDefault(ss => ss.Level.Equals(value));
-                                }
-                                else
-                                {
-                                    selection = selections.FirstOrDefault();
-                                }
+                                    var columnName = tables.Rows[0][h].ToString();
 
-                                if (selection != null)
-                                {
-                                    var has = student.Preselections.Any(p => p.Course.Equals(selection.Course));
-                                    if (!has)
+                                    // 如果有层没有输入层的名字,直接输入科目的名字。
+                                    var firstCourse = cl.Courses.FirstOrDefault(clc => clc.Name.Equals(value));
+                                    if (firstCourse?.Levels?.Count > 1)
                                     {
-                                        student.Preselections.Add(selection);
+                                        continue;
+                                    }
+
+                                    UIPreselection selection;
+                                    var selections = preselections.Where(p => p.Course.Equals(columnName))?.ToList();
+
+                                    if (!columnName.Equals(value))
+                                    {
+                                        selection = selections?.FirstOrDefault(ss => ss.Level.Equals(value));
+                                    }
+                                    else
+                                    {
+                                        selection = selections.FirstOrDefault();
+                                    }
+
+                                    if (selection != null)
+                                    {
+                                        var has = student.Preselections.Any(p => p.Course.Equals(selection.Course));
+                                        if (!has)
+                                        {
+                                            student.Preselections.Add(selection);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    // 重新绑定界面
-                    windowCommand(_view);
+                    }).ContinueWith((r) =>
+                    {
+                        this.Students = students;
+
+                        GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            this.loadDataGrid();
+                            this.RefreshStudentFromUI();
+                            _dg.ItemsSource = this.Students;
+
+                            _studentCollectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(this.Students);
+                            _studentCollectionView.Filter = StudentContains;
+                        });
+
+                        this.ShowLoading = false;
+                    });
                 }
             };
             window.ShowDialog();
@@ -567,6 +665,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 if (excelResult.Item1)
                 {
                     this.ShowDialog("提示信息", "导出成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                    FileHelper.OpenFilePath(filePath);
                 }
                 else
                 {
@@ -610,18 +709,84 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         public void Refresh()
         {
-            this.Initilize();
             this.RefreshStudentPreselections();
         }
 
         /// <summary>
-        /// 刷新学生志愿UI
+        /// 从UI刷新
+        /// </summary>
+        public void RefreshStudentFromUI()
+        {
+            var cl = base.GetClCase(base.LocalID);
+
+            int no = 0;
+            var students = (from s in this.Students
+                            select new UIStudent()
+                            {
+                                NO = ++no,
+                                ID = s.ID,
+                                Name = s.Name,
+                                Preselections = s.Preselections.Select(p =>
+                                {
+                                    UIPreselection preselection = new UIPreselection();
+                                    preselection.CourseID = p.CourseID;
+                                    preselection.LevelID = p.LevelID;
+
+                                    var course = cl.Courses.FirstOrDefault(c => c.ID.Equals(p.CourseID));
+                                    if (course != null)
+                                    {
+                                        var level = course.Levels?.FirstOrDefault(cll => cll.ID.Equals(p.LevelID));
+                                        preselection.Course = course.Name;
+                                        preselection.Level = level?.Name;
+                                    }
+
+                                    return preselection;
+
+                                })?.ToList()
+                            })?.ToList();
+
+            this.BindData(students, cl);
+        }
+
+        /// <summary>
+        /// 从数据源刷新学生志愿
         /// </summary>
         public void RefreshStudentPreselections()
         {
-            var cl = CommonDataManager.GetCLCase(base.LocalID);
+            var cl = base.GetClCase(base.LocalID);
 
-            foreach (var student in Students)
+            int no = 0;
+            var students = (from s in cl.Students
+                            select new UIStudent()
+                            {
+                                NO = ++no,
+                                ID = s.ID,
+                                Name = s.Name,
+                                Preselections = s.Preselections.Select(p =>
+                                {
+                                    UIPreselection preselection = new UIPreselection();
+                                    preselection.CourseID = p.CourseID;
+                                    preselection.LevelID = p.LevelID;
+
+                                    var course = cl.Courses.FirstOrDefault(c => c.ID.Equals(p.CourseID));
+                                    if (course != null)
+                                    {
+                                        var level = course.Levels?.FirstOrDefault(cll => cll.ID.Equals(p.LevelID));
+                                        preselection.Course = course.Name;
+                                        preselection.Level = level?.Name;
+                                    }
+
+                                    return preselection;
+
+                                })?.ToList()
+                            })?.ToList();
+
+            this.BindData(students, cl);
+        }
+
+        public void BindData(List<UIStudent> students, CLCase cl)
+        {
+            foreach (var student in students)
             {
                 IDictionary<string, object> dics = new ExpandoObject();
                 cl.Courses.ForEach(c =>
@@ -641,14 +806,169 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                         }
                         else
                         {
-                            dics[p.Course] = p.Course;
+                            var has = dics.ContainsKey(p.Course);
+                            if (has)
+                            {
+                                dics[p.Course] = p.Course;
+                            }
                         }
                     }
                 });
 
-                student.ExpandoObject = dics;
+                var firstStudent = this.Students.FirstOrDefault(s => s.ID.Equals(student.ID));
+                if (firstStudent != null)
+                {
+                    firstStudent.ExpandoObject = dics;
+                }
             }
         }
 
+        public void BatchDelete()
+        {
+            var hasChecked = this.Students.Any(s => s.IsChecked);
+            if (!hasChecked)
+            {
+                this.ShowDialog("提示信息", "请选择要删除的学生?", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                return;
+            }
+
+            var confirm = this.ShowDialog("提示信息", "确认删除选中项?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
+            if (confirm == CustomControl.Enums.DialogResultType.OK)
+            {
+                var todeleteStudents = this.Students.Where(s => s.IsChecked)?.ToList();
+                todeleteStudents?.ForEach(s =>
+                {
+                    var student = this.Students.FirstOrDefault(ss => ss.ID.Equals(s.ID));
+                    if (student != null)
+                    {
+                        this.Students.Remove(student);
+                    }
+                });
+            }
+        }
+
+        void UnCheckedAll()
+        {
+            if (_searchStudents?.Count > 0)
+            {
+                _searchStudents?.ForEach(t =>
+                {
+                    var first = this.Students.FirstOrDefault(tt => tt.ID.Equals(t.ID));
+                    if (first != null)
+                    {
+                        first.IsChecked = false;
+                    }
+                });
+            }
+            else
+            {
+                foreach (var s in this.Students)
+                {
+                    s.IsChecked = false;
+                }
+            }
+        }
+
+        void CheckedAll()
+        {
+            if (_searchStudents?.Count > 0)
+            {
+                _searchStudents?.ForEach(t =>
+                {
+                    var first = this.Students.FirstOrDefault(tt => tt.ID.Equals(t.ID));
+                    if (first != null)
+                    {
+                        first.IsChecked = true;
+                    }
+                });
+            }
+            else
+            {
+                foreach (var s in this.Students)
+                {
+                    s.IsChecked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 调整学生志愿
+        /// </summary>
+        void AdjustStudentPreselection(object obj)
+        {
+            if (obj == null)
+            {
+                this.ShowDialog("提示信息", "没有选中学生!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                return;
+            }
+
+            UIStudent model = obj as UIStudent;
+
+            SetStudentPreselectionWindow window = new SetStudentPreselectionWindow(model);
+            window.Closed += (s, arg) =>
+            {
+                if (window.DialogResult.Value)
+                {
+                    var cl = base.GetClCase(base.LocalID);
+
+                    model.Preselections.Clear();
+                    window.Preselections.ForEach(p =>
+                    {
+                        model.Preselections.Add(p);
+                    });
+
+                    IDictionary<string, object> dics = new ExpandoObject();
+                    cl.Courses.ForEach(c =>
+                    {
+                        dics.Add(c.Name, string.Empty);
+                    });
+
+                    model.Preselections.ForEach(p =>
+                    {
+
+                        // 列头显示情况。
+                        var hasColumn = dics.ContainsKey(p.Course);
+                        if (hasColumn)
+                        {
+                            if (!p.LevelID.Equals("0"))
+                            {
+                                dics[p.Course] = p.Level;
+                            }
+                            else
+                            {
+                                var has = dics.ContainsKey(p.Course);
+                                if (has)
+                                {
+                                    dics[p.Course] = p.Course;
+                                }
+                            }
+                        }
+                    });
+                    model.ExpandoObject = dics;
+                }
+            };
+            window.ShowDialog();
+
+        }
+
+        /// <summary>
+        /// 清除学生志愿
+        /// </summary>
+        void ClearStudentPreselection()
+        {
+            if (Students != null)
+            {
+                foreach (var student in Students)
+                {
+                    student.Preselections?.Clear();
+                }
+                this.RefreshStudentPreselections();
+            }
+        }
+
+        void MouseDouble()
+        {
+            AdjustStudentPreselection(this.SelectStudent);
+        }
     }
 }

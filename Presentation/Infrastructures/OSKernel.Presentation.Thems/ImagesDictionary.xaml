@@ -106,4 +106,7 @@
     <BitmapImage x:Key="icon_female"
                  UriSource="pack://application:,,,/OSKernel.Presentation.Thems;Component/Images/student_girl.png" />
 
+    <BitmapImage x:Key="icon_qrcode"
+                 UriSource="pack://application:,,,/OSKernel.Presentation.Thems;Component/Images/service.jpg" />
+
 </ResourceDictionary>

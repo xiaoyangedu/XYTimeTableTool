@@ -35,10 +35,12 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             if (showStudent)
             {
                 radio_student.Visibility = Visibility.Visible;
+                radio_grade.Visibility = Visibility.Collapsed;
             }
             else
             {
                 radio_student.Visibility = Visibility.Collapsed;
+                radio_grade.Visibility = Visibility.Visible;
             }
         }
 
@@ -55,6 +57,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
         private void Radio_student_Click(object sender, RoutedEventArgs e)
         {
             Type = 3;
+        }
+
+        private void Radio_grade_Click(object sender, RoutedEventArgs e)
+        {
+            Type = 4;
         }
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)

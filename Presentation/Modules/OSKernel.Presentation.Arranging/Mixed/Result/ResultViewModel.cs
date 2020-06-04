@@ -19,6 +19,7 @@ using OSKernel.Presentation.Core.Http;
 using XYKernel.OS.Common.Models;
 using OSKernel.Presentation.Models.Base;
 using OSKernel.Presentation.Utilities.Models;
+using OSKernel.Presentation.Core.Http.Table;
 
 namespace OSKernel.Presentation.Arranging.Mixed.Result
 {
@@ -27,6 +28,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
     /// </summary>
     public class ResultViewModel : CommonViewModel, IInitilize
     {
+
         private ObservableCollection<UIResult> _results;
 
         public ObservableCollection<UIResult> Results
@@ -86,6 +88,22 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
             }
         }
 
+        public ICommand AnalysisCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UIResult>(analysis);
+            }
+        }
+
+        public ICommand PrechargeCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UIResult>(precharge);
+            }
+        }
+
         public ResultViewModel()
         {
             this.Results = new ObservableCollection<UIResult>();
@@ -101,6 +119,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
         {
             AdjustResult window = new AdjustResult(result);
             window.ShowDialog();
+        }
+
+        public void analysis(UIResult result)
+        {
+            ResultDataManager.CurrentResult = result;
+
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
+            Analysis.Result.Mixed.HostWindow host = new Analysis.Result.Mixed.HostWindow(result.Name);
+            host.ShowDialog();
         }
 
         public void Delete(UIResult result)
@@ -161,7 +188,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
 
                     if (resultModel == null)
                     {
-                        var value = OSHttpClient.Instance.GetResult(result.TaskID);
+                        var value = WebAPI.Instance.GetMixedResult(result.TaskID);
                         if (value.Item1)
                         {
                             resultModel = value.Item2;
@@ -446,6 +473,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
                             if (table.Item1)
                             {
                                 this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                                FileHelper.OpenFilePath(saveDialog.FileName);
                             }
                             else
                             {
@@ -458,6 +486,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
                             if (table.Item1)
                             {
                                 this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                                FileHelper.OpenFilePath(saveDialog.FileName);
                             }
                             else
                             {
@@ -484,7 +513,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
             var confirm = this.ShowDialog("提示信息", "确认上传方案?", DialogSettingType.OkAndCancel, DialogType.Warning);
             if (confirm == DialogResultType.OK)
             {
-                var operation = OSHttpClient.Instance.WriteBackResult(result.TaskID, adjustRecord);
+                var operation = WebAPI.Instance.WriteBackResult(result.TaskID, adjustRecord);
                 if (operation.Item1)
                 {
                     result.IsUploaded = true;
@@ -495,7 +524,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
                 }
                 else
                 {
-                    this.ShowDialog("提示信息", operation.Item2, DialogSettingType.OnlyOkButton, DialogType.Error);
+                    this.ShowDialog("提示信息", operation.Item3, DialogSettingType.OnlyOkButton, DialogType.Error);
                 }
             }
         }
@@ -558,6 +587,74 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
                     break;
 
             }
+        }
+
+        public void precharge(UIResult result)
+        {
+            var valueResult = WebAPI.Instance.SampleTask(result.TaskID);
+            if (!valueResult.Item1)
+            {
+                this.ShowDialog("提示信息",valueResult.Item3, DialogSettingType.OnlyOkButton, DialogType.Warning);
+                return;
+            }
+
+            // 预览
+            PrechargeResultWindow precharge = new PrechargeResultWindow(result.Name, valueResult.Item2);
+            precharge.Closed += (s, arg) =>
+            {
+                // 如果预览结果为True.
+                if (precharge.DialogResult == true)
+                {
+                    var results = ResultDataManager.GetResults(base.LocalID);
+                    var local = CommonDataManager.GetLocalCase(base.LocalID);
+
+                    if (precharge.IsUseResult)
+                    {
+                        var value = WebAPI.Instance.ConfirmTask(result.TaskID);
+                        if (value.Item1)
+                        {
+                            // 更新文件
+                            var task = results.FirstOrDefault(r => r.TaskID.Equals(result.TaskID));
+                            if (task != null)
+                            {
+                                task.IsUsed = true;
+                                local.Serizlize(results);
+                            }
+
+                            // 更新界面
+                            var uiTask = this.Results.FirstOrDefault(r => r.TaskID.Equals(result.TaskID));
+                            if (uiTask != null)
+                            {
+                                uiTask.IsUsed = true;
+                                uiTask.RaiseChanged();
+                            }
+
+                            this.ShowDialog("提示信息", "操作成功！", DialogSettingType.NoButton, DialogType.None);
+                        }
+                        else
+                        {
+                            this.ShowDialog("提示信息", "操作失败！", DialogSettingType.OnlyOkButton, DialogType.Warning);
+                        }
+                    }
+                    else
+                    {
+                        var value = WebAPI.Instance.AbandonTask(result.TaskID);
+                        if (value.Item1)
+                        {
+                            this.Results.Remove(result);
+                            results.RemoveAll(r => r.TaskID == result.TaskID);
+                            local.Serizlize(results);
+
+                            this.ShowDialog("提示信息", "操作成功！", DialogSettingType.NoButton, DialogType.None);
+                        }
+                        else
+                        {
+                            this.ShowDialog("提示信息", "操作失败！", DialogSettingType.OnlyOkButton, DialogType.Warning);
+                        }
+                    }
+                }
+            };
+            precharge.ShowDialog();
         }
     }
 }

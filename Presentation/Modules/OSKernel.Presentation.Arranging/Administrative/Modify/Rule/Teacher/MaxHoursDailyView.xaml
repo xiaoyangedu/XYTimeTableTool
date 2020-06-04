@@ -111,6 +111,7 @@
                       CanUserAddRows="False"
                       ItemsSource="{Binding Rules}"
                       IsReadOnly="False"
+                      CellEditEnding="Dg_CellEditEnding"
                       ColumnHeaderHeight="65">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">
@@ -168,7 +169,8 @@
                                           SelectedValue="{Binding DataContext.SelectWeight,RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                           HorizontalContentAlignment="Center"
                                           ItemsSource="{Binding DataContext.Weights,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                          Margin="2" />
+                                          Margin="2">
+                                </ComboBox>
                             </StackPanel>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>

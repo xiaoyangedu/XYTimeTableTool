@@ -91,7 +91,7 @@ namespace OSKernel.Presentation.Utilities
 
         public static void DeleteTempFile(string basepath)
         {
-            string[] extensions = { ".tmp", ".pendingoverwrite", ".dll.tmp", ".dll.PendingOverwrite" };
+            string[] extensions = { ".tmp", ".pendingoverwrite", ".dll.tmp", ".dll.PendingOverwrite", ".adress", ".key" };
             var leftOverFiles = Directory.GetFiles(basepath, "*.*").Where(f => extensions.Contains(new FileInfo(f).Extension.ToLower())).ToArray();
 
             foreach (var leftOverFile in leftOverFiles)
@@ -106,7 +106,7 @@ namespace OSKernel.Presentation.Utilities
             {
                 if (e.BytesTransferred != 0 && e.TotalBytesToTransfer != 0)
                 {
-                    CompressProgress(((double)e.BytesTransferred / e.TotalBytesToTransfer)*100, e.CurrentEntry.FileName);
+                    CompressProgress(((double)e.BytesTransferred / e.TotalBytesToTransfer) * 100, e.CurrentEntry.FileName);
                 }
             }
         }

@@ -14,6 +14,7 @@ namespace OSKernel.Presentation.Login.Summary
     {
         private long _id;
         private string _name;
+        private string _type;
 
         public ICommand ModifyCommand
         {
@@ -57,10 +58,25 @@ namespace OSKernel.Presentation.Login.Summary
             }
         }
 
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+
+            set
+            {
+                _type = value;
+                RaisePropertyChanged(() => Type);
+            }
+        }
+
         public UserInfoViewModel()
         {
             this.Id = CacheManager.Instance.LoginUser.ID;
             this.Name = CacheManager.Instance.LoginUser.UserName;
+            this.Type = CacheManager.Instance.LoginUser.IsAnnual == true ? "年费" : "预付费";
         }
 
         public void Modify()

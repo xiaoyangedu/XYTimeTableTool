@@ -328,12 +328,10 @@ namespace OSKernel.Presentation.Core.DataManager
             else
             {
                 CPCase newCase = new CPCase();
-                newCase.IsTeacherClassBalance = true;
-                newCase.IsTeacherPositionBalance = true;
+                newCase.IsPEAllowLast = true;
                 newCase.IsTwoClassHourLimit = true;
                 newCase.IsThreeClassHourLimit = true;
                 newCase.IsMajorCourseSameDay = true;
-
                 CPCases.Add(localID, newCase);
                 return newCase;
             }

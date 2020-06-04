@@ -202,13 +202,19 @@ namespace OSKernel.Presentation.Arranging.Administrative
 
                 results?.ToList()?.ForEach(r =>
                 {
-                    classes.Add(new UIClass()
+                    UIClass classInfo = new UIClass()
                     {
                         ID = r.ID,
                         CourseID = courseID,
                         Course = course.Name,
                         Name = r.Name
-                    });
+                    };
+
+                    // 课时数
+                    var lessons = cp.ClassHours.Count(ch => ch.ClassID.Equals(r.ID) && ch.CourseID.Equals(course.ID));
+                    classInfo.Lessons = lessons;
+
+                    classes.Add(classInfo);
                 });
             }
             return classes;

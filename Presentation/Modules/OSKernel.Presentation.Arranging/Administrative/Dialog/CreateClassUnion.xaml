@@ -5,7 +5,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
-                    Style="{StaticResource MetroWindowStyle}"
+                    Style="{DynamicResource MetroWindowStyle}"
                     WindowStartupLocation="CenterOwner"
                     Name="win"
                     mc:Ignorable="d"
@@ -47,7 +47,7 @@
             <Rectangle Width="1"
                        Grid.RowSpan="2"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}"/>
+                       Fill="{DynamicResource CB_Separation}" />
 
             <TextBlock Text="选择合班班级"
                        Opacity="0.7"
@@ -61,8 +61,15 @@
                      ItemsSource="{Binding Classes}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Content="{Binding Name}"
-                                  IsChecked="{Binding IsChecked}" />
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Name}"
+                                      IsChecked="{Binding IsChecked}" />
+                            <TextBlock VerticalAlignment="Center" Margin="5,0">
+                                <Run>( </Run>
+                                <Run Text="{Binding Lessons}" />
+                                <Run> )</Run>
+                            </TextBlock>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -72,7 +79,7 @@
         <Rectangle Height="1"
                    Grid.Row="1"
                    VerticalAlignment="Top"
-                   Fill="{StaticResource main_lightgroud}" />
+                   Fill="{DynamicResource main_lightgroud}" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
@@ -84,7 +91,7 @@
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

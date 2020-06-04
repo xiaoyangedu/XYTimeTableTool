@@ -57,23 +57,23 @@
             <Button Content="模式"
                     ToolTip="选择模式"
                     Command="{Binding SettingPatternCommand}"
-                    Style="{StaticResource SettingButtonStyle}" />
+                    Style="{DynamicResource SettingButtonStyle}" />
 
             <ContentControl Visibility="{Binding HasPattern,Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ContentControl.Content>
-                    <Border Background="{StaticResource main_lightgroud}">
+                    <Border Background="{DynamicResource main_lightgroud}">
                         <StackPanel Orientation="Horizontal"
                                     Margin="15,0,10,0">
                             <TextBlock Text="{Binding PatternName}"
                                        FontSize="14"
-                                       Foreground="{StaticResource main_background}"
+                                       Foreground="{DynamicResource main_background}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
 
                             <Button Command="{Binding DeleteCurrentPatternCommand}"
                                     Margin="5,0,0,0"
                                     Foreground="{StaticResource local_red}"
-                                    Style="{StaticResource CloseButtonStyle}" />
+                                    Style="{DynamicResource CloseButtonStyle}" />
 
                         </StackPanel>
                     </Border>

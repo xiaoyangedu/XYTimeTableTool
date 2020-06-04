@@ -11,10 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Unity;
-using XYKernel.Application.OS.Data.MixedClass;
 using XYKernel.OS.Common.Models.Pattern.Base;
-using XYKernel.Application.OS.DataValidation.Common;
 using MixedModel = XYKernel.OS.Common.Models.Mixed;
+using OSKernel.Presentation.Arranging.Mixed.Pattern.Data;
+using OSKernel.Presentation.Core.Http.Table;
 
 namespace OSKernel.Presentation.Arranging.Mixed.Dialog
 {
@@ -355,7 +355,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
                         return;
                     }
 
-                    var result = Core.Http.OSHttpClient.Instance.GetResult(optimizedExtractionVM.SelectResult.TaskID);
+                    var result = WebAPI.Instance.GetMixedResult(optimizedExtractionVM.SelectResult.TaskID);
                     if (result.Item1)
                     {
                         UIOptimizedExtraction optimizedExtraction = new UIOptimizedExtraction()
@@ -429,7 +429,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
                         return;
                     }
 
-                    var optimizedResult = Core.Http.OSHttpClient.Instance.GetResult(optimizedCompressionVM.SelectResult.TaskID);
+                    var optimizedResult = WebAPI.Instance.GetMixedResult(optimizedCompressionVM.SelectResult.TaskID);
                     if (optimizedResult != null)
                     {
                         var compressionOptimize = dataProcess.GetModelByStudentsClassificationResult(clModel, rule, algoRule, optimizedResult.Item2);

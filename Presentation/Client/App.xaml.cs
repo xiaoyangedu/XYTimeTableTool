@@ -18,6 +18,7 @@ using System.Text;
 using System.Diagnostics;
 using OSKernel.Presentation.Core.Http;
 using OSKernel.Presentation.CustomControl;
+using System.Security.AccessControl;
 
 namespace Client
 {
@@ -71,31 +72,6 @@ namespace Client
                 }
             };
             login.ShowDialog();
-
-            //var has = System.IO.Directory.Exists(CommonPath.Data.CombineCurrentDirectory());
-            //if (has)
-            //{
-            //    OSKernel.Presentation.Login.LoginWindow login = new OSKernel.Presentation.Login.LoginWindow();
-            //    login.Closed += (s, arg) =>
-            //    {
-            //        if (login.DialogResult.Value)
-            //        {
-            //            MainWindow main = new MainWindow();
-            //            main.Show();
-            //        }
-            //    };
-            //    login.ShowDialog();
-            //}
-            //else
-            //{
-            //    CacheManager.Instance.LoginUser = new User
-            //    {
-            //        UserName = "未知用户",
-            //    };
-
-            //    MainWindow main = new MainWindow();
-            //    main.Show();
-            //}
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -171,7 +147,7 @@ namespace Client
         {
             var path = Path.Combine(CacheManager.Instance.Version.URL, CacheManager.Instance.Version.Path);
 
-            WebClientPro client = new WebClientPro(2000);
+            WebClientPro client = new WebClientPro(10 * 1000);
 
             try
             {
@@ -195,9 +171,14 @@ namespace Client
                 if (localVersion < serviceVersion)
                 {
                     CheckUpdate checkUpdate = new CheckUpdate();
+                    checkUpdate.Closed += (s, arg) =>
+                    {
+                        if (!checkUpdate.DialogResult.Value)
+                        {
+                            System.Environment.Exit(-1);
+                        }
+                    };
                     checkUpdate.ShowDialog();
-
-                    System.Environment.Exit(-1);
                 }
                 else
                 {

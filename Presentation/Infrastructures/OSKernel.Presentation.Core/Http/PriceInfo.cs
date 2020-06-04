@@ -14,11 +14,11 @@ namespace OSKernel.Presentation.Core.Http
         /// <summary>
         /// 行政班价格
         /// </summary>
-        public double cpprice { get; set; }
+        public double cp_price { get; set; }
 
         /// <summary>
         /// 走班价格
         /// </summary>
-        public double clprice { get; set; }
+        public double cl_price { get; set; }
     }
 }

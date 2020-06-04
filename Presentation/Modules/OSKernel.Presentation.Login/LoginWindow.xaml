@@ -188,6 +188,14 @@
                           Foreground="#A3A4A6"
                           HorizontalAlignment="Left" />
 
+                <CheckBox Grid.Row="3"
+                          VerticalAlignment="Center"
+                          Content="记住密码"
+                          Margin="80,2"
+                          IsChecked="{Binding IsRememberPassWord}"
+                          Foreground="#A3A4A6"
+                          HorizontalAlignment="Left" />
+
                 <TextBlock Grid.Row="1"
                            Margin="5,0"
                            HorizontalAlignment="Right"
@@ -198,8 +206,6 @@
                      注册用户
                  </Hyperlink>
                 </TextBlock>
-
-
 
                 <Button  Grid.Row="3"
                          HorizontalAlignment="Right"
@@ -218,8 +224,8 @@
             <view:LoginSettingView />
         </Grid>
 
-        <!--<custom:CaseLoadingView Visibility="{Binding ShowLoading,Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Grid.RowSpan="3" />-->
+        <custom:CaseLoadingView Visibility="{Binding ShowLoading,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Grid.RowSpan="3" />
 
     </Grid>
 </Window>

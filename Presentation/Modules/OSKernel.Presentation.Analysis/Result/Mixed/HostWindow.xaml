@@ -1,0 +1,26 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Analysis.Result.Mixed.HostWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Analysis.Result.Mixed"
+                   xmlns:mixed="clr-namespace:OSKernel.Presentation.Analysis.Result.Mixed.Views"
+                   mc:Ignorable="d"
+                   Style="{StaticResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="CanResize"
+                   Title="结果分析"
+                   Height="600"
+                   Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="规则检查">
+                <mixed:RuleCheckView />
+            </TabItem>
+            <TabItem Header="结果评估">
+                <mixed:GeneralAssessmentView />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</metro:MetroWindow>

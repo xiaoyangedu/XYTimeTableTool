@@ -80,5 +80,15 @@ namespace OSKernel.Presentation.Utilities
                 }
             }
         }
+
+
+        /// <summary>
+        /// 打开文件所在路径
+        /// </summary>
+        public static void OpenFilePath(string file)
+        {
+            System.IO.FileInfo fileInfo = new FileInfo(file);
+            System.Diagnostics.Process.Start(fileInfo.DirectoryName);
+        }
     }
 }

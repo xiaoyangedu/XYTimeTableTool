@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.Models.Base;
@@ -225,12 +226,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
         List<ResultClassModel> _resultClasses;
         MetroWindow _window;
 
-        private UIResult _result;
+        private UIResult _result = null;
         private long _taskID
         {
             get
             {
-                return _result.TaskID;
+                if (_result != null)
+                    return _result.TaskID;
+                else
+                    return 0;
             }
         }
 
@@ -239,15 +243,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
             _window = window;
             _window.Title = $"{result.Name} 结果";
 
-            var value = OSHttpClient.Instance.GetResult(result.TaskID);
+            var value = WebAPI.Instance.GetMixedResult(result.TaskID);
 
             if (!value.Item1)
             {
-                if (value.Item3.IndexOf("签名不正确") != -1)
+                if (value.Item3.IndexOf("签名非法") != -1)
                 {
                     if (SignLogic.SignCheck())
                     {
-                        value = OSHttpClient.Instance.GetResult(result.TaskID);
+                        value = WebAPI.Instance.GetMixedResult(result.TaskID);
                     }
                 }
             }

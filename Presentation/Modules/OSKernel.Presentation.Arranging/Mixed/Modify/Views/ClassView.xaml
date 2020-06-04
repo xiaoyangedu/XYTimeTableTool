@@ -48,31 +48,30 @@
                   Height="40">
                 <StackPanel HorizontalAlignment="Left"
                             Orientation="Horizontal"
-                            Margin="5,0"
                             VerticalAlignment="Center">
 
                     <StackPanel Orientation="Horizontal">
 
                         <Button Content="自动分班"
-                                Style="{StaticResource OpratorButtonStyle}"
+                                Style="{DynamicResource OpratorButtonStyle}"
                                 Command="{Binding UniformClassCommand}"
-                                Margin="5,0" />
+                                Margin="5,0,0,0" />
 
                         <Button Content="集中设置课时"
                                 Command="{Binding UniformClassHourCommand}"
                                 Visibility="{Binding ShowUniform,Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Margin="5,0" />
+                                Margin="5,0,0,0" />
 
                         <Button Content="集中设置教师"
                                 Command="{Binding UniformTeacherCommand}"
                                 Visibility="{Binding ShowUniform,Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Margin="5,0" />
+                                Margin="5,0,0,0" />
 
                     </StackPanel>
 
                 </StackPanel>
 
-                <Button Style="{StaticResource OpratorButtonStyle}"
+                <Button Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding SaveCommand}"
                         HorizontalAlignment="Right"
                         Grid.ColumnSpan="8"
@@ -80,14 +79,14 @@
                         Content="保存"
                         Width="70"
                         Height="30"
-                        Margin="5,5,25,5" />
+                        Margin="5" />
             </Grid>
 
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0,15">
                 <ItemsControl ItemsSource="{Binding CourseLevels}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="5">
+                            <Grid Margin="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="60" />
                                     <RowDefinition Height="auto" />
@@ -95,7 +94,7 @@
                                 </Grid.RowDefinitions>
                                 <Border BorderThickness="1"
                                         Grid.RowSpan="3"
-                                        BorderBrush="{StaticResource main_lightgroud}" />
+                                        BorderBrush="{DynamicResource main_lightgroud}" />
                                 <Border Background="#F5F7FA" />
                                 <StackPanel Orientation="Horizontal"
                                             VerticalAlignment="Center"
@@ -136,13 +135,13 @@
                                     <Button CommandParameter="{Binding}"
                                             Command="{Binding DataContext.CreateClassCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ItemsControl}}"
                                             HorizontalAlignment="Left"
-                                            Style="{StaticResource PlusStyleButton}"
+                                            Style="{DynamicResource PlusStyleButton}"
                                             ToolTip="新建班级"
                                             Width="20"
                                             Height="20"
                                             Margin="5" />
 
-                                    <Button Style="{StaticResource OpratorButtonStyle}"
+                                    <Button Style="{DynamicResource OpratorButtonStyle}"
                                             CommandParameter="{Binding}"
                                             Visibility="{Binding ShowUniformCapacity,Converter={StaticResource BooleanToVisibilityConverter}}"
                                             Command="{Binding DataContext.UniformCapacityCommand,RelativeSource={RelativeSource  AncestorType=ItemsControl}}"
@@ -209,7 +208,7 @@
                                                              Text="{Binding TeacherString}" />
 
                                                     <Button Content="..."
-                                                            Foreground="{StaticResource main_background}"
+                                                            Foreground="{DynamicResource main_background}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.ChooseTeacherCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                                             ToolTip="设置教师"
@@ -228,7 +227,7 @@
                                                              Height="20"
                                                              Content="删除班级"
                                                              ToolTip="删除班级"
-                                                             Style="{StaticResource MinusEllipseButtonStyle}"
+                                                             Style="{DynamicResource MinusEllipseButtonStyle}"
                                                              CommandParameter="{Binding}"
                                                              Command="{Binding DataContext.DeleteCourseCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                                              Margin="5,5,0,5"

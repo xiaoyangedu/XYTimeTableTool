@@ -39,5 +39,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 parent.RaiseEvent(eventArg);
             }
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as StudentViewModel).CheckedAllCommand.Execute(null);
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as StudentViewModel).UnCheckedAllCommand.Execute(null);
+        }
     }
 }

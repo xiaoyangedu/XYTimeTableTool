@@ -449,9 +449,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             {
                 return;
             }
-            MixedDataHelper.TimeChanged(base.LocalID, CommonDataManager);
 
             var cl = base.GetClCase(base.LocalID);
+            var rule = base.GetClRule(base.LocalID);
+            var algo = base.GetCLAlgoRule(base.LocalID);
+
+            var hasPatern = base.HasPatern();
+
+            MixedDataHelper.TimeChanged(base.LocalID, rule, algo, hasPatern);
 
             //清除课位
             cl.Positions.Clear();

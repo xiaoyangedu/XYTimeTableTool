@@ -1,0 +1,9 @@
+排课工具使用前注意事项：
+
+1.排课工具支持Windows 7 SP1及以上操作系统；
+
+2.运行工具需安装.NET Framework 4.61及以上版本；
+.NET Framework 4.61 下载地址如下：
+https://www.microsoft.com/zh-CN/download/confirmation.aspx?id=49981
+
+3. 遇到防火墙提示，请允许，并可设置不再提醒 ；

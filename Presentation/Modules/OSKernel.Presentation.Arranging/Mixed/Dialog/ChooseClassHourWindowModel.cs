@@ -118,6 +118,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
             }
         }
 
+        public ICommand LessonChangedCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UICourseLevelTree>(lessonChanged);
+            }
+        }
+
         public ChooseClassHourWindowModel()
         {
             this.CourseLevels = new List<UICourseLevelTree>();
@@ -226,6 +234,11 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
             } 
 
             window.DialogResult = window.IsSave;
+        }
+
+        void lessonChanged(UICourseLevelTree course)
+        {
+            course.IsChecked = true;
         }
     }
 

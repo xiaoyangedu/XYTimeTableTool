@@ -7,7 +7,9 @@
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
                    mc:Ignorable="d"
                    Title="集中设置课时"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+                   xmlns:cmd="http://www.galasoft.ch/mvvmlight"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
                    WindowStartupLocation="CenterOwner"
                    ResizeMode="CanResize"
@@ -74,7 +76,15 @@
                                       SelectedValuePath="Lessons"
                                       ItemsSource="{Binding ClassHours}"
                                       Width="80"
-                                      Margin="5" />
+                                      Margin="5">
+                                <activity:Interaction.Triggers>
+                                    <activity:EventTrigger EventName="SelectionChanged">
+                                        <cmd:EventToCommand PassEventArgsToCommand="False"
+                                                            CommandParameter="{Binding}"
+                                                            Command="{Binding DataContext.LessonChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                    </activity:EventTrigger>
+                                </activity:Interaction.Triggers>
+                            </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -93,7 +103,7 @@
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="确认并关闭"
                     Command="{Binding CancelCommand}"

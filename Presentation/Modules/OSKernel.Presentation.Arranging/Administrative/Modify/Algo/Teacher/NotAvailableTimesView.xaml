@@ -40,7 +40,7 @@
 
             <Button Content="创建"
                     Command="{Binding CreateCommand}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
         </StackPanel>
 
         <Grid Background="White"
@@ -69,11 +69,11 @@
                                     <Button Margin="2"
                                             CommandParameter="{Binding}"
                                             Command="{Binding DataContext.ModifyCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            Style="{StaticResource ModifyButtonStyle}" />
+                                            Style="{DynamicResource ModifyButtonStyle}" />
                                     <Button Margin="2"
                                             CommandParameter="{Binding}"
                                             Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            Style="{StaticResource MinusEllipseButtonStyle}" />
+                                            Style="{DynamicResource MinusEllipseButtonStyle}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

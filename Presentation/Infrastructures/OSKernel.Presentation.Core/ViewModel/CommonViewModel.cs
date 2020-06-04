@@ -163,6 +163,12 @@ namespace OSKernel.Presentation.Core.ViewModel
             }
         }
 
+        public bool HasPatern()
+        {
+            var caseModel = CommonDataManager.GetLocalCase(LocalID);
+            return caseModel.Pattern == Models.Enums.PatternTypeEnum.None ? false : true;
+        }
+
         public void Serialize(CLCase cl, string localID)
         {
             var caseModel = CommonDataManager.GetLocalCase(localID);

@@ -39,7 +39,7 @@
             </Grid.ColumnDefinitions>
             <!--科目-班级树形结构-->
             <Rectangle Width="1"
-                       Fill="{StaticResource CB_Separation}"
+                       Fill="{DynamicResource CB_Separation}"
                        Grid.Column="1"
                        HorizontalAlignment="Left" />
             <TreeView ItemsSource="{Binding CourseClasses}"
@@ -66,7 +66,7 @@
 
                             </StackPanel>
 
-                            <Button Style="{StaticResource ModifyButtonStyle}"
+                            <Button Style="{DynamicResource ModifyButtonStyle}"
                                     Grid.Column="1"
                                     Width="20"
                                     Height="20"

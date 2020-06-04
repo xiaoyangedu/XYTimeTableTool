@@ -406,6 +406,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
                             this.createClassHours(classCourse);
                             uiClass.Courses.Add(classCourse);
+                            uiClass.RaiseLessons();
                         }
                     });
 
@@ -425,6 +426,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                 if (classModel != null)
                 {
                     classModel.Courses.Remove(model);
+                    classModel.RaiseLessons();
                     this.RaisePropertyChanged(() => ShowUniform);
                 }
             }
@@ -441,6 +443,19 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
             });
 
             ClassHourSettingWindow classsHourWindow = new ClassHourSettingWindow(classCourse.ClassHours);
+            classsHourWindow.Closed += (s, arg) =>
+            {
+                var firstClassHour = classCourse.ClassHours.FirstOrDefault();
+                if (firstClassHour != null)
+                {
+                    var allSame = classCourse.ClassHours.All(ch => ch.TeacherString.Equals(firstClassHour.TeacherString));
+                    if (allSame)
+                    {
+                        classCourse.Teachers = firstClassHour.Teachers;
+                        classCourse.RaiseChanged();
+                    }
+                }
+            };
             classsHourWindow.ShowDialog();
         }
 
@@ -448,6 +463,13 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
         {
             UIClassCourse classCourse = obj as UIClassCourse;
             this.createClassHours(classCourse);
+
+            // 刷新界面课时
+            var firstClass = this.Classes.FirstOrDefault(c => c.ID.Equals(classCourse.ClassID));
+            if (firstClass != null)
+            {
+                firstClass.RaiseLessons();
+            }
         }
 
         void chooseTeacherCommand(object obj)
@@ -533,6 +555,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                                 };
                                 this.createClassHours(classCourse);
                                 cc.Courses.Add(classCourse);
+                                cc.RaiseLessons();
                             }
                         }
                     });
@@ -559,7 +582,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                                 m.Lessons = c.Lessons;
                             }
                         }
+
+                        var firstClass = this.Classes.FirstOrDefault(cc => cc.ID.Equals(c.ID));
+                        if (firstClass != null)
+                        {
+                            firstClass.RaiseLessons();
+                        }
                     });
+
                 }
             };
             window.ShowDialog();
@@ -673,27 +703,28 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
             var confirm = this.ShowDialog("提示信息", "确认清除?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
             if (confirm == CustomControl.Enums.DialogResultType.OK)
             {
-                if (this.Classes != null)
-                {
-                    foreach (var c in this.Classes)
-                    {
-                        if (c.Courses != null)
-                        {
-                            foreach (var course in c.Courses)
-                            {
-                                foreach (var classHour in course.ClassHours)
-                                {
-                                    classHour.Teachers?.Clear();
-                                    classHour.TeacherString = string.Empty;
-                                }
-                                course.Lessons = 5;
-                                course.Teachers?.Clear();
-                                course.TeacherString = string.Empty;
-                                course.RaiseChanged();
-                            }
-                        }
-                    }
-                }
+                this.Classes.Clear();
+                //if (this.Classes != null)
+                //{
+                //    foreach (var c in this.Classes)
+                //    {
+                //        if (c.Courses != null)
+                //        {
+                //            foreach (var course in c.Courses)
+                //            {
+                //                foreach (var classHour in course.ClassHours)
+                //                {
+                //                    classHour.Teachers?.Clear();
+                //                    classHour.TeacherString = string.Empty;
+                //                }
+                //                course.Lessons = 5;
+                //                course.Teachers?.Clear();
+                //                course.TeacherString = string.Empty;
+                //                course.RaiseChanged();
+                //            }
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -715,11 +746,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
             var cp = CommonDataManager.GetCPCase(base.LocalID);
 
-            // 删除班级
-            removeClasses.ForEach(rc =>
-            {
-                cp.Classes.RemoveAll(dc => dc.ID.Equals(rc.ID));
-            });
+            cp.Classes.Clear();
             removeClasses.Clear();
 
             foreach (var c in this.Classes)

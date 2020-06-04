@@ -1,4 +1,5 @@
-﻿using OSKernel.Presentation.Core;
+﻿using OSKernel.Presentation.Arranging.Mixed.Modify.Rule.Teacher.Model;
+using OSKernel.Presentation.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.Teacher
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<MaxHoursDailyViewModel>();
+        }
+
+        private void Dg_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            UIMaxHoursDaily maxHours = e.Row.DataContext as UIMaxHoursDaily;
+            if (maxHours != null)
+            {
+                maxHours.IsChecked = true;
+            }
         }
     }
 }

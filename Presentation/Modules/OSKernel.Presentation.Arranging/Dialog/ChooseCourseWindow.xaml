@@ -5,7 +5,7 @@
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
                    WindowStartupLocation="CenterOwner"
                    Name="win"
@@ -117,7 +117,7 @@
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

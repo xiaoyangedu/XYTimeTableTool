@@ -56,6 +56,14 @@ namespace OSKernel.Presentation.Arranging
             rulePath.SerializeObjectToJson(model);
         }
 
+        public static void RulePaternSerialize(this OSKernel.Presentation.Models.Enums.MixedRuleEnum rule, string localID, object model)
+        {
+            string path = CacheManager.Instance.GetDataPath();
+            string rulePath = $"{path}\\{localID}\\{rule.ToString()}\\{localID}.paternrule";
+
+            rulePath.SerializeObjectToJson(model);
+        }
+
         /// <summary>
         /// 规则反序列化类
         /// </summary>
@@ -76,10 +84,41 @@ namespace OSKernel.Presentation.Arranging
                 return null;
         }
 
+        /// <summary>
+        /// 规则反序列化类
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rule">规则</param>
+        /// <param name="localID">方案ID</param>
+        /// <returns>反序列化对象</returns>
+        public static T RulePaternDeSerialize<T>(this OSKernel.Presentation.Models.Enums.MixedRuleEnum rule, string localID) where T : class
+        {
+            string path = CacheManager.Instance.GetDataPath();
+            string rulePath = $"{path}\\{localID}\\{rule.ToString()}\\{localID}.paternrule";
+
+            if (File.Exists(rulePath))
+            {
+                return rulePath.DeSerializeObjectFromJson<T>();
+            }
+            else
+                return null;
+        }
+
         public static void DeleteRule(this OSKernel.Presentation.Models.Enums.MixedRuleEnum rule, string localID)
         {
             string path = CacheManager.Instance.GetDataPath();
             string rulePath = $"{path}\\{localID}\\{rule.ToString()}\\{localID}.rule";
+
+            if (File.Exists(rulePath))
+            {
+                System.IO.File.Delete(rulePath);
+            }
+        }
+
+        public static void DeletePaternRule(this OSKernel.Presentation.Models.Enums.MixedRuleEnum rule, string localID)
+        {
+            string path = CacheManager.Instance.GetDataPath();
+            string rulePath = $"{path}\\{localID}\\{rule.ToString()}\\{localID}.paternrule";
 
             if (File.Exists(rulePath))
             {

@@ -50,7 +50,7 @@ namespace OSKernel.Presentation.Arranging.Dialog
             if (hasRepeat.Count>0)
             {
                 txt_message.Visibility = Visibility.Visible;
-                txt_message.Text = $"重复科目{hasRepeat.Parse()}";
+                txt_message.Text = $"重复科目：{hasRepeat.Parse()}";
                 return;
             }
 

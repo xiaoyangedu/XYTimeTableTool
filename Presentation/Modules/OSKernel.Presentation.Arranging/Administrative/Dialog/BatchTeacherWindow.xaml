@@ -34,12 +34,12 @@
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Style="{StaticResource OpratorButtonStyle}"
+            <Button Style="{DynamicResource OpratorButtonStyle}"
                     Command="{Binding ImportCommand}"
                     Content="导入"
                     Width="80"
                     Margin="2,5" />
-            <Button Style="{StaticResource OpratorButtonStyle}"
+            <Button Style="{DynamicResource OpratorButtonStyle}"
                     Command="{Binding ExportCommand}"
                     Content="导出"
                     Width="80"
@@ -48,7 +48,7 @@
 
         <Rectangle Height="1"
                    Margin="5,0"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
         <Grid Grid.Row="1">
@@ -83,7 +83,7 @@
             <Rectangle Width="1"
                        Margin="0,5"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <!--科目-->
             <ListBox Name="lst_course"
@@ -101,7 +101,7 @@
                                    VerticalContentAlignment="Center"
                                    HorizontalContentAlignment="Center"
                                    Visibility="{Binding ShowSelectClassCountArea,Converter={StaticResource BooleanToVisibilityConverter}}"
-                                   Background="{StaticResource main_background}" />
+                                   Background="{DynamicResource main_background}" />
                             <TextBlock Text="{Binding Name}"
                                        VerticalAlignment="Center" />
                          
@@ -144,7 +144,7 @@
         <Rectangle Height="1"
                    Grid.Row="3"
                    Margin="5,0"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
         <xy:TitleBar Grid.Row="2"
@@ -160,7 +160,7 @@
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="确认并关闭"
                     Command="{Binding CancelCommand}"

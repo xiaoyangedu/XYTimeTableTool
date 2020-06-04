@@ -35,7 +35,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <xy:TitleBar Title="可通过导入学生志愿的形式同时导入学生及学生选课结果，导入时会清除已导入的结果，导入文件中应包含本次排课的所有学生及其选课结果。" />
+        <xy:TitleBar Title="可通过导入学生志愿的形式同时导入学生及学生选课结果，导入时会清除已导入的结果，导入文件中应包含本次排课的所有学生及其选课结果;添加学生后，可双击或点击右键调整志愿。" />
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -58,32 +58,41 @@
                               Margin="10,0"
                               Width="200" />
 
+                    <Button Content="批量删除"
+                            ToolTip="选中批量删除"
+                            Style="{DynamicResource BatchDeleteButtonStyle}"
+                            Command="{Binding BatchDeleteCommand}"
+                            Width="70"
+                            Height="30"
+                            Margin="5,0,0,0" />
+
                     <Button Content="添加学生"
                             Width="70"
                             Height="30"
+                            Margin="5,0,0,0"
                             Command="{Binding CreateCommand}"
-                            Style="{StaticResource OpratorButtonStyle}" />
+                            Style="{DynamicResource OpratorButtonStyle}" />
 
                     <Button Content="统计"
                             Width="40"
                             Height="30"
-                            Margin="5,0"
+                            Margin="5,0,0,0"
                             ToolTip="统计科目选择人数"
                             Command="{Binding StatisticsCommand}" />
 
                     <Button Content="导入学生志愿"
                             Command="{Binding ImportStudentSelectionsCommand}"
                             Height="30"
-                            Margin="5,0" />
+                            Margin="5,0,0,0" />
 
                     <Button Content="导出学生志愿"
                             Command="{Binding ExportStudentSelectionsCommand}"
                             Height="30"
-                            Margin="5,0" />
+                            Margin="5,0,0,0" />
 
                 </StackPanel>
 
-                <Button Style="{StaticResource OpratorButtonStyle}"
+                <Button Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding SaveCommand}"
                         HorizontalAlignment="Right"
                         Grid.ColumnSpan="8"
@@ -91,11 +100,11 @@
                         Content="保存"
                         Width="70"
                         Height="30"
-                        Margin="5,5,25,5" />
+                        Margin="5" />
             </Grid>
 
             <!--承载区域-->
-            <Grid Margin="0,0,0,10"
+            <Grid Margin="0,0,0,15"
                   Grid.Row="1"
                   Background="White">
                 <Grid.RowDefinitions>
@@ -106,32 +115,61 @@
                 <!--<ScrollViewer HorizontalScrollBarVisibility="Visible"
                               PreviewMouseWheel="Dg_PreviewMouseWheel"
                               VerticalScrollBarVisibility="Auto">-->
-                    <DataGrid Name="dg">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="序号"
-                                                Binding="{Binding NO}" />
-                            <DataGridTemplateColumn Header="操作"
-                                                    Width="auto">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Margin="2"
-                                                CommandParameter="{Binding}"
-                                                ToolTip="{Binding ID}"
-                                                Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                Style="{StaticResource MinusEllipseButtonStyle}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="学生"
-                                                Binding="{Binding Name}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <DataGrid Name="dg"
+                          SelectedItem="{Binding SelectStudent}"
+                          ColumnHeaderHeight="35">
+                    <activity:Interaction.Triggers>
+                        <activity:EventTrigger EventName="MouseDoubleClick">
+                            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                                Command="{Binding MouseDoubleCommand}" />
+                        </activity:EventTrigger>
+                    </activity:Interaction.Triggers>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="调整志愿"
+                                      CommandParameter="{Binding SelectStudent}"
+                                      Command="{Binding Path=PlacementTarget.DataContext.AdjustStudentPreselectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                            <MenuItem Header="清除志愿"
+                                      Command="{Binding Path=PlacementTarget.DataContext.ClearStudentPreselectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox Checked="CheckBox_Checked"
+                                          Unchecked="CheckBox_Unchecked" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="序号"
+                                            Binding="{Binding NO}" />
+                        <DataGridTextColumn Header="学生"
+                                            Binding="{Binding Name}" />
+                        <DataGridTemplateColumn Header="操作"
+                                                Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Margin="2"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="{Binding ID}"
+                                            Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            Style="{DynamicResource MinusEllipseButtonStyle}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
                 <!--</ScrollViewer>-->
             </Grid>
 
         </Grid>
 
-        <!--<loading:LoadingArcs  Grid.RowSpan="2"
-                              Visibility="{Binding ShowLoading,Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+        <loading:LoadingArcs  Grid.RowSpan="2"
+                              Visibility="{Binding ShowLoading,Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Unity;
@@ -56,6 +57,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             }
         }
 
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(saveCommand);
+            }
+        }
+
         /// <summary>
         /// 选中全部
         /// </summary>
@@ -71,13 +80,29 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 _allChecked = value;
                 RaisePropertyChanged(() => AllChecked);
 
-                foreach (var t in Teachers)
+                if (_toDeleteTeachers.Count > 0)
                 {
-                    t.IsChecked = value;
+                    _toDeleteTeachers.ForEach(t =>
+                    {
+                        var firstTeacher = this.Teachers.First(tt => tt.ID.Equals(t.ID));
+                        if (firstTeacher != null)
+                        {
+                            firstTeacher.IsChecked = _allChecked;
+                        }
+                    });
+                }
+                else
+                {
+                    foreach (var t in Teachers)
+                    {
+                        t.IsChecked = value;
+                    }
                 }
             }
         }
 
+
+        private List<UITeacher> _toDeleteTeachers = new List<UITeacher>();
         /// <summary>
         /// 搜索教师
         /// </summary>
@@ -94,6 +119,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 RaisePropertyChanged(() => SearchTeacher);
 
                 _teacherCollectionView.Refresh();
+                _toDeleteTeachers = this.Teachers.Where(t => t.Name.IndexOf(this.SearchTeacher) != -1)?.ToList();
             }
         }
 
@@ -190,13 +216,23 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void batchDeleteCommand()
         {
+            var hasChecked = this.Teachers.Any(t => t.IsChecked);
+            if (!hasChecked)
+            {
+                this.ShowDialog("提示信息", "没有选中要删除的教师!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                return;
+            }
+
             var dialog = this.ShowDialog("提示信息", "确认删除?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
             if (dialog == CustomControl.Enums.DialogResultType.OK)
             {
+                var rule = base.GetClRule(base.LocalID);
+                var algo = base.GetCLAlgoRule(base.LocalID);
                 var cl = base.GetClCase(base.LocalID);
+                var hasPatern = base.HasPatern();
 
                 // 验证是否确认删除?
-                var toDeleteTeachers = this.Teachers.Where(t => t.IsChecked)?.ToList();
+                var toDeleteTeachers = _toDeleteTeachers?.Count == 0 ? this.Teachers.Where(t => t.IsChecked)?.ToList() : _toDeleteTeachers?.Where(t => t.IsChecked);
                 if (toDeleteTeachers != null)
                 {
                     foreach (var t in toDeleteTeachers)
@@ -206,7 +242,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                         // 移除教师
                         cl.Teachers.RemoveAll(teacher => teacher.ID.Equals(t.ID));
                         // 删除基础数据
-                        MixedDataHelper.TeacherChanged(t, base.LocalID, CommonDataManager);
+                        MixedDataHelper.TeacherChanged(t, base.LocalID, rule, algo, cl, hasPatern);
 
                         // 发送消息
                         GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<UITeacher>(t);
@@ -221,6 +257,11 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
         public void Refresh()
         {
             this.Initilize();
+        }
+
+        void saveCommand()
+        {
+            this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
         }
     }
 }

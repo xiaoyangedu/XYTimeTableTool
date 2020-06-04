@@ -6,7 +6,7 @@
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
                    Title="创建层"
@@ -35,7 +35,7 @@
                         VerticalAlignment="Center"
                         Name="txt_message"
                         Visibility="Collapsed"
-                        Foreground="{StaticResource local_red}" />
+                        Foreground="{DynamicResource local_red}" />
 
             <xy:TitleBar Grid.Row="2"
                          Title="输入层名称，回车键换行可继续添加，或可通过复制excel表格纵向一列数据批量粘贴到输入框。"/>
@@ -49,7 +49,7 @@
                         Margin="5"
                         Click="Btn_save_Click"
                         IsDefault="True"
-                        Style="{StaticResource OpratorButtonStyle}" />
+                        Style="{DynamicResource OpratorButtonStyle}" />
 
                 <Button Content="取消"
                         Name="btn_cancel"

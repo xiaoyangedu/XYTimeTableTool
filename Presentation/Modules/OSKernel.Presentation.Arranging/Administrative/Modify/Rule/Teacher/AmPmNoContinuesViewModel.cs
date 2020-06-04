@@ -25,6 +25,8 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
 
         private ListCollectionView _teacherCollectionView;
 
+        private List<UITeacher> _searchTeachers = new List<UITeacher>();
+
         public List<UITeacher> Teachers
         {
             get
@@ -62,9 +64,23 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
                 _allChecked = value;
                 RaisePropertyChanged(() => AllChecked);
 
-                foreach (var t in Teachers)
+                if (_searchTeachers.Count > 0)
                 {
-                    t.IsChecked = value;
+                    _searchTeachers.ForEach(t =>
+                    {
+                        var firstTeacher = this.Teachers.First(tt => tt.ID.Equals(t.ID));
+                        if (firstTeacher != null)
+                        {
+                            firstTeacher.IsChecked = _allChecked;
+                        }
+                    });
+                }
+                else
+                {
+                    foreach (var t in Teachers)
+                    {
+                        t.IsChecked = value;
+                    }
                 }
             }
         }
@@ -85,6 +101,8 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
                 RaisePropertyChanged(() => SearchTeacher);
 
                 _teacherCollectionView.Refresh();
+
+                _searchTeachers = this.Teachers.Where(t => t.Name.IndexOf(this.SearchTeacher) != -1)?.ToList();
             }
         }
 

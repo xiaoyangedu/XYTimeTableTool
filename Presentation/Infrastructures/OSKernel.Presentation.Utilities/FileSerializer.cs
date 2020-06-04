@@ -176,9 +176,9 @@ namespace OSKernel.Presentation.Utilities
 
                 //path.FileSerialize(jsonMessage);
             }
-            catch (Exception ex)
+            catch
             {
-                // TODO
+               
             }
         }
 
@@ -189,14 +189,14 @@ namespace OSKernel.Presentation.Utilities
         /// <param name="path"></param>
         /// <returns></returns>
         public static T DeSerializeObjectFromJson<T>(this string path) where T : class
-        {            
+        {
             try
             {
                 var jsonString = File.ReadAllText(path);
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonString);
                 return result;
             }
-            catch (Exception ex)
+            catch
             {
                 // TODO
                 return null;

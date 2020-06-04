@@ -5,7 +5,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
                    Title="创建方案"
@@ -61,7 +61,7 @@
                     Margin="5"
                     Click="Btn_save_Click"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

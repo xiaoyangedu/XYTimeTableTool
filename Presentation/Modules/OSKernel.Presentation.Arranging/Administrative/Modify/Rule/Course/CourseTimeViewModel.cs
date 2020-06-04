@@ -322,7 +322,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
 
             if (selectClasses?.Count == 0)
             {
-                this.ShowDialog("提示信息", "请选择课程", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                this.ShowDialog("提示信息", "请选择班级", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                 return;
             }
 

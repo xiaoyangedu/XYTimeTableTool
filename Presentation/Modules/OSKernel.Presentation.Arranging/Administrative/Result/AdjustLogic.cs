@@ -29,7 +29,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
         /// <param name="classID">班级ID</param>
         /// <param name="item">调整的项</param>
         /// <returns></returns>
-        public static List<DayPeriodModel> CheckCanAdjustPosition(string localID, string classID, List<ResultDetailModel> item, ResultModel resultModel)
+        public static Tuple<List<DayPeriodModel>, List<PostionWithWarningInfo>> CheckCanAdjustPosition(string localID, string classID, List<ResultDetailModel> item, ResultModel resultModel)
         {
             var positions = GetMovablePositons(localID, classID, item, resultModel);
             //单向检查结果
@@ -64,7 +64,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             }
             #endregion
 
-            return twoWayPositions;
+            return  Tuple.Create(twoWayPositions, positions.Item2);
         }
 
         public static Tuple<bool, string> CanReplacePosition(string localID, string classID, List<ResultDetailModel> sourceItem, List<ResultDetailModel> targetItem, ResultModel resultModel)
@@ -123,6 +123,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                             && p.Position != XYKernel.OS.Common.Enums.Position.Noon
                             && p.Position != XYKernel.OS.Common.Enums.Position.PB)
                             ?.Select(d => d.DayPeriod)?.ToList() ?? new List<DayPeriodModel>();
+
+            cp?.Positions?.Where(p => !p.IsSelected
+                            && p.Position != XYKernel.OS.Common.Enums.Position.AB
+                            && p.Position != XYKernel.OS.Common.Enums.Position.Noon
+                            && p.Position != XYKernel.OS.Common.Enums.Position.PB)
+                            ?.Select(d => d.DayPeriod)?.ToList()?.ForEach(p => {
+                                notReachable.Add(new PostionWithWarningInfo() { DayPeriod = p, WaringMessage = $"方案不可用时间!" });
+                            });
 
             //TODO: 是否基于现有模型更新结果模型中的教师信息?
             item?.ForEach(it =>
@@ -333,21 +341,43 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
 
                     //合并上午最后一节和下午第一节课位
                     List<DayPeriodModel> availableNoonTimes = TimeOperation.TimeSlotUnion(amLasts, pmFirsts);
-                    //移除当前要移动的课位
-                    currentTimeSlots = TimeOperation.TimeSlotDiff(currentTimeSlots, new List<DayPeriodModel>() { it.DayPeriod });
                     //教师在中午的上课信息
                     List<DayPeriodModel> teacherNoonTimes = TimeOperation.TimeSlotInterSect(currentTimeSlots, availableNoonTimes);
                     List<DayPeriodModel> teacherNotAvailableNoonTimes = new List<DayPeriodModel>() { };
 
-                    availableNoonTimes.ForEach(an =>
-                    {
-                        if (teacherNoonTimes.Exists(t => t.Day == an.Day))
+                    availableNoonTimes.Select(lnt => lnt.Day).Distinct().ToList().ForEach(lnt => {
+                        var teacherCurrentDayNoonTimes = teacherNoonTimes.Where(tnt => tnt.Day == lnt);
+                        if (teacherCurrentDayNoonTimes.Count() == 2)
                         {
-                            teacherNotAvailableNoonTimes.Add(an);
+                            var intersectResult = TimeOperation.TimeSlotInterSect(teacherCurrentDayNoonTimes.ToList(), new List<DayPeriodModel>() { it.DayPeriod });
+                            if (intersectResult.Count > 0)
+                            {
+                                var leftTimeSlot = availableNoonTimes.Where(ant => ant.Day == lnt && ant.Period != it.DayPeriod.Period).FirstOrDefault();
+                                if (leftTimeSlot != null)
+                                {
+                                    teacherNotAvailableNoonTimes.Add(leftTimeSlot);
+                                }
+                            }
+                            else
+                            {
+                                teacherNotAvailableNoonTimes.AddRange(teacherCurrentDayNoonTimes);
+                            }
+                        }
+
+                        if (teacherCurrentDayNoonTimes.Count() == 1)
+                        {
+                            var teacherTimeSlot = teacherCurrentDayNoonTimes.First();
+                            if (!(teacherTimeSlot.Day == it.DayPeriod.Day && teacherTimeSlot.Period == it.DayPeriod.Period))
+                            {
+                                var conflitTimeSlot = availableNoonTimes.Where(ant => ant.Day == teacherTimeSlot.Day && ant.Period != teacherTimeSlot.Period).FirstOrDefault();
+                                if (conflitTimeSlot != null)
+                                {
+                                    teacherNotAvailableNoonTimes.Add(conflitTimeSlot);
+                                }
+                            }
                         }
                     });
 
-                    teacherNotAvailableNoonTimes = TimeOperation.TimeSlotDiff(teacherNotAvailableNoonTimes, teacherNoonTimes);
                     dayPeriods = TimeOperation.TimeSlotDiff(dayPeriods, teacherNotAvailableNoonTimes);
 
                     teacherNotAvailableNoonTimes.ForEach(tn =>
@@ -361,11 +391,10 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                     //默认处理逻辑为徒弟之间也不允许同时排课, 不然无法保证互听课
                     List<string> tempTeachers = new List<string>();
                     tempTeachers.AddRange(x.ApprenticeIDs);
-                    tempTeachers.AddRange(teachers);
                     tempTeachers.Add(x.MasterID);
                     tempTeachers = tempTeachers.Distinct().ToList();
 
-                    var classHoursTimes = resultModel.ResultClasses?.SelectMany(c => c.ResultDetails)?.Where(c => c.CourseID == it.CourseID && c.Teachers.Intersect(tempTeachers).Count() > 0)?.ToList()?.Select(c => c.DayPeriod);
+                    var classHoursTimes = resultModel.ResultClasses?.SelectMany(c => c.ResultDetails)?.Where(c => c.CourseID == it.CourseID && c.Teachers.Except(it.Teachers).Count() > 0 && c.Teachers.Intersect(tempTeachers).Count() > 0)?.ToList()?.Select(c => c.DayPeriod);
 
                     classHoursTimes?.ToList()?.ForEach(c =>
                     {

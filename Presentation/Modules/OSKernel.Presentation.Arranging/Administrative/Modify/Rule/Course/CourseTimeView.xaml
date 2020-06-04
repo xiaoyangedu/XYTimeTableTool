@@ -62,7 +62,7 @@
 
                             </StackPanel>
 
-                            <Button Style="{StaticResource ModifyButtonStyle}"
+                            <Button Style="{DynamicResource ModifyButtonStyle}"
                                     Grid.Column="1"
                                     Width="20"
                                     Height="20"

@@ -5,7 +5,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
@@ -35,7 +35,7 @@
                         VerticalAlignment="Center"
                         Name="txt_message"
                         Visibility="Collapsed"
-                        Foreground="{StaticResource local_red}" />
+                        Foreground="{DynamicResource local_red}" />
 
             <xy:TitleBar Title="输入学生名称，回车键换行可继续添加，或可通过复制excel表格纵向一列数据批量粘贴到输入框。" Grid.Row="2"/>
 
@@ -48,7 +48,7 @@
                         Margin="5"
                         Click="Btn_save_Click"
                         IsDefault="True"
-                        Style="{StaticResource OpratorButtonStyle}" />
+                        Style="{DynamicResource OpratorButtonStyle}" />
 
                 <Button Content="取消"
                         Name="btn_cancel"

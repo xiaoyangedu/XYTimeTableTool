@@ -98,7 +98,15 @@
                                               Width="80"
                                               Margin="5"
                                               SelectedValuePath="Value"
-                                              SelectedValue="{Binding Weight}" />
+                                              SelectedValue="{Binding Weight}">
+                                        <activity:Interaction.Triggers>
+                                            <activity:EventTrigger EventName="SelectionChanged">
+                                                <cmd:EventToCommand PassEventArgsToCommand="False"
+                                                                    CommandParameter="{Binding}"
+                                                                    Command="{Binding DataContext.WeightChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                            </activity:EventTrigger>
+                                        </activity:Interaction.Triggers>
+                                    </ComboBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
@@ -106,7 +114,7 @@
                         <DataGridTemplateColumn Header="状态">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource ModifyButtonStyle}"
+                                    <Button Style="{DynamicResource ModifyButtonStyle}"
                                             Margin="5"
                                             Grid.Column="1"
                                             Width="20"

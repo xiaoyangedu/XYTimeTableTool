@@ -39,7 +39,7 @@
 
             <Button HorizontalAlignment="Left"
                     Margin="5"
-                    Style="{StaticResource OpratorButtonStyle}"
+                    Style="{DynamicResource OpratorButtonStyle}"
                     Command="{Binding CreateMutexGroupCommand}"
                     Content="新建课程互斥" />
 

@@ -22,14 +22,14 @@
         <StackPanel Orientation="Horizontal"
                     Margin="5"
                     HorizontalAlignment="Center">
-            <RadioButton  Style="{StaticResource switch_leftStyle}"
+            <RadioButton  Style="{DynamicResource switch_leftStyle}"
                           x:Name="rb_class"
                           IsChecked="True"
                           Width="100"
                           Height="35"
                           Content="班级课表" />
 
-            <RadioButton  Style="{StaticResource switch_rightStyle}"
+            <RadioButton  Style="{DynamicResource switch_rightStyle}"
                           x:Name="rb_teacher"
                           Width="100"
                           Height="35"

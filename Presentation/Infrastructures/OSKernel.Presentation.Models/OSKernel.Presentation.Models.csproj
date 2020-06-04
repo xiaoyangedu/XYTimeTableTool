@@ -69,6 +69,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="XYKernel.OS.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\XYKernel.OS.Common.1.1.0\lib\netstandard2.0\XYKernel.OS.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administrative\UIAlgoRule.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="Result\UIAdjustResultWeek.cs" />
     <Compile Include="Result\Administrative\UICourseFrame.cs" />
     <Compile Include="Result\Administrative\UIDragItem.cs" />
+    <Compile Include="Result\UIPrechargeResult.cs" />
     <Compile Include="Result\UIResult.cs" />
     <Compile Include="Result\UIResultWeek.cs" />
     <Compile Include="Rule\UIAlgoBase.cs" />
@@ -125,10 +129,6 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\XYKernel.OS.Common\XYKernel.OS.Common.csproj">
-      <Project>{0854a627-a0e6-493d-ab31-f3ded37a6540}</Project>
-      <Name>XYKernel.OS.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSKernel.Presentation.Utilities\OSKernel.Presentation.Utilities.csproj">
       <Project>{178bb25b-edac-4035-8d9d-55fc1af308c0}</Project>
       <Name>OSKernel.Presentation.Utilities</Name>

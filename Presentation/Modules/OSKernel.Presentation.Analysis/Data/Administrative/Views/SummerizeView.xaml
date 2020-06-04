@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Analysis.Data.Administrative.Views.SummerizeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Analysis.Data.Administrative.Views"
+             xmlns:converter="clr-namespace:OSKernel.Presentation.Analysis.Converters"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--综合-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <xy:TitleBar Title="本次排课任务数据的校验与分析已经完成，以下是本次数据分析的结果：" />
+
+        <Grid Grid.Row="1">
+            <ScrollViewer>
+                <StackPanel Margin="5">
+                    <!--1.班级课时数分析-->
+                    <StackPanel>
+                        <TextBlock Text="1、班级课时数分析"
+                                   FontWeight="Bold"
+                                   Opacity="0.7"
+                                   Margin="0,5" />
+                        <TextBlock Opacity="0.7"
+                                   Margin="0,5">
+                            <Run Text="班级：本次排课方案有" />
+                            <Run Text="{Binding ClassCount}" />
+                            <Run Text="个班级" />
+                        </TextBlock>
+                    </StackPanel>
+                    <DataGrid Margin="0,5"
+                              PreviewMouseWheel="DataGrid_PreviewMouseWheel"
+                              ItemsSource="{Binding ClassTimeSlots}">
+                        <DataGrid.Resources>
+                            <converter:SlotConverter x:Key="slotConverter" />
+                        </DataGrid.Resources>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow"
+                                   BasedOn="{StaticResource ErroDataGridRow}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <Binding Path="FreeSlotNumber"
+                                                 Converter="{StaticResource slotConverter}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="序号"
+                                                Binding="{Binding NO}" />
+                            <DataGridTextColumn Header="班级"
+                                                Binding="{Binding ClassName}"
+                                                Width="25*" />
+                            <DataGridTextColumn Binding="{Binding ClassLesson}"
+                                                Width="33.3*">
+                                <DataGridTextColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="课时数 "
+                                                   HorizontalAlignment="Center" />
+                                        <TextBlock FontSize="12"
+                                                   VerticalAlignment="Center">
+                                            <Run>(总课位</Run>
+                                            <Run Text="{Binding DataContext.TotalClassHour,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                            <Run>)</Run>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="科目数"
+                                                Binding="{Binding CourseNumber}"
+                                                Width="25*" />
+                            <DataGridTextColumn Header="空余课位数"
+                                                Binding="{Binding FreeSlotNumber}"
+                                                Width="25*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!--2.教师工作量分析（工作课时占比越高，排课风险越大)-->
+                    <StackPanel>
+
+                        <TextBlock Text="2.教师工作量分析（工作课时占比越高，排课风险越大)"
+                                   FontWeight="Bold"
+                                   Opacity="0.7"
+                                   Margin="0,5" />
+
+                        <TextBlock Opacity="0.7"
+                                   Margin="0,5">
+                            <Run Text="教师：本次排课方案有" />
+                            <Run Text="{Binding TeacherCount}" />
+                            <Run Text="名教师" />
+                        </TextBlock>
+
+                    </StackPanel>
+                    <DataGrid Margin="0,5"
+                              PreviewMouseWheel="DataGrid_PreviewMouseWheel"
+                              ItemsSource="{Binding TeacherAnalysises}">
+                        <DataGrid.Resources>
+                            <converter:PercentConverter x:Key="percentConverter" />
+                        </DataGrid.Resources>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow"
+                                   BasedOn="{StaticResource ErroDataGridRow}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <Binding Path="LessonRatio"
+                                                 Converter="{StaticResource percentConverter}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="序号"
+                                                Binding="{Binding NO}" />
+                            <DataGridTextColumn Header="教师"
+                                                Binding="{Binding Teacher.Name}"
+                                                Width="25*" />
+                            <DataGridTextColumn Header="课时"
+                                                Binding="{Binding Lesson}"
+                                                Width="25*" />
+                            <DataGridTextColumn Header="带班数"
+                                                Binding="{Binding ClassNumber}"
+                                                Width="25*" />
+                            <DataGridTextColumn Header="工作课时占比"
+                                                Binding="{Binding LessonRatio,StringFormat={}{0:P}}"
+                                                Width="25*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!--3.排课规则分析-->
+                    <StackPanel>
+                        <TextBlock Text="3.排课规则分析"
+                                   FontWeight="Bold"
+                                   Opacity="0.7"
+                                   Margin="0,5" />
+                    </StackPanel>
+                    <DataGrid Margin="0,5"
+                              ItemsSource="{Binding Rules}"
+                              PreviewMouseWheel="DataGrid_PreviewMouseWheel">
+                        <DataGrid.Resources>
+                            <converter:IsErroConverter x:Key="isErroConverter" />
+                        </DataGrid.Resources>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow"
+                                   BasedOn="{StaticResource ErroDataGridRow}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <Binding Path="HasConflict"
+                                                 Converter="{StaticResource isErroConverter}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="序号"
+                                                Binding="{Binding NO}" />
+                            <DataGridTextColumn Header="规则"
+                                                Width="50*"
+                                                Binding="{Binding RuleName}" />
+                            <DataGridTextColumn Header="是否存在冲突（详细见规则分析）"
+                                                Binding="{Binding HasConflictString}"
+                                                Width="50*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

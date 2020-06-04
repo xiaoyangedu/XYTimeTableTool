@@ -116,6 +116,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
             }
         }
 
+        private List<UICourse> _toDeleteCourses = new List<UICourse>();
         /// <summary>
         /// 搜索课程
         /// </summary>
@@ -132,6 +133,8 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                 RaisePropertyChanged(() => SearchCourse);
 
                 _courseCollectionView.Refresh();
+                _toDeleteCourses = this.Courses.Where(t => t.Name.IndexOf(this.SearchCourse) != -1)?.ToList();
+
             }
         }
 
@@ -270,11 +273,18 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
         void batchDeleteCommand()
         {
-            var confirm = this.ShowDialog("提示信息", "确定删除选中科目?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
+            var hasCheckedCourse = this.Courses.Any(c => c.IsChecked);
+            if (!hasCheckedCourse)
+            {
+                this.ShowDialog("提示信息", "没有选中要删除的课程!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                return;
+            }
+
+            var confirm = this.ShowDialog("提示信息", "确定删除选中课程?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
             if (confirm == CustomControl.Enums.DialogResultType.OK)
             {
                 // 验证是否确认删除?
-                var toDeletes = this.Courses.Where(t => t.IsChecked)?.ToList();
+                var toDeletes = this._toDeleteCourses.Count == 0 ? this.Courses.Where(t => t.IsChecked)?.ToList() : this._toDeleteCourses.Where(t => t.IsChecked);
                 if (toDeletes != null)
                 {
                     var local = CommonDataManager.GetLocalCase(base.LocalID);
@@ -402,12 +412,6 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
         void saveCommand()
         {
-
-            var local = CommonDataManager.GetLocalCase(base.LocalID);
-            local.Serialize();
-
-            _cpcase.Serialize(base.LocalID);
-
             this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
         }
     }

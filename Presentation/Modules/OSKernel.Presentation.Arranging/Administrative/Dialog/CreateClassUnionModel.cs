@@ -129,6 +129,20 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
                 this.ShowDialog("提示信息", "至少选择两个班级", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                 return;
             }
+            else
+            {
+                var checkedClasses = this.Classes.Where(c => c.IsChecked)?.ToList();
+
+                var first = checkedClasses.FirstOrDefault();
+                var allSameLessons = checkedClasses.All(c => c.Lessons == first.Lessons);
+
+                // 如果所有都不一致
+                if (!allSameLessons)
+                {
+                    this.ShowDialog("提示信息","只有课时相同的班级可以合班!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                    return;
+                }
+            }
 
             CreateClassUnion win = obj as CreateClassUnion;
             //win.IsSave = true;

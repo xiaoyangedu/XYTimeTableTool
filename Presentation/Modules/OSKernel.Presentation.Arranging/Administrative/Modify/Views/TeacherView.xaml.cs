@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 {
     /// <summary>
-    /// Interaction logic for TeacherView.xaml
+    /// 教师界面
     /// </summary>
     public partial class TeacherView : UserControl
     {
@@ -26,11 +26,6 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<TeacherViewModel>();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (this.DataContext as TeacherViewModel).SaveCommand.Execute(sender);
         }
     }
 }

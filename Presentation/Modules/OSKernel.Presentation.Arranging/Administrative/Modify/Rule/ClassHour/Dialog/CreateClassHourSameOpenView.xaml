@@ -8,7 +8,7 @@
                    mc:Ignorable="d"
                    x:Name="main"
                    Title="创建同时开课规则"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    ResizeMode="CanResize"
                    WindowStartupLocation="CenterOwner"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -129,7 +129,7 @@
         <Rectangle Height="1"
                    Grid.Row="1"
                    VerticalAlignment="Top"
-                   Fill="{StaticResource main_lightgroud}" />
+                   Fill="{DynamicResource main_lightgroud}" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
@@ -141,7 +141,7 @@
                     CommandParameter="{Binding ElementName=main}"
                     Command="{Binding SaveCommand}"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XYKernel.OS.Common.Models.Mixed;
+using XYKernel.OS.Common.Models.Mixed.AlgoRule;
+using XYKernel.OS.Common.Models.Mixed.Rule;
 
 namespace OSKernel.Presentation.Arranging.Mixed
 {
@@ -16,18 +19,20 @@ namespace OSKernel.Presentation.Arranging.Mixed
         /// <summary>
         /// 时间发生改变(清除所有时间规则）
         /// </summary>
-        public static void TimeChanged(string localID, ICommonDataManager CommonDataManager)
+        public static void TimeChanged(string localID, Rule rule, AlgoRule algo, bool hasPatern)
         {
-            var rule = CommonDataManager.GetMixedRule(localID);
-            var algo = CommonDataManager.GetMixedAlgoRule(localID);
-
             if (rule != null)
             {
                 rule.TeacherTimes?.Clear();
                 rule.CourseLimits?.Clear();
                 rule.CourseTimes?.Clear();
                 rule.ArrangeContinuous?.Clear();
-                rule.Serialize(localID);
+                if (hasPatern)
+                {
+                    rule.SerializePatternRule(localID);
+                }
+                else
+                    rule.Serialize(localID);
             }
 
             if (algo != null)
@@ -40,16 +45,17 @@ namespace OSKernel.Presentation.Arranging.Mixed
                 algo.ClassHourRequiredStartingTime?.Clear();
                 algo.ClassHoursMaxConcurrencyInSelectedTimes?.Clear();
                 algo.ClassHoursOccupyMaxTimeFromSelections?.Clear();
-                algo.Serialize(localID);
+                if (hasPatern)
+                {
+                    algo.SerializePatternAlgo(localID);
+                }
+                else
+                    algo.Serialize(localID);
             }
         }
 
-        public static void TeacherChanged(Models.Base.UITeacher teacher, string localID, ICommonDataManager CommonDataManager)
+        public static void TeacherChanged(Models.Base.UITeacher teacher, string localID, Rule rule, AlgoRule algo, CLCase cl, bool hasPatern)
         {
-            var rule = CommonDataManager.GetMixedRule(localID);
-            var algo = CommonDataManager.GetMixedAlgoRule(localID);
-            var cl = CommonDataManager.GetCLCase(localID);
-
             if (cl != null)
             {
                 cl.Classes?.ForEach(c =>
@@ -62,7 +68,14 @@ namespace OSKernel.Presentation.Arranging.Mixed
                     ch.TeacherIDs?.RemoveAll(t => t.Contains(teacher.ID));
                 });
 
-                cl.Serialize(localID);
+                if (hasPatern)
+                {
+                    cl.SerializePatternCase(localID);
+                }
+                else
+                {
+                    cl.Serialize(localID);
+                }
             }
 
             if (rule != null)
@@ -71,7 +84,14 @@ namespace OSKernel.Presentation.Arranging.Mixed
                 rule.MaxGapsPerDay?.RemoveAll(t => t.TeacherID.Contains(teacher.ID));
                 rule.MaxDaysPerWeek?.RemoveAll(t => t.TeacherID.Contains(teacher.ID));
                 rule.MaxHoursDaily?.RemoveAll(t => t.TeacherID.Contains(teacher.ID));
-                rule.Serialize(localID);
+                if (hasPatern)
+                {
+                    rule.SerializePatternRule(localID);
+                }
+                else
+                {
+                    rule.Serialize(localID);
+                }
             }
 
             if (algo != null)
@@ -80,18 +100,23 @@ namespace OSKernel.Presentation.Arranging.Mixed
                 algo.TeacherMaxHoursDailys?.RemoveAll(t => t.TeacherID.Equals(teacher.ID));
                 algo.TeacherMaxDaysPerWeeks?.RemoveAll(t => t.TeacherID.Equals(teacher.ID));
                 algo.TeacherNotAvailableTimes?.RemoveAll(t => t.TeacherID.Equals(teacher.ID));
-                algo.Serialize(localID);
+                if (hasPatern)
+                {
+                    algo.SerializePatternAlgo(localID);
+                }
+                else
+                {
+                    algo.Serialize(localID);
+                }
             }
         }
 
-        public static void CourseChanged(List<Models.Mixed.UICourse> courses, string localID, ICommonDataManager CommonDataManager)
+        public static void CourseChanged(List<Models.Mixed.UICourse> courses, string localID, Rule rule, AlgoRule algo, CLCase cl, bool hasPatern)
         {
-            var rule = CommonDataManager.GetMixedRule(localID);
-            var algo = CommonDataManager.GetMixedAlgoRule(localID);
-            var cl = CommonDataManager.GetCLCase(localID);
-
             if (rule != null)
             {
+                rule.ClassHourSameOpens?.Clear();
+
                 courses.ForEach(c =>
                 {
                     var classes = cl.Classes.Where(cc => cc.CourseID.Equals(c.ID))?.ToList();
@@ -100,12 +125,22 @@ namespace OSKernel.Presentation.Arranging.Mixed
                         rule.CourseTimes?.RemoveAll(r => r.ClassID.Equals(tc.ID));
                         rule.ArrangeContinuous?.RemoveAll(r => r.ClassID.Equals(tc.ID));
                         rule.ClassHourAverages?.RemoveAll(r => r.ClassID.Equals(tc.ID));
-                        rule.ClassHourSameOpens?.Clear();
                     });
 
                     rule.AmPmClassHours?.RemoveAll(r => r.CourseID.Equals(c.ID));
                     rule.CourseLimits?.RemoveAll(r => r.CourseID.Equals(c.ID));
                 });
+
+                if (hasPatern)
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeletePaternRule(localID);
+                    rule.SerializePatternRule(localID);
+                }
+                else
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeleteRule(localID);
+                    rule.Serialize(localID);
+                }
             }
 
             if (algo != null)
@@ -188,7 +223,14 @@ namespace OSKernel.Presentation.Arranging.Mixed
                     algo.ClassHourRequiredStartingTime?.RemoveAll(r => r.ID.Equals(ch.ID));
                 });
 
-                algo.Serialize(localID);
+                if (hasPatern)
+                {
+                    algo.SerializePatternAlgo(localID);
+                }
+                else
+                {
+                    algo.Serialize(localID);
+                }
             }
 
             if (cl != null)
@@ -203,20 +245,24 @@ namespace OSKernel.Presentation.Arranging.Mixed
 
                     cl.Students?.ForEach(st =>
                     {
-                        st.Preselections?.RemoveAll(p => p.CourseID.Equals(c.ID));
+                        st.Preselections?.Clear();
+                        //st.Preselections?.RemoveAll(p => p.CourseID.Equals(c.ID));
                     });
                 });
 
-                cl.Serialize(localID);
+                if (hasPatern)
+                {
+                    cl.SerializePatternCase(localID);
+                }
+                else
+                {
+                    cl.Serialize(localID);
+                }
             }
         }
 
-        public static void LevelChanged(List<Models.Mixed.UILevel> levels, string localID, ICommonDataManager CommonDataManager)
+        public static void LevelChanged(List<Models.Mixed.UILevel> levels, string localID, Rule rule, AlgoRule algo, CLCase cl, bool isPatern)
         {
-            var rule = CommonDataManager.GetMixedRule(localID);
-            var algo = CommonDataManager.GetMixedAlgoRule(localID);
-            var cl = CommonDataManager.GetCLCase(localID);
-
             if (rule != null)
             {
                 levels.ForEach(c =>
@@ -228,11 +274,22 @@ namespace OSKernel.Presentation.Arranging.Mixed
                         rule.ArrangeContinuous?.RemoveAll(r => r.ClassID.Equals(tc.ID));
                         rule.ClassHourAverages?.RemoveAll(r => r.ClassID.Equals(tc.ID));
                     });
-
-                    rule.ClassHourSameOpens?.Clear();
                     rule.AmPmClassHours?.RemoveAll(r => r.CourseID.Equals(c.ID));
                     rule.CourseLimits?.RemoveAll(r => r.CourseID.Equals(c.ID));
                 });
+
+                rule.ClassHourSameOpens?.Clear();
+
+                if (isPatern)
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeletePaternRule(localID);
+                    rule.SerializePatternRule(localID);
+                }
+                else
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeleteRule(localID);
+                    rule.Serialize(localID);
+                }
             }
 
             if (algo != null)
@@ -315,7 +372,14 @@ namespace OSKernel.Presentation.Arranging.Mixed
                     algo.ClassHourRequiredStartingTime?.RemoveAll(r => r.ID.Equals(ch.ID));
                 });
 
-                algo.Serialize(localID);
+                if (isPatern)
+                {
+                    algo.SerializePatternAlgo(localID);
+                }
+                else
+                {
+                    algo.Serialize(localID);
+                }
             }
 
             if (cl != null)
@@ -334,29 +398,44 @@ namespace OSKernel.Presentation.Arranging.Mixed
 
                     cl.Students?.ForEach(st =>
                     {
-                        st.Preselections?.RemoveAll(p => p.LevelID.Equals(c.ID) && p.CourseID.Equals(c.CourseID));
+                        st.Preselections?.Clear();
+                        //st.Preselections?.RemoveAll(p => p.LevelID.Equals(c.ID) && p.CourseID.Equals(c.CourseID));
                     });
                 });
-                cl.Serialize(localID);
+
+                if (isPatern)
+                {
+                    cl.SerializePatternCase(localID);
+                }
+                else
+                {
+                    cl.Serialize(localID);
+                }
             }
         }
 
-        public static void ClassHourChanged(string localID, ICommonDataManager CommonDataManager)
+        public static void ClassHourChanged(string localID, Rule rule, AlgoRule algo, CLCase cl, bool isPatern)
         {
-            var rule = CommonDataManager.GetMixedRule(localID);
-            var algo = CommonDataManager.GetMixedAlgoRule(localID);
-            var cl = CommonDataManager.GetCLCase(localID);
-
             if (rule != null)
             {
-                OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeleteRule(localID);
+
+
                 rule.ClassHourSameOpens?.Clear();
                 rule.ClassHourAverages?.Clear();
                 rule.CourseTimes?.Clear();
                 rule.ArrangeContinuous?.Clear();
                 rule.AmPmClassHours?.Clear();
 
-                rule.Serialize(localID);
+                if (isPatern)
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeletePaternRule(localID);
+                    rule.SerializePatternRule(localID);
+                }
+                else
+                {
+                    OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.DeleteRule(localID);
+                    rule.Serialize(localID);
+                }
             }
 
             if (algo != null)
@@ -376,7 +455,15 @@ namespace OSKernel.Presentation.Arranging.Mixed
                 algo.ClassHourRequiredStartingTime?.Clear();
                 algo.ClassHoursMaxConcurrencyInSelectedTimes?.Clear();
                 algo.ClassHoursOccupyMaxTimeFromSelections?.Clear();
-                algo.Serialize(localID);
+
+                if (isPatern)
+                {
+                    algo.SerializePatternAlgo(localID);
+                }
+                else
+                {
+                    algo.Serialize(localID);
+                }
             }
         }
     }

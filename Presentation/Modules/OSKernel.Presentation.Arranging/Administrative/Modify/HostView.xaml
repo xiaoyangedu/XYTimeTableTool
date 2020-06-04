@@ -4,7 +4,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    ResizeMode="CanResize"
                    mc:Ignorable="d"
@@ -28,7 +28,7 @@
                     Margin="5"
                     Click="Btn_save_Click"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="关闭"
                     Name="btn_cancel"

@@ -26,6 +26,11 @@ namespace OSKernel.Presentation.Core.DataManager
             get; set;
         }
 
+        public UIResult CurrentResult
+        {
+            get; set;
+        }
+
         public ResultDataManager()
         {
             this.TaskResults = new Dictionary<string, XYKernel.OS.Common.Models.Administrative.Result.ResultModel>();

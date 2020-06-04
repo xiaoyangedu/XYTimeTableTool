@@ -1,0 +1,40 @@
+﻿<metro:MetroWindow  x:Class="OSKernel.Presentation.Analysis.Data.Mixed.HostWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Analysis.Data.Mixed"
+                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns:mixed="clr-namespace:OSKernel.Presentation.Analysis.Data.Mixed.Views"
+                    Style="{StaticResource MetroWindowStyle}"
+                    WindowStartupLocation="CenterOwner"
+                    ResizeMode="CanResize"
+                    mc:Ignorable="d"
+                    Height="450"
+                    Width="800">
+    <!--走班数据分析-->
+    <Grid>
+        <Grid>
+            <TabControl>
+                <TabItem Header="综合分析">
+                    <mixed:SummerizeView />
+                </TabItem>
+                <TabItem Header="教师分析">
+                    <mixed:TeacherView />
+                </TabItem>
+                <TabItem Header="课程分析">
+                    <mixed:CourseView />
+                </TabItem>
+                <TabItem Header="班级分析">
+                    <mixed:ClassView />
+                </TabItem>
+                <TabItem Header="学生分析">
+                    <mixed:StudentView />
+                </TabItem>
+                <TabItem Header="规则分析">
+                    <mixed:RuleView />
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>

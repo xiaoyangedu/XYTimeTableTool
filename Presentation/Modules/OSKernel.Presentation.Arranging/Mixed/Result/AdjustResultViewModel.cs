@@ -24,6 +24,7 @@ using System.Collections.ObjectModel;
 using OSKernel.Presentation.Models.Result.Mixed;
 using System.Windows.Shapes;
 using System.Windows.Data;
+using OSKernel.Presentation.Core.Http.Table;
 
 namespace OSKernel.Presentation.Arranging.Mixed.Result
 {
@@ -38,6 +39,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
         private List<UIAdjustResultWeek> _results;
         private bool _showCanNotDrag;
         private bool _checkedAllStudent;
+        private bool _teacherReportChecked;
 
         private ObservableCollection<ClassHourAdjustmentModel> _adjustmentRecords;
         private ObservableCollection<UIDragItem> _courseFrames;
@@ -433,6 +435,25 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
             }
         }
 
+        public bool TeacherReportChecked
+        {
+            get
+            {
+                return _teacherReportChecked;
+            }
+
+            set
+            {
+                _teacherReportChecked = value;
+                this.RaisePropertyChanged(() => TeacherReportChecked);
+
+                if (value)
+                {
+                    this.SelectTeacher = this.Teachers.FirstOrDefault();
+                }
+            }
+        }
+
         public AdjustResultViewModel()
         {
             this.TeacherResults = new List<UIResultWeek>();
@@ -492,14 +513,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Result
             }
             else
             {
-                var value = OSHttpClient.Instance.GetResult(_taskID);
+                var value = WebAPI.Instance.GetMixedResult(_taskID);
                 if (!value.Item1)
                 {
-                    if (value.Item3.IndexOf("签名不正确") != -1)
+                    if (value.Item3.IndexOf("签名非法") != -1)
                     {
                         if (SignLogic.SignCheck())
                         {
-                            value = OSHttpClient.Instance.GetResult(_taskID);
+                            value = WebAPI.Instance.GetMixedResult(_taskID);
                             if (value.Item1)
                             {
                                 _localResult = value.Item2;

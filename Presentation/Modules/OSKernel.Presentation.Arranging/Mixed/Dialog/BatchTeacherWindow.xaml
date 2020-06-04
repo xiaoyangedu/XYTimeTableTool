@@ -8,7 +8,7 @@
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
                    xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
                    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
                    ResizeMode="NoResize"
@@ -33,12 +33,12 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Style="{StaticResource OpratorButtonStyle}"
+            <Button Style="{DynamicResource OpratorButtonStyle}"
                     Command="{Binding ImportCommand}"
                     Content="导入"
                     Width="80"
                     Margin="2,5" />
-            <Button Style="{StaticResource OpratorButtonStyle}"
+            <Button Style="{DynamicResource OpratorButtonStyle}"
                     Command="{Binding ExportCommand}"
                     Content="导出"
                     Width="80"
@@ -47,7 +47,7 @@
 
         <Rectangle Height="1"
                    Margin="5,0"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
 
@@ -65,7 +65,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button Style="{StaticResource ModifyButtonStyle}"
+                            <Button Style="{DynamicResource ModifyButtonStyle}"
                                     Margin="5,0"
                                     Width="20"
                                     Height="20"
@@ -114,7 +114,7 @@
                        Grid.Column="1"
                        Margin="0,5"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <!--班级-->
             <ListBox ItemsSource="{Binding SelectCourse.Classes}"
@@ -145,7 +145,7 @@
         <Rectangle Height="1"
                    Margin="5,0"
                    Grid.Row="2"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
         <xy:TitleBar Title="点击导出按钮，导出模板；填写好模板后点击导入按钮，完成批量设置；"
@@ -161,7 +161,7 @@
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="确认并关闭"
                     Command="{Binding CancelCommand}"

@@ -1,0 +1,25 @@
+﻿<metro:MetroWindow  x:Class="OSKernel.Presentation.Analysis.Dialogs.ErroDetailsWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:OSKernel.Presentation.Analysis.Dialogs"
+                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    mc:Ignorable="d"
+                    Title="错误详细信息窗口"
+                    Style="{StaticResource MetroWindowStyle}"
+                    WindowStartupLocation="CenterOwner"
+                    ResizeMode="CanResize"
+                    Height="300"
+                    Width="600">
+    <!--错误信息详细窗口-->
+    <Grid>
+        <DataGrid Name="dg_erro">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*"
+                                    Binding="{Binding}"
+                                    Header="错误信息" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</metro:MetroWindow>

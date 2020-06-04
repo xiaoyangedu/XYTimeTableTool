@@ -19,6 +19,9 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Algo.ClassHour
 {
     public class BetweenClassHoursViewModel : CommonViewModel, IInitilize
     {
+        private bool _showMaxDay = true;
+        private bool _showMinDay = true;
+
         private ObservableCollection<UIClassHourRule> _rules;
 
         private AdministrativeAlgoRuleEnum currentRuleEnum;
@@ -68,6 +71,40 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Algo.ClassHour
             }
         }
 
+        /// <summary>
+        /// 显示最大天数
+        /// </summary>
+        public bool ShowMaxDay
+        {
+            get
+            {
+                return _showMaxDay;
+            }
+
+            set
+            {
+                _showMaxDay = value;
+                RaisePropertyChanged(() => ShowMaxDay);
+            }
+        }
+
+        /// <summary>
+        /// 显示最小天数
+        /// </summary>
+        public bool ShowMinDay
+        {
+            get
+            {
+                return _showMinDay;
+            }
+
+            set
+            {
+                _showMinDay = value;
+                RaisePropertyChanged(() => ShowMinDay);
+            }
+        }
+
         public BetweenClassHoursViewModel()
         {
             this.Rules = new ObservableCollection<UIClassHourRule>();
@@ -88,6 +125,15 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Algo.ClassHour
         {
             currentRuleEnum = value;
             this.Comments = CommonDataManager.GetAdminAlgoComments(value);
+
+            if (currentRuleEnum == AdministrativeAlgoRuleEnum.MinDaysBetweenClassHours)
+            {
+                this.ShowMaxDay = false;
+            }
+            else if (currentRuleEnum == AdministrativeAlgoRuleEnum.MaxDaysBetweenClassHours)
+            {
+                this.ShowMinDay = false;
+            }
         }
 
         void createCommand()

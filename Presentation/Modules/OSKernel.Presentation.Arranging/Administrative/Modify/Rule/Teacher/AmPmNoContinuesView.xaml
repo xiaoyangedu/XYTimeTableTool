@@ -47,7 +47,8 @@
 
         </StackPanel>
 
-        <Rectangle Height="1" Fill="{StaticResource CB_Separation}" VerticalAlignment="Bottom"/>
+        <Rectangle Height="1"
+                   Fill="{DynamicResource CB_Separation}" VerticalAlignment="Bottom"/>
 
 
         <DataGrid Grid.Row="1"
@@ -56,6 +57,7 @@
                   CanUserAddRows="False"
                   ItemsSource="{Binding Teachers}"
                   IsReadOnly="False"
+                  CellEditEnding="Dg_CellEditEnding"
                   ColumnHeaderHeight="65">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="100">

@@ -43,6 +43,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
             }
         }
 
+        public ICommand WeightChangedCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UITeacher>(weightChanged);
+            }
+        }
+
         public List<UITeacher> Teachers
         {
             get
@@ -464,14 +472,6 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
             }
         }
 
-        public override void BatchSetWeight(WeightTypeEnum weightEnum)
-        {
-            this.Teachers.ForEach(r =>
-            {
-                r.Weight = weightEnum;
-            });
-        }
-
         void RefreshPosition()
         {
             var cp = CommonDataManager.GetCPCase(base.LocalID);
@@ -493,6 +493,19 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
             }
 
             this.Periods = results;
+        }
+
+        void weightChanged(UITeacher course)
+        {
+            course.IsChecked = true;
+        }
+
+        public override void BatchSetWeight(WeightTypeEnum weightEnum)
+        {
+            this.Teachers.ForEach(r =>
+            {
+                r.Weight = weightEnum;
+            });
         }
     }
 }

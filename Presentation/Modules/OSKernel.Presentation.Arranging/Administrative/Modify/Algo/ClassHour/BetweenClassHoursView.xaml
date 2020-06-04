@@ -7,6 +7,7 @@
              xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:activity="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:bindingProxy="clr-namespace:OSKernel.Presentation.Arranging.Converters"
              xmlns:cmd="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"
              d:DesignHeight="450"
@@ -39,13 +40,17 @@
             <Button Content="创建"
                     Margin="2"
                     Command="{Binding CreateCommand}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
         </StackPanel>
         <Grid Background="White"
               Grid.Row="1"
               Height="auto">
             <DataGrid Name="dg"
                       ItemsSource="{Binding Rules}">
+                <DataGrid.Resources>
+                    <bindingProxy:BindingProxy x:Key="proxy"
+                                               Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="序号"
                                         Binding="{Binding NO}"
@@ -56,6 +61,15 @@
                     <DataGridTextColumn Header="课时数"
                                         Binding="{Binding ClassHourCount}"
                                         Width="*" />
+
+                    <DataGridTextColumn Header="最小天数"
+                                        Binding="{Binding MinDays}"
+                                        Width="100"
+                                        Visibility="{Binding Data.ShowMinDay, Source={StaticResource proxy},Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <DataGridTextColumn Header="最大天数"
+                                        Binding="{Binding MaxDays}"
+                                        Width="100"
+                                        Visibility="{Binding Data.ShowMaxDay, Source={StaticResource proxy},Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <DataGridTextColumn Header="权重"
                                         Binding="{Binding Weight}"
                                         Width="100" />
@@ -70,11 +84,11 @@
                                     <Button Margin="2"
                                             CommandParameter="{Binding}"
                                             Command="{Binding DataContext.ModifyCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            Style="{StaticResource ModifyButtonStyle}" />
+                                            Style="{DynamicResource ModifyButtonStyle}" />
                                     <Button Margin="2"
                                             CommandParameter="{Binding}"
                                             Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            Style="{StaticResource MinusEllipseButtonStyle}" />
+                                            Style="{DynamicResource MinusEllipseButtonStyle}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

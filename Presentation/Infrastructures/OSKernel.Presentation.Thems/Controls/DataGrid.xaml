@@ -234,6 +234,43 @@
             </MultiDataTrigger>
         </Style.Triggers>
     </Style>
+    
+    <!--错误行基础样式-->
+    <Style x:Key="ErroDataGridRow"
+           TargetType="{x:Type DataGridRow}">
+        <Setter Property="Opacity"
+                Value="0.6" />
+        <Setter Property="FontSize"
+                Value="13" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Margin"
+                Value="1,0,0,0" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected"
+                               Value="True" />
+                    <Condition Property="Selector.IsSelectionActive"
+                               Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter  Property="Background"
+                         Value="{StaticResource ItemSelectedBackground}" />
+                <Setter Property="Foreground"
+                        Value="{StaticResource ItemSelectedForeground}" />
+            </MultiTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}"
+                               Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter  Property="Background"
+                         Value="{StaticResource ItemMouseOverBackground}" />
+                <Setter Property="Foreground"
+                        Value="{StaticResource ItemMouseOverForeground}" />
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
 
     <!--行头调整高度样式 -->
     <Style x:Key="DefaultRowHeaderGripperStyle"

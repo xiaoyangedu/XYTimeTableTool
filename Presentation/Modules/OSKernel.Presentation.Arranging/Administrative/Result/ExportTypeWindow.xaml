@@ -5,13 +5,14 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Result"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
+                   SizeToContent="WidthAndHeight"
                    ResizeMode="NoResize"
                    Title="导出选择"
-                   Height="150"
-                   Width="300">
+                   MinHeight="150"
+                   MinWidth="300">
     <!--导出设置-->
     <Grid>
         <Grid.RowDefinitions>
@@ -21,6 +22,11 @@
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
+            <RadioButton Margin="5"
+                         Name="radio_grade"
+                         IsChecked="True"
+                         Click="Radio_grade_Click"
+                         Content="年级课表" />
             <RadioButton Margin="5"
                          Name="radio_class"
                          IsChecked="True"
@@ -37,7 +43,7 @@
         </StackPanel>
 
         <Rectangle Height="1"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
         <!--第二行-->
@@ -50,7 +56,7 @@
                     Margin="5"
                     IsDefault="True"
                     Click="Btn_save_Click"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

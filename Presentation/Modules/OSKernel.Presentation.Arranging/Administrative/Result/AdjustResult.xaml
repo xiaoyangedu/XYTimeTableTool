@@ -40,7 +40,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Rectangle Fill="{StaticResource main_lightgroud}" />
+                <Rectangle Fill="{DynamicResource main_lightgroud}" />
 
                 <StackPanel Orientation="Horizontal">
 
@@ -77,23 +77,23 @@
 
                     <Border Background="White"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Width="20"
                             Height="20"
                             Margin="2"
                             ToolTip="空白" />
 
-                    <Border Background="{StaticResource main_lightgroud}"
+                    <Border Background="{DynamicResource main_lightgroud}"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Width="20"
                             Height="20"
                             Margin="2"
                             ToolTip="可调整位置" />
 
-                    <Border Background="{StaticResource week_forbid}"
+                    <Border Background="{DynamicResource week_forbid}"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Width="20"
                             Height="20"
                             Margin="2"
@@ -106,7 +106,7 @@
                              Margin="5"
                              Width="50"
                              HorizontalAlignment="Right"
-                             Style="{StaticResource OpratorButtonStyle}"
+                             Style="{DynamicResource OpratorButtonStyle}"
                              Visibility="{Binding ShowRefreshButton,Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 </StackPanel>
@@ -132,7 +132,7 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Rectangle Fill="{StaticResource main_lightgroud}" />
+                            <Rectangle Fill="{DynamicResource main_lightgroud}" />
 
                             <StackPanel Orientation="Horizontal">
 
@@ -146,11 +146,11 @@
                                 <!--教师科目字符串-->
                                 <TextBlock Margin="5"
                                            Text="{Binding TeacherCourseString}"
-                                           Foreground="{StaticResource main_background}"
+                                           Foreground="{DynamicResource main_background}"
                                            VerticalAlignment="Center"/>
 
                                 <Button Command="{Binding ExportTeacherCommand}"
-                                        Style="{StaticResource OpratorButtonStyle}"
+                                        Style="{DynamicResource OpratorButtonStyle}"
                                         Visibility="Collapsed"
                                         Content="导出教师课表" />
 
@@ -179,11 +179,11 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <!--拖拽背景色-->
-                                                <Border BorderBrush="{StaticResource main_lightgroud}"
+                                                <Border BorderBrush="{DynamicResource main_lightgroud}"
                                                         Background="White"
                                                         BorderThickness="2"
                                                         Grid.ColumnSpan="2" />
-                                                <Rectangle Fill="{StaticResource main_lightgroud}"
+                                                <Rectangle Fill="{DynamicResource main_lightgroud}"
                                                            MouseMove="Rectangle_MouseMove"
                                                            Cursor="Hand"
                                                            MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" />
@@ -225,20 +225,20 @@
                                             <TextBlock Margin="10,5">
                                             <Run Text="班级:" />
                                             <Run Text="{Binding ClassName}"
-                                                 Foreground="{StaticResource main_background}" />
+                                                 Foreground="{DynamicResource main_background}" />
                                             </TextBlock>
                                             <!--原始-->
                                             <TextBlock Margin="5">
                                             <Run Text="原始:" />   
                                             <Run Text="{Binding StartClassHour.CourseName}"
-                                                 Foreground="{StaticResource local_green}" />
+                                                 Foreground="{DynamicResource local_green}" />
                                             </TextBlock>
 
                                             <!--目标-->
                                             <TextBlock Margin="5">
                                               <Run Text="目标:" />
                                             <Run Text="{Binding EndClassHour.CourseName}"
-                                                 Foreground="{StaticResource local_red}" />
+                                                 Foreground="{DynamicResource local_red}" />
                                             </TextBlock>
 
                                             <!--调整类型-->

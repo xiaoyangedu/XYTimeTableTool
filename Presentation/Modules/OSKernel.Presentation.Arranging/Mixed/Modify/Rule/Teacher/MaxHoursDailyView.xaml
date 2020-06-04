@@ -48,7 +48,7 @@
                                      IsChecked="{Binding IsSelected}"
                                      Command="{Binding DataContext.CourseSelectedCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                      CommandParameter="{Binding}"
-                                     Style="{StaticResource SelectGrayRatioButton}">
+                                     Style="{DynamicResource SelectGrayRatioButton}">
                             <RadioButton.Content>
                                 <StackPanel Orientation="Horizontal"
                                             Margin="1"
@@ -111,6 +111,7 @@
                       CanUserAddRows="False"
                       IsReadOnly="False"
                       ItemsSource="{Binding Rules}"
+                      CellEditEnding="Dg_CellEditEnding"
                       ColumnHeaderHeight="65">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">

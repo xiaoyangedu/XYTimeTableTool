@@ -685,9 +685,18 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void saveCommand()
         {
+            var cl = base.GetClCase(base.LocalID);
+
             if (hasChanged())
             {
-                MixedDataHelper.ClassHourChanged(base.LocalID, CommonDataManager);
+                var rule = base.GetClRule(base.LocalID);
+                var algo = base.GetCLAlgoRule(base.LocalID);
+
+                var local = CommonDataManager.GetLocalCase(base.LocalID);
+
+                bool isPatern = local.Pattern != Models.Enums.PatternTypeEnum.None ? true : false;
+
+                MixedDataHelper.ClassHourChanged(base.LocalID, rule, algo, cl, isPatern);
             }
 
             // 层下是否存在重复班级
@@ -708,10 +717,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 return;
             }
 
-            var cl = base.GetClCase(base.LocalID);
-
             var filters = this.CourseLevels.Where(c => c.Classes.Count > 0);
-
             if (filters != null)
             {
                 // 清除班级信息

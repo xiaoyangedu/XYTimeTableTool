@@ -84,13 +84,28 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                 _allChecked = value;
                 RaisePropertyChanged(() => AllChecked);
 
-                foreach (var t in Teachers)
+                if (_toDeleteTeachers.Count > 0)
                 {
-                    t.IsChecked = value;
+                    _toDeleteTeachers.ForEach(t =>
+                    {
+                        var firstTeacher = this.Teachers.First(tt => tt.ID.Equals(t.ID));
+                        if (firstTeacher != null)
+                        {
+                            firstTeacher.IsChecked = _allChecked;
+                        }
+                    });
+                }
+                else
+                {
+                    foreach (var t in Teachers)
+                    {
+                        t.IsChecked = value;
+                    }
                 }
             }
         }
 
+        private List<UITeacher> _toDeleteTeachers = new List<UITeacher>();
         /// <summary>
         /// 搜索教师
         /// </summary>
@@ -107,6 +122,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                 RaisePropertyChanged(() => SearchTeacher);
 
                 _teacherCollectionView.Refresh();
+                _toDeleteTeachers = this.Teachers.Where(t => t.Name.IndexOf(this.SearchTeacher) != -1)?.ToList();
             }
         }
 
@@ -212,11 +228,18 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
         void batchDeleteCommand()
         {
+            var hasChecked = this.Teachers.Any(t => t.IsChecked);
+            if (!hasChecked)
+            {
+                this.ShowDialog("提示信息", "没有选择要删除的教师!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                return;
+            }
+
             var dialog = this.ShowDialog("提示信息", "确认删除?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
             if (dialog == CustomControl.Enums.DialogResultType.OK)
             {
                 // 验证是否确认删除?
-                var toDeleteTeachers = this.Teachers.Where(t => t.IsChecked)?.ToList();
+                var toDeleteTeachers = _toDeleteTeachers?.Count == 0 ? this.Teachers.Where(t => t.IsChecked)?.ToList() : _toDeleteTeachers?.Where(t => t.IsChecked);
 
                 if (toDeleteTeachers != null)
                 {
@@ -227,11 +250,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
                         // 移除教师
                         _cpcase.Teachers.RemoveAll(teacher => teacher.ID.Equals(t.ID));
 
-                    AdministrativeDataHelper.TeacherChanged(t, base.LocalID, CommonDataManager);
+                        AdministrativeDataHelper.TeacherChanged(t, base.LocalID, CommonDataManager);
 
-                    // 移除教师
-                    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<UITeacher>(t);
-                }
+                        // 移除教师
+                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<UITeacher>(t);
+                    }
 
                     // 保存
                     _cpcase.Serialize(base.LocalID);
@@ -241,12 +264,6 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Views
 
         void saveCommand()
         {
-
-            var local = CommonDataManager.GetLocalCase(base.LocalID);
-            local.Serialize();
-
-            _cpcase.Serialize(base.LocalID);
-
             this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
         }
     }

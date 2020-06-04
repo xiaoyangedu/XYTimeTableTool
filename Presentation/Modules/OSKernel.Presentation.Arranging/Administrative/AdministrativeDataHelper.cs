@@ -264,6 +264,9 @@ namespace OSKernel.Presentation.Arranging.Administrative
                 rule.CourseArranges?.Clear();
                 rule.ClassHourAverages?.Clear();
                 rule.AmPmClassHours?.Clear();
+                rule.PlanFlushes?.Clear();
+                rule.ClassHourPriorityBalance?.Clear();
+                rule.ContinuousPlanFlushes?.Clear();
                 rule.TimeTableLockedTimes = null;
 
                 rule.Serialize(localID);

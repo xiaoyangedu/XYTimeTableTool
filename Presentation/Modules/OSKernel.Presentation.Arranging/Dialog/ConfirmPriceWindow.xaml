@@ -6,7 +6,7 @@
                     xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                     xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     mc:Ignorable="d"
-                    Style="{StaticResource MetroWindowStyle}"
+                    Style="{DynamicResource MetroWindowStyle}"
                     WindowStartupLocation="CenterOwner"
                     Title="排课消费金额预览"
                     Height="220"
@@ -27,30 +27,45 @@
             <Run Text="排课消费金额预览" />
         </TextBlock>
 
-        <TextBlock  
-                    Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    FontSize="16"
-                    Margin="30,5"
-                    VerticalAlignment="Center">
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   FontSize="16"
+                   Margin="30,5"
+                   VerticalAlignment="Center">
             <Run Text="本次排课消费金额共计" />
             <Run Text="0"
                  Name="txt_price" />
              <Run Text="元" />
         </TextBlock>
 
-        <TextBlock Grid.Row="2"
-                   FontSize="15"
-                   Margin="55,5"
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Center"
-                   Foreground="{StaticResource local_blue}"
-                   Text="*实际扣费优先使用优惠券；排课不成功，本次排课不扣费。"/>
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock FontSize="15"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Text="1、最终扣费优先使用优惠券；"
+                       Margin="5"
+                       Foreground="{DynamicResource local_blue}" />
+            <TextBlock FontSize="15"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Text="2、最终扣费以用户确认课表为准；"
+                       Margin="5"
+                       Foreground="{DynamicResource local_blue}" />
+            <TextBlock FontSize="15"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Text="3、排课失败或放弃课表不扣费；"
+                       Margin="5"
+                       Foreground="{DynamicResource local_blue}" />
+        </StackPanel>
+
 
         <Rectangle Grid.Row="2"
                    Height="1"
                    VerticalAlignment="Top"
-                   Fill="{StaticResource CB_Separation}" />
+                   Fill="{DynamicResource CB_Separation}" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
@@ -61,7 +76,7 @@
                     Margin="5"
                     Click="Btn_save_Click"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="再想想"
                     Name="btn_cancel"

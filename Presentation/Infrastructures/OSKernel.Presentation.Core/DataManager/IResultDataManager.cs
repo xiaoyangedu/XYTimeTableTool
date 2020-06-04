@@ -26,6 +26,11 @@ namespace OSKernel.Presentation.Core.DataManager
         Dictionary<string, XYKernel.OS.Common.Models.Mixed.Result.ResultModel> TaskCLResults { get; set; }
 
         /// <summary>
+        /// 当前结果
+        /// </summary>
+        UIResult CurrentResult { get; set; }
+
+        /// <summary>
         /// 获取结果根据TaskID-行政班
         /// </summary>
         /// <param name="key"></param>

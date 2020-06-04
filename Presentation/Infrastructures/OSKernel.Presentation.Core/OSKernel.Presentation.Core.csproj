@@ -47,9 +47,6 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="EasyHttp, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\EasyHttp.1.7.0\lib\net40\EasyHttp.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -58,9 +55,6 @@
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\JsonFx.2.0.1209.2802\lib\net40\JsonFx.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -89,8 +83,8 @@
     <Reference Include="Unity.Container, Version=5.10.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Unity.5.10.3\lib\net46\Unity.Container.dll</HintPath>
     </Reference>
-    <Reference Include="XY.Common">
-      <HintPath>..\..\..\Dlls\XY.Common.dll</HintPath>
+    <Reference Include="XYKernel.OS.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\XYKernel.OS.Common.1.1.0\lib\netstandard2.0\XYKernel.OS.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -107,12 +101,13 @@
     <Compile Include="Http\CLTransfer.cs" />
     <Compile Include="Http\CPTransfer.cs" />
     <Compile Include="Http\MessageInfo.cs" />
-    <Compile Include="Http\OSHttpClient.cs" />
+    <Compile Include="Http\PostNormal.cs" />
     <Compile Include="Http\PriceInfo.cs" />
     <Compile Include="Http\ProgressInfo.cs" />
     <Compile Include="Http\ResultAdministrative.cs" />
     <Compile Include="Http\ResultMixed.cs" />
     <Compile Include="Http\ResultTransfer.cs" />
+    <Compile Include="Http\Table\WebAPI.cs" />
     <Compile Include="Http\TaskInfo.cs" />
     <Compile Include="Http\TaskParam.cs" />
     <Compile Include="Http\TaskResult.cs" />
@@ -131,10 +126,6 @@
     <Compile Include="ViewModel\CommonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\XYKernel.OS.Common\XYKernel.OS.Common.csproj">
-      <Project>{0854a627-a0e6-493d-ab31-f3ded37a6540}</Project>
-      <Name>XYKernel.OS.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OSKernel.Presentation.Models\OSKernel.Presentation.Models.csproj">
       <Project>{6B950185-7FDF-431B-8C95-686956CFBFB9}</Project>
       <Name>OSKernel.Presentation.Models</Name>
@@ -146,6 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Http\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

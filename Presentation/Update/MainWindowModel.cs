@@ -39,18 +39,28 @@ namespace Update
             {
                 Task.Run(() =>
                 {
-                    KillMainProcess("Client");
-
+                    // 次数
+                    int time = 0;
                     bool run = true;
-                    while (run)
+                    do
                     {
+                        KillMainProcess("Client");
+                        Thread.Sleep(1000);
+
                         Process[] runApplications = Process.GetProcessesByName("Client");
                         if (runApplications.Length == 0)
                         {
                             run = false;
                         }
-                        Thread.Sleep(500);
+
+                        time += 1;
+                        if (time == 5)
+                        {
+                            // 尝试5次以后就不继续尝试了。
+                            run = false;
+                        }
                     }
+                    while (run);
 
                     // 获取原始路径
                     if (File.Exists("source.info"))
@@ -87,8 +97,9 @@ namespace Update
                     }
                     else
                     {
-                        MessageBox.Show("没有找到source.info");
                         _logger.Info("没有找到source.info");
+                        MessageBox.Show("升级失败!由于网络等因素,关闭后从新升级!");
+                        System.Environment.Exit(-5);
                         return;
                     }
 
@@ -110,6 +121,7 @@ namespace Update
                     {
                         _logger.Warn(erroMessage);
                         MessageBox.Show($"序列化失败:{erroMessage}");
+                        System.Environment.Exit(-5);
                         return;
                     }
 
@@ -135,6 +147,8 @@ namespace Update
                     catch (Exception ex)
                     {
                         _logger.Info($"{ex.Message}");
+                        MessageBox.Show("升级失败!由于网络等因素,关闭后从新升级!");
+                        System.Environment.Exit(-5);
                     }
 
                     _logger.Info($"启动任务;{Path.Combine(_sourcePath, "Client.exe")}");
@@ -150,6 +164,8 @@ namespace Update
                     catch (Exception ex)
                     {
                         _logger.Info($"启动任务失败:{ex.Message}");
+                        MessageBox.Show("升级失败!由于网络等因素,关闭后从新升级!");
+                        System.Environment.Exit(-5);
                     }
 
                     _logger.Info($"已经启动;{Path.Combine(_sourcePath, "Client.exe")}");
@@ -164,7 +180,10 @@ namespace Update
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.Info(ex.Message);
+
+                MessageBox.Show("升级失败!由于网络等因素,关闭后从新升级!");
+                System.Environment.Exit(-5);
             }
         }
 

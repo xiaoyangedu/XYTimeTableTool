@@ -32,17 +32,17 @@
             <Style TargetType="{x:Type metro:WindowButtonCommands}"
                    BasedOn="{StaticResource {x:Type metro:WindowButtonCommands}}">
                 <Setter Property="LightMinButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
                 <Setter Property="LightMaxButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
                 <Setter Property="LightCloseButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
                 <Setter Property="DarkMinButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
                 <Setter Property="DarkMaxButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
                 <Setter Property="DarkCloseButtonStyle"
-                        Value="{StaticResource CloseButtonSytle}" />
+                        Value="{DynamicResource CloseButtonSytle}" />
             </Style>
 
             <Style x:Key="MetroWindowStyle"
@@ -71,6 +71,10 @@
                         Value="#FAFAFA" />
                 <Setter Property="ResizeMode"
                         Value="NoResize" />
+                <Setter Property="Focusable"
+                        Value="False" />
+                <Setter Property="FocusVisualStyle"
+                        Value="{x:Null}" />
             </Style>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -79,14 +83,14 @@
 
             <ControlTemplate x:Key="CaseRunProcess">
                 <TextBlock Text="{Binding Task.PercentCurrent,StringFormat={}{0:P2}}"
-                           Foreground="{StaticResource main_background}"
+                           Foreground="{DynamicResource main_background}"
                            FontSize="30"
                            Opacity="0.9" />
             </ControlTemplate>
 
             <ControlTemplate x:Key="CaseRunAutoProcess">
                 <TextBlock Text="{Binding Task.RunTimeString}"
-                           Foreground="{StaticResource main_background}"
+                           Foreground="{DynamicResource main_background}"
                            FontSize="30"
                            Opacity="0.9" />
             </ControlTemplate>

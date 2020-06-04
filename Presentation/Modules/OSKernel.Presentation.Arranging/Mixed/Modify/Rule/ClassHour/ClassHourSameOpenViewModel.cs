@@ -91,14 +91,18 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour
 
             this.Comments = CommonDataManager.GetMixedRuleComments(MixedRuleEnum.ClassHourSameOpen);
 
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
 
-            var rule = CommonDataManager.GetMixedRule(base.LocalID);
+            var rule = base.GetClRule(base.LocalID);
             if (rule.ClassHourSameOpens?.Count > 0)
             {
-                var temp = Models.Enums.MixedRuleEnum.ClassHourSameOpen.RuleDeSerialize<ObservableCollection<UISameOpenTime>>(base.LocalID);
-                if (temp != null)
+                if (local.Pattern != PatternTypeEnum.None)
                 {
-                    this.Rules = temp;
+                    this.Rules = Models.Enums.MixedRuleEnum.ClassHourSameOpen.RulePaternDeSerialize<ObservableCollection<UISameOpenTime>>(base.LocalID);
+                }
+                else
+                {
+                    this.Rules = Models.Enums.MixedRuleEnum.ClassHourSameOpen.RuleDeSerialize<ObservableCollection<UISameOpenTime>>(base.LocalID);
                 }
             }
         }
@@ -238,8 +242,16 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour
             // 2.序列化
             base.SerializePatternRule(rule, base.LocalID);
 
-            // 4.序列化规则
-            OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.RuleSerialize(base.LocalID, this.Rules);
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
+            if (local.Pattern != PatternTypeEnum.None)
+            {
+                OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.RulePaternSerialize(base.LocalID, this.Rules);
+            }
+            else
+            {
+                OSKernel.Presentation.Models.Enums.MixedRuleEnum.ClassHourSameOpen.RuleSerialize(base.LocalID, this.Rules);
+
+            }
 
             // 3.弹出提示
             this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);

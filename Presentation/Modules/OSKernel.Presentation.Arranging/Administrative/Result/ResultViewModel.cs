@@ -1,11 +1,14 @@
 ﻿using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.CustomControl.Enums;
 using OSKernel.Presentation.Models.Base;
 using OSKernel.Presentation.Models.Result;
 using OSKernel.Presentation.Utilities;
+using OSKernel.Presentation.Utilities.Excels;
+using OSKernel.Presentation.Utilities.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -84,6 +87,22 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             }
         }
 
+        public ICommand AnalysisCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UIResult>(analysis);
+            }
+        }
+
+        public ICommand PrechargeCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UIResult>(precharge);
+            }
+        }
+
         public ResultViewModel()
         {
             this.Results = new ObservableCollection<UIResult>();
@@ -138,7 +157,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                 }
             }
 
-            // (1:班级 2:教师)
+            // (1:班级 2:教师 4 年级)
             int exportType = 1;
             ExportTypeWindow window = new ExportTypeWindow(false);
             window.Closed += (s, arg) =>
@@ -155,7 +174,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                     ResultModel resultModel = base.LocalID.DeSerializeLocalResult<ResultModel>(result.TaskID);
                     if (resultModel == null)
                     {
-                        var value = OSHttpClient.Instance.GetAdminResult(result.TaskID);
+                        var value = WebAPI.Instance.GetAdminResult(result.TaskID);
                         if (value.Item1)
                         {
                             resultModel = value.Item2;
@@ -167,7 +186,19 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                         }
                     }
 
-                    string typeName = exportType == 1 ? "班级课表" : "教师课表";
+                    string typeName = string.Empty;
+                    if (exportType == 1)
+                    {
+                        typeName = "班级课表";
+                    }
+                    else if (exportType == 2)
+                    {
+                        typeName = "教师课表";
+                    }
+                    else if (exportType == 4)
+                    {
+                        typeName = "年级课表";
+                    }
 
                     System.Windows.Forms.SaveFileDialog saveDialog = new System.Windows.Forms.SaveFileDialog();
                     saveDialog.Filter = "Microsoft Excel files(*.xls)|*.xls;*.xlsx";
@@ -175,18 +206,16 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                     var confirm = saveDialog.ShowDialog();
                     if (confirm == System.Windows.Forms.DialogResult.OK)
                     {
-                        Dictionary<string, DataTable> values = new Dictionary<string, DataTable>();
                         if (exportType == 1)
                         {
+                            Dictionary<string, DataTable> values = new Dictionary<string, DataTable>();
                             foreach (var rc in resultModel.ResultClasses)
                             {
                                 // 创建基础结构
                                 var dt = this.CreateTableFrame();
-
                                 // 创建sheet
                                 var firstClass = cp.Classes.FirstOrDefault(c => rc.ClassID.Equals(c.ID));
                                 values.Add(firstClass.Name, dt);
-
                                 // 常规
                                 var normals = rc.ResultDetails.Where(rd => rd.ResultType == XYKernel.OS.Common.Enums.ClassHourResultType.Normal)?.ToList();
                                 normals?.ForEach(n =>
@@ -194,7 +223,6 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                                     var classHourInfo = cp.GetClassHours(new int[] { n.ClassHourId })?.FirstOrDefault();
                                     SetCellData(dt, classHourInfo.Course + "\n" + classHourInfo.TeacherString, n.DayPeriod);
                                 });
-
                                 // 单双周
                                 var mulitplys = rc.ResultDetails.Where(rd => rd.ResultType != XYKernel.OS.Common.Enums.ClassHourResultType.Normal)?.ToList();
                                 var groups = mulitplys?.GroupBy(m => $"{m.DayPeriod.Day}{m.DayPeriod.Period}");
@@ -203,25 +231,140 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                                     foreach (var g in groups)
                                     {
                                         var first = g.FirstOrDefault();
-
                                         var courseName = g.Select(gi =>
-                                          {
-                                              return cp.Courses.FirstOrDefault(c => c.ID.Equals(gi.CourseID))?.Name;
-                                          })?.Parse("|");
-
+                                        {
+                                            return cp.Courses.FirstOrDefault(c => c.ID.Equals(gi.CourseID))?.Name;
+                                        })?.Parse("|");
                                         var teacherName = g.Select(gi =>
                                         {
                                             return cp.GetTeachersByIds(gi.Teachers.ToList()).Select(a => a.Name).ToArray().Parse(",");
                                         })?.Parse("|");
-
                                         SetCellData(dt, courseName + "\n" + teacherName, first.DayPeriod);
                                     }
                                 }
 
+
+                            }
+
+                            #region 导出
+
+                            List<int> enableIndex = new List<int>();
+
+                            var abIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.AB);
+                            if (abIndex != null)
+                            {
+                                enableIndex.Add(abIndex.DayPeriod.Period);
+                            }
+
+                            var noonIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.Noon);
+                            if (noonIndex != null)
+                            {
+                                enableIndex.Add(noonIndex.DayPeriod.Period);
+                            }
+
+                            var pbIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.PB);
+                            if (pbIndex != null)
+                            {
+                                enableIndex.Add(pbIndex.DayPeriod.Period);
+                            }
+
+                            var table = NPOIClass.DataTableToExcel(values, saveDialog.FileName, enableIndex);
+                            if (table.Item1)
+                            {
+                                this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                                FileHelper.OpenFilePath(saveDialog.FileName);
+                            }
+                            else
+                            {
+                                this.ShowDialog("提示信息", table.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                            }
+
+                            #endregion
+                        }
+                        else if (exportType == 4)
+                        {
+                            GradeExcelModel excelModel = new GradeExcelModel();
+
+                            // 检查是否有周六周日
+                            List<string> weeks = new List<string>()
+                            {
+                                "星期一",
+                                "星期二",
+                                "星期三",
+                                "星期四",
+                                "星期五",
+                            };
+
+                            // 是否有周末
+                            var hasWeekend = resultModel.ResultClasses.Any(rc => rc.ResultDetails.Any(rd => (rd.DayPeriod.Day == DayOfWeek.Saturday || rd.DayPeriod.Day == DayOfWeek.Sunday)));
+
+                            if (hasWeekend)
+                            {
+                                weeks.Add("星期六");
+                                weeks.Add("星期日");
+                            }
+
+                            // 节次
+                            List<string> periods = new List<string>();
+                            cp.Positions.GroupBy(p => p.DayPeriod.PeriodName)?.ToList()?.ForEach(p =>
+                              {
+                                  periods.Add(p.Key);
+                              });
+
+                            // 设置节次
+                            excelModel.SetPeriods(periods);
+
+                            // 设置星期
+                            excelModel.SetWeeks(weeks);
+
+                            foreach (var rc in resultModel.ResultClasses)
+                            {
+                                var classInfo = resultModel.Classes.FirstOrDefault(c => rc.ClassID.Equals(c.ID));
+
+                                // 添加结果
+                                List<string> values = new List<string>();
+                                excelModel.AddClassesDictionary(classInfo.Name, values);
+
+                                var mondays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Monday)?.ToList();
+                                var tuesdays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Tuesday)?.ToList();
+                                var wednesdays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Wednesday)?.ToList();
+                                var thursdays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Thursday)?.ToList();
+                                var fridays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Friday)?.ToList();
+                                var saturdays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Saturday)?.ToList();
+                                var sundays = rc.ResultDetails.Where(rd => rd.DayPeriod.Day == DayOfWeek.Sunday)?.ToList();
+
+                                values.AddRange(FillGradeExportValues(mondays, periods));
+                                values.AddRange(FillGradeExportValues(tuesdays, periods));
+                                values.AddRange(FillGradeExportValues(wednesdays, periods));
+                                values.AddRange(FillGradeExportValues(thursdays, periods));
+                                values.AddRange(FillGradeExportValues(fridays, periods));
+
+                                if (saturdays?.Count > 0)
+                                {
+                                    values.AddRange(FillGradeExportValues(saturdays, periods));
+                                }
+
+                                if (sundays?.Count > 0)
+                                {
+                                    values.AddRange(FillGradeExportValues(sundays, periods));
+                                }
+                            }
+
+                            var table = GradeExcel.Export(excelModel, saveDialog.FileName);
+                            if (table.Item1)
+                            {
+                                this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                                FileHelper.OpenFilePath(saveDialog.FileName);
+                            }
+                            else
+                            {
+                                this.ShowDialog("提示信息", table.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                             }
                         }
                         else if (exportType == 2)
                         {
+                            Dictionary<string, DataTable> values = new Dictionary<string, DataTable>();
+
                             // 获取所有教师
                             var classHourIDs = from c in resultModel.ResultClasses from rd in c.ResultDetails select rd.ClassHourId;
                             var classHours = cp.GetClassHours(classHourIDs?.ToArray());
@@ -291,35 +434,40 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                                 }
                             });
 
-                        }
+                            #region 导出
 
-                        List<int> enableIndex = new List<int>();
-                        var abIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.AB);
-                        if (abIndex != null)
-                        {
-                            enableIndex.Add(abIndex.DayPeriod.Period);
-                        }
+                            List<int> enableIndex = new List<int>();
 
-                        var noonIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.Noon);
-                        if (noonIndex != null)
-                        {
-                            enableIndex.Add(noonIndex.DayPeriod.Period);
-                        }
+                            var abIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.AB);
+                            if (abIndex != null)
+                            {
+                                enableIndex.Add(abIndex.DayPeriod.Period);
+                            }
 
-                        var pbIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.PB);
-                        if (pbIndex != null)
-                        {
-                            enableIndex.Add(pbIndex.DayPeriod.Period);
-                        }
+                            var noonIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.Noon);
+                            if (noonIndex != null)
+                            {
+                                enableIndex.Add(noonIndex.DayPeriod.Period);
+                            }
 
-                        var table = NPOIClass.DataTableToExcel(values, saveDialog.FileName, enableIndex);
-                        if (table.Item1)
-                        {
-                            this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
-                        }
-                        else
-                        {
-                            this.ShowDialog("提示信息", table.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                            var pbIndex = cp.Positions.FirstOrDefault(p => p.Position == XYKernel.OS.Common.Enums.Position.PB);
+                            if (pbIndex != null)
+                            {
+                                enableIndex.Add(pbIndex.DayPeriod.Period);
+                            }
+
+                            var table = NPOIClass.DataTableToExcel(values, saveDialog.FileName, enableIndex);
+                            if (table.Item1)
+                            {
+                                this.ShowDialog("提示信息", "导出成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                                FileHelper.OpenFilePath(saveDialog.FileName);
+                            }
+                            else
+                            {
+                                this.ShowDialog("提示信息", table.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                            }
+
+                            #endregion
                         }
                     }
 
@@ -341,7 +489,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             var confirm = this.ShowDialog("提示信息", "确认上传方案?", DialogSettingType.OkAndCancel, DialogType.Warning);
             if (confirm == DialogResultType.OK)
             {
-                var operation = OSHttpClient.Instance.WriteBackResult(result.TaskID, adjustRecord);
+                var operation = WebAPI.Instance.WriteBackResult(result.TaskID, adjustRecord);
                 if (operation.Item1)
                 {
                     result.IsUploaded = true;
@@ -352,8 +500,82 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                 }
                 else
                 {
-                    this.ShowDialog("提示信息", operation.Item2, DialogSettingType.OkAndCancel, DialogType.Warning);
+                    this.ShowDialog("提示信息", operation.Item3, DialogSettingType.OnlyOkButton, DialogType.Warning);
                 }
+            }
+        }
+
+        public void analysis(UIResult result)
+        {
+            ResultDataManager.CurrentResult = result;
+
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
+            Analysis.Result.Administrative.HostWindow host = new Analysis.Result.Administrative.HostWindow(result.Name);
+            host.ShowDialog();
+        }
+
+        public void precharge(UIResult result)
+        {
+            var sample = WebAPI.Instance.SampleTask(result.TaskID);
+
+            if (sample.Item1)
+            {
+                // 预览
+                PrechargeResultWindow precharge = new PrechargeResultWindow(result.Name, sample.Item2);
+                precharge.Closed += (s, arg) =>
+                {
+                    // 如果预览结果为True.
+                    if (precharge.DialogResult == true)
+                    {
+                        var results = ResultDataManager.GetResults(base.LocalID);
+                        var local = CommonDataManager.GetLocalCase(base.LocalID);
+
+                        if (precharge.IsUseResult)
+                        {
+                            var value = WebAPI.Instance.ConfirmTask(result.TaskID);
+                            if (value.Item1)
+                            {
+                                result.IsUsed = true;
+                                local.Serizlize(results);
+
+                                // 更新界面
+                                var uiTask = this.Results.FirstOrDefault(r => r.TaskID.Equals(result.TaskID));
+                                if (uiTask != null)
+                                {
+                                    uiTask.IsUsed = true;
+                                    uiTask.RaiseChanged();
+                                }
+
+                                this.ShowDialog("提示信息", "操作成功！", DialogSettingType.NoButton, DialogType.None);
+                            }
+                            else
+                            {
+                                this.ShowDialog("提示信息", "操作失败！", DialogSettingType.OnlyOkButton, DialogType.Warning);
+                            }
+                        }
+                        else
+                        {
+                            var value = WebAPI.Instance.AbandonTask(result.TaskID);
+                            if (value.Item1)
+                            {
+                                this.Results.Remove(result);
+                                results.RemoveAll(r=>r.TaskID== result.TaskID);
+                                local.Serizlize(results);
+
+                                this.ShowDialog("提示信息", "操作成功！", DialogSettingType.NoButton, DialogType.None);
+                            }
+                            else
+                            {
+                                this.ShowDialog("提示信息", "操作失败！", DialogSettingType.OnlyOkButton, DialogType.Warning);
+                            }
+                        }
+                    }
+                };
+                precharge.ShowDialog();
+            }
+            else
+            {
+                this.ShowDialog("提示信息", sample.Item3, DialogSettingType.OnlyOkButton, DialogType.Warning);
             }
         }
 
@@ -417,6 +639,69 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             }
         }
 
+        List<string> FillGradeExportValues(List<ResultDetailModel> details, List<string> periods)
+        {
+            var cp = CommonDataManager.GetCPCase(base.LocalID);
+
+            List<string> values = new List<string>();
+            if (details != null)
+            {
+                // 单周
+                var normals = details.Where(rd => rd.ResultType == XYKernel.OS.Common.Enums.ClassHourResultType.Normal)?.ToList();
+
+                // 双周
+                var mulitplys = details.Where(rd => rd.ResultType != XYKernel.OS.Common.Enums.ClassHourResultType.Normal)?.ToList();
+
+                periods.ForEach(p =>
+                {
+                    // 双周
+                    var multiply = details.FirstOrDefault(m => m.DayPeriod.PeriodName.Equals(p));
+
+                    // 单周
+                    var normal = details.FirstOrDefault(m => m.DayPeriod.PeriodName.Equals(p));
+
+                    if (multiply == null && normal == null)
+                    {
+                        values.Add(string.Empty);
+                    }
+                    else
+                    {
+                        if (normal != null)
+                        {
+                            var classHourInfo = cp.GetClassHours(new int[] { normal.ClassHourId })?.FirstOrDefault();
+                            values.Add(classHourInfo.Course + "\n" + classHourInfo.TeacherString);
+                        }
+                        else
+                        {
+                            var groups = mulitplys?.GroupBy(m => $"{m.DayPeriod.Day}{m.DayPeriod.Period}");
+                            if (groups != null)
+                            {
+                                foreach (var g in groups)
+                                {
+                                    var first = g.FirstOrDefault();
+
+                                    var courseName = g.Select(gi =>
+                                    {
+                                        return cp.Courses.FirstOrDefault(c => c.ID.Equals(gi.CourseID))?.Name;
+                                    })?.Parse("|");
+
+                                    var teacherName = g.Select(gi =>
+                                    {
+                                        return cp.GetTeachersByIds(gi.Teachers.ToList()).Select(a => a.Name).ToArray().Parse(",");
+                                    })?.Parse("|");
+
+                                    values.Add(courseName + "\n" + teacherName);
+                                }
+                            }
+                        }
+                    }
+
+                });
+            }
+
+            return values;
+        }
+
         [InjectionMethod]
         public void Initilize()
         {
@@ -426,7 +711,5 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
                 this.Results = new ObservableCollection<UIResult>(results);
             }
         }
-
-
     }
 }

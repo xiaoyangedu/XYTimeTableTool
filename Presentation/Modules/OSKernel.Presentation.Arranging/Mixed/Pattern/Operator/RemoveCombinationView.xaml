@@ -51,7 +51,7 @@
                                     <DataTrigger.Setters>
                                         <Setter Property="Foreground"
                                                 TargetName="txt_combination"
-                                                Value="{StaticResource local_red}" />
+                                                Value="{DynamicResource local_red}" />
                                         <Setter Property="TextBlock.TextDecorations"
                                                 Value="StrikeThrough"
                                                 TargetName="txt_combination"/>

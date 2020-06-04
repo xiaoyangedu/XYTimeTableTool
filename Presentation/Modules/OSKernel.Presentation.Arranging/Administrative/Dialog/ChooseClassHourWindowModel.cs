@@ -119,6 +119,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
             }
         }
 
+        public ICommand LessonChangedCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UICourse>(lessonChanged);
+            }
+        }
+
         public ChooseClassHourWindowModel()
         {
             this.Courses = new List<UICourse>();
@@ -169,7 +177,8 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
                 if (c.IsChecked)
                 {
                     if (window.Courses == null) { window.Courses = new List<UICourse>(); }
-                    if (window.Courses.Any(cc => cc.ID == c.ID)) {
+                    if (window.Courses.Any(cc => cc.ID == c.ID))
+                    {
                         window.Courses.Remove(window.Courses.Find(cc => cc.ID == c.ID));
                     }
                     window.Courses.Add(c);
@@ -186,7 +195,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
         void cancel(object obj)
         {
             ChooseClassHourWindow window = obj as ChooseClassHourWindow;
-     
+
             if (this.Courses.Count(c => c.IsChecked) > 0)
             {
                 if (window.Courses == null)
@@ -207,6 +216,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
                 }
             }
             window.DialogResult = window.IsSave;
+        }
+
+        void lessonChanged(UICourse course)
+        {
+            course.IsChecked = true;
         }
     }
 }

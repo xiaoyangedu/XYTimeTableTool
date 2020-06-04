@@ -81,16 +81,21 @@
   <ItemGroup>
     <Compile Include="AnimationHelper.cs" />
     <Compile Include="CommonPath.cs" />
+    <Compile Include="Excels\GradeExcel.cs" />
     <Compile Include="Extend.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="FileSerializer.cs" />
     <Compile Include="MD5Helper.cs" />
+    <Compile Include="Models\GradeExcelModel.cs" />
     <Compile Include="Models\UIExcelExport.cs" />
     <Compile Include="NPOIClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebClientPro.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="XY.Common\Constants.cs" />
+    <Compile Include="XY.Common\HashUtil.cs" />
+    <Compile Include="XY.Common\RSAUtil.cs" />
     <Compile Include="ZipHelper.cs" />
   </ItemGroup>
   <ItemGroup>

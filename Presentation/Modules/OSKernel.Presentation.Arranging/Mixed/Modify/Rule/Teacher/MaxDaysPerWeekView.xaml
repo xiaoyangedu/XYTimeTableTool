@@ -37,6 +37,7 @@
                       Name="dg"
                       IsReadOnly="False"
                       CanUserAddRows="False"
+                      CellEditEnding="Dg_CellEditEnding"
                       ItemsSource="{Binding Rules}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">
@@ -61,6 +62,7 @@
                                         Binding="{Binding Teacher}" />
 
                     <DataGridTextColumn Header="课程"
+                                        IsReadOnly="True"
                                         Binding="{Binding CourseString}"
                                         Width="50*" />
 
@@ -68,7 +70,7 @@
                                         Binding="{Binding MaxDays,UpdateSourceTrigger=PropertyChanged}">
                         <DataGridTextColumn.Header>
                             <StackPanel>
-                                <TextBlock Text="最大课时数"
+                                <TextBlock Text="最大天数"
                                            HorizontalAlignment="Center"
                                            Margin="2" />
                                 <TextBox Width="80"

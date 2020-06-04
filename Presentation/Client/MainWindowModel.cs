@@ -116,6 +116,14 @@ namespace Client
             }
         }
 
+        public ICommand NotifyCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<string>(notifyCommand);
+            }
+        }
+
         /// <summary>
         /// 当前模块视图
         /// </summary>
@@ -186,7 +194,7 @@ namespace Client
         {
             _uiDictionaries = new Dictionary<string, UIElement>();
 
-            Messenger.Default.Register<string>(this, Receive);
+            //Messenger.Default.Register<string>(this, Receive);
 
             this.UserName = CacheManager.Instance.LoginUser.UserName;
 
@@ -215,10 +223,10 @@ namespace Client
 
         }
 
-        public void Receive(string message)
-        {
-            this.UserName = CacheManager.Instance.LoginUser.UserName;
-        }
+        //public void Receive(string message)
+        //{
+           
+        //}
 
         void userMouseLeftDown(object e)
         {
@@ -425,11 +433,33 @@ namespace Client
             }
         }
 
+        void notifyCommand(string parms)
+        {
+            if (parms.Equals("Open"))
+            {
+                var mainWindow = Application.Current.MainWindow;
+
+                if (mainWindow.WindowState == WindowState.Maximized || mainWindow.WindowState == WindowState.Normal)
+                {
+                    mainWindow.WindowState = WindowState.Minimized;
+                }
+                else if (mainWindow.WindowState == WindowState.Minimized)
+                {
+                    mainWindow.WindowState = WindowState.Normal;
+                }
+            }
+            else if (parms.Equals("Exit"))
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
         void _notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                System.Windows.Controls.ContextMenu NotifyIconMenu = (System.Windows.Controls.ContextMenu)Application.Current.FindResource("NotifyIconMenu");
+                System.Windows.Controls.ContextMenu NotifyIconMenu = (System.Windows.Controls.ContextMenu)Application.Current.MainWindow.FindResource("NotifyIconMenu");
+                NotifyIconMenu.DataContext = this;
                 NotifyIconMenu.IsOpen = true;
             }
         }

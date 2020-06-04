@@ -38,7 +38,7 @@
             <StackPanel Orientation="Horizontal">
 
                 <Button Content="创建师徒"
-                        Style="{StaticResource OpratorButtonStyle}"
+                        Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding CreateCommand}"
                         Margin="5" />
 
@@ -54,6 +54,7 @@
                       IsReadOnly="False"
                       CanUserAddRows="False"
                       ItemsSource="{Binding Rules}"
+                      CellEditEnding="Dg_CellEditEnding"
                       ColumnHeaderHeight="65">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">

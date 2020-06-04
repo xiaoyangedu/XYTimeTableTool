@@ -175,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Languages\ZH-CN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Common\error.png" />
@@ -199,6 +203,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\locked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\service.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

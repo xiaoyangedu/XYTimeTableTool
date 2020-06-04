@@ -17,57 +17,73 @@
 
         <xy:TitleBar Title="请添加学校名称，并选择排课学段。" />
 
-        <ScrollViewer Grid.Row="1"
-                      Background="White">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <StackPanel Margin="20,5,20,0"
-                    HorizontalAlignment="Left">
+            <Grid Background="White"
+                  Margin="0,10"
+                  Height="40">
 
-                    <TextBlock Text="学校名称:"
-                               Margin="2"
-                               FontSize="15"
-                               Opacity="0.5"
-                               VerticalAlignment="Center" />
-                    <TextBox Text="{Binding School}"
-                             Width="300"
-                             HorizontalAlignment="Left"
-                             Height="30"
-                             Margin="2" />
-
-                    <TextBlock Text="学段:"
-                               Margin="2"
-                               FontSize="15"
-                               Opacity="0.5"
-                               VerticalAlignment="Center" />
-                    <ComboBox ItemsSource="{Binding Periods}"
-                              DisplayMemberPath="Key"
-                              SelectedValuePath="Value"
-                              Height="30"
-                              Width="300"
-                              HorizontalAlignment="Left"
-                              SelectedValue="{Binding SelectLearningPeriod}"
-                              Margin="2,0,2,5" />
-
-                </StackPanel>
-
-                <Button Style="{StaticResource OpratorButtonStyle}"
+                <Button Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding SaveCommand}"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         Grid.ColumnSpan="8"
                         Grid.Row="2"
                         Content="保存"
                         Width="70"
                         Height="30"
-                        Margin="20,5,5,10" />
+                        Margin="5" />
 
             </Grid>
 
-        </ScrollViewer>
+            <ScrollViewer Grid.Row="1"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          Margin="0,0,0,15"
+                          Background="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Margin="20,5,20,0"
+                                HorizontalAlignment="Left">
+
+                        <TextBlock Text="学校名称:"
+                                   Margin="2"
+                                   FontSize="15"
+                                   Opacity="0.5"
+                                   VerticalAlignment="Center" />
+                        <TextBox Text="{Binding School}"
+                                 Width="300"
+                                 HorizontalAlignment="Left"
+                                 Height="30"
+                                 Margin="2" />
+
+                        <TextBlock Text="学段:"
+                                   Margin="2"
+                                   FontSize="15"
+                                   Opacity="0.5"
+                                   VerticalAlignment="Center" />
+                        <ComboBox ItemsSource="{Binding Periods}"
+                                  DisplayMemberPath="Key"
+                                  SelectedValuePath="Value"
+                                  Height="30"
+                                  Width="300"
+                                  HorizontalAlignment="Left"
+                                  SelectedValue="{Binding SelectLearningPeriod}"
+                                  Margin="2,0,2,5" />
+
+                    </StackPanel>
+
+                </Grid>
+
+            </ScrollViewer>
+            
+        </Grid>
     </Grid>
 </UserControl>

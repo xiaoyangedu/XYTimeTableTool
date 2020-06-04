@@ -200,7 +200,7 @@ namespace OSKernel.Presentation.CustomControl
             if (WindowType == DialogType.None)
             {
                 _timer.Start();
-                this.ShowIcon = false;
+                this.ShowIcon = true;
             }
             else if (WindowType == DialogType.Error)
             {

@@ -6,7 +6,7 @@
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    mc:Ignorable="d"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"                   
                    ResizeMode="NoResize"
                    Title="科目选择人数统计"
@@ -24,8 +24,8 @@
                         <Label Content="{Binding}"
                                FontSize="20"
                                MinWidth="185"
-                               Foreground="{StaticResource main_background}"
-                               Background="{StaticResource CB_Separation}"
+                               Foreground="{DynamicResource main_background}"
+                               Background="{DynamicResource CB_Separation}"
                                Margin="2" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

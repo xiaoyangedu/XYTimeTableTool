@@ -55,6 +55,17 @@
             <Run Text="{Binding Name}"/>
                 </TextBlock>
 
+                <TextBlock FontSize="15"
+                           Foreground="Gray"
+                           Grid.Row="1"
+                           Margin="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left">
+                 <Run Text="类型:"
+                      FontWeight="Bold" />
+            <Run Text="{Binding Type}" />
+                </TextBlock>
+
             </StackPanel>
             
 

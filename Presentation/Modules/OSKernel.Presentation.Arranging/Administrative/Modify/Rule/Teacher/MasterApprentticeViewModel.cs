@@ -162,15 +162,22 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
                 if (masterWindow.DialogResult.Value)
                 {
                     var master = masterWindow.Rule;
-                    if (this.Rules.Any(r => r.MasterID.Equals(master.MasterID)))
+
+                    var hasMaster = this.Rules.Any(r => r.MasterID.Equals(master.MasterID));
+                    if (hasMaster)
                     {
-                        this.ShowDialog("提示信息", "存在该教师", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                        this.ShowDialog("提示信息", "存在该教师", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                         return;
                     }
-                    else
+
+                    var cross = this.Rules.Any(r => master.ApprentticeID.Any(ap => ap.ID.Equals(r.MasterID)) && r.ApprentticeID.Any(ap => ap.ID.Equals(master.MasterID)));
+                    if (cross)
                     {
-                        this.Rules.Add(master);
+                        this.ShowDialog("提示信息", "教师不能互为师徒", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                        return;
                     }
+
+                    this.Rules.Add(master);
                 }
             };
             masterWindow.ShowDialog();

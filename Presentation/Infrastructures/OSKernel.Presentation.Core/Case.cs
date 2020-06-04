@@ -12,6 +12,8 @@ using OSKernel.Presentation.Core.EventArgs;
 using System.Timers;
 using System.Windows;
 using XYKernel.Presentation.Core;
+using Newtonsoft.Json;
+using OSKernel.Presentation.Core.Http.Table;
 
 namespace OSKernel.Presentation.Core
 {
@@ -325,6 +327,13 @@ namespace OSKernel.Presentation.Core
             copy.Task = new TaskModel();
             copy.refreshTimer = null;
             copy.IsStart = false;
+
+            var courseColorsJson = JsonConvert.SerializeObject(this.CourseColors);
+            var teacherColorsJson = JsonConvert.SerializeObject(this.TeacherCourses);
+
+            copy.CourseColors = JsonConvert.DeserializeObject<Dictionary<string, string>>(courseColorsJson);
+            copy.TeacherCourses = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(teacherColorsJson);
+
             return copy;
         }
 
@@ -405,7 +414,7 @@ namespace OSKernel.Presentation.Core
         {
             progressTimer.Stop();
 
-            var value = Http.OSHttpClient.Instance.Progress(this.Task.TaskID);
+            var value = WebAPI.Instance.Progress(this.Task.TaskID);
             if (value.Item1)
             {
                 this.Task.TotalProcess = value.Item2.total;
@@ -465,7 +474,7 @@ namespace OSKernel.Presentation.Core
             try
             {
 
-                var value = Http.OSHttpClient.Instance.GetStateByTaskID(this.Task.TaskID);
+                var value = WebAPI.Instance.GetStateByTaskID(this.Task.TaskID);
                 if (value.Item1)
                 {
                     if (value.Item2 != MissionStateEnum.Creating)
@@ -493,7 +502,7 @@ namespace OSKernel.Presentation.Core
 
                         if (!this.IsAuto)
                         {
-                            var progress = Http.OSHttpClient.Instance.Progress(this.Task.TaskID);
+                            var progress = WebAPI.Instance.Progress(this.Task.TaskID);
                             if (progress.Item1)
                             {
                                 GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -582,7 +591,7 @@ namespace OSKernel.Presentation.Core
                     this.Task.TaskStatus == MissionStateEnum.Started ||
                     this.Task.TaskStatus == MissionStateEnum.Waiting)
                 {
-                    var value = OSKernel.Presentation.Core.Http.OSHttpClient.Instance.GetStateByTaskID(this.Task.TaskID);
+                    var value = WebAPI.Instance.GetStateByTaskID(this.Task.TaskID);
 
                     if (value.Item1)
                     {
@@ -623,7 +632,7 @@ namespace OSKernel.Presentation.Core
             // 获取进度
             if (!this.IsAuto)
             {
-                var progress = Http.OSHttpClient.Instance.Progress(this.Task.TaskID);
+                var progress = WebAPI.Instance.Progress(this.Task.TaskID);
                 if (progress.Item1)
                 {
                     GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -636,7 +645,7 @@ namespace OSKernel.Presentation.Core
                 }
             }
 
-            var value = Http.OSHttpClient.Instance.GetStateByTaskID(this.Task.TaskID);
+            var value = WebAPI.Instance.GetStateByTaskID(this.Task.TaskID);
             if (value.Item1)
             {
                 GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -656,7 +665,7 @@ namespace OSKernel.Presentation.Core
 
                     if (!this.IsAuto)
                     {
-                        var progress = Http.OSHttpClient.Instance.Progress(this.Task.TaskID);
+                        var progress = WebAPI.Instance.Progress(this.Task.TaskID);
                         if (progress.Item1)
                         {
                             GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>

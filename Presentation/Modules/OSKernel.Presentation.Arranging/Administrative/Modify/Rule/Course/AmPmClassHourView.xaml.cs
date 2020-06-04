@@ -1,4 +1,5 @@
-﻿using OSKernel.Presentation.Core;
+﻿using OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course.Model;
+using OSKernel.Presentation.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,15 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<AmPmClassHourViewModel>();
+        }
+
+        private void Dg_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            UIAmPm ampm = e.Row.DataContext as UIAmPm;
+            if (ampm != null)
+            {
+                ampm.IsChecked = true;
+            }
         }
     }
 }

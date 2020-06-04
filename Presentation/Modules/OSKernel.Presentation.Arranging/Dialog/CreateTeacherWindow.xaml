@@ -6,7 +6,7 @@
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
                    Title="创建教师"
@@ -36,7 +36,7 @@
                         VerticalAlignment="Center"
                         Name="txt_message"
                         Visibility="Collapsed"
-                        Foreground="{StaticResource local_red}" />
+                        Foreground="{DynamicResource local_red}" />
 
             <xy:TitleBar Grid.Row="2"
                          Margin="0,2,0,0"
@@ -52,7 +52,7 @@
                         Margin="5"
                         Click="Btn_save_Click"
                         IsDefault="True"
-                        Style="{StaticResource OpratorButtonStyle}" />
+                        Style="{DynamicResource OpratorButtonStyle}" />
 
                 <Button Content="取消"
                         Name="btn_cancel"

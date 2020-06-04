@@ -6,7 +6,7 @@
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Administrative.Dialog"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    xmlns:metrol="http://metro.mahapps.com/winfx/xaml/controls"
                    WindowStartupLocation="CenterOwner"
                    mc:Ignorable="d"
@@ -45,7 +45,7 @@
                             Width="70"
                             Height="30"
                             Command="{Binding CreateCommand}"
-                            Style="{StaticResource OpratorButtonStyle}" />
+                            Style="{DynamicResource OpratorButtonStyle}" />
 
                 </StackPanel>
 
@@ -112,7 +112,7 @@
                                                                IsChecked="{Binding IsChecked}"
                                                                Margin="5" />
 
-                                                    <Image Source="{StaticResource icon_teacher}"
+                                                    <Image Source="{DynamicResource icon_teacher}"
                                                            Width="35"
                                                            Height="35" />
 

@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <Grid Background="White"
-                  Margin="0,10,0,0"
+                  Margin="0,10,0,10"
                   Grid.Row="1"
                   Height="40">
                 <StackPanel HorizontalAlignment="Left"
@@ -37,7 +37,7 @@
                     <Button Content="内置课程"
                             Width="70"
                             Height="30"
-                            Style="{StaticResource OpratorButtonStyle}"
+                            Style="{DynamicResource OpratorButtonStyle}"
                             Command="{Binding SystemCourseCommand}"
                             Margin="5,0" />
 
@@ -45,20 +45,24 @@
                             Width="70"
                             Height="30"
                             Command="{Binding CreateCommand}"
-                            Style="{StaticResource OpratorButtonStyle}" />
+                            Style="{DynamicResource OpratorButtonStyle}" />
 
-                   
-
-                    <Button Content="统一创建分层"
-                            Width="90"
+                    <Button Content="创建分层"
+                            ToolTip="统一创建分层"
+                            Width="70"
                             Height="30"
                             Margin="5,0"
                             Visibility="{Binding ShowCreateLevel,Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding CreateUniformLevelCommand}" />
 
+                    <Button Content="删除全部课程"
+                            Height="30"
+                            Command="{Binding DeleteAllCourseCommand}"
+                            Style="{DynamicResource BatchDeleteButtonStyle}" />
+
                 </StackPanel>
 
-                <Button Style="{StaticResource OpratorButtonStyle}"
+                <Button Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding SaveCommand}"
                         HorizontalAlignment="Right"
                         Grid.ColumnSpan="8"
@@ -66,17 +70,17 @@
                         Content="保存"
                         Width="70"
                         Height="30"
-                        Margin="5,5,25,5" />
+                        Margin="5" />
             </Grid>
 
-            <Grid Margin="0,0,0,10"
+            <Grid Margin="0,0,0,15"
                   Grid.Row="2"
                   Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <ScrollViewer>
+                <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Courses}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -88,7 +92,7 @@
                                     </Grid.RowDefinitions>
                                     <Border BorderThickness="1"
                                             Grid.RowSpan="3"
-                                            BorderBrush="{StaticResource main_lightgroud}" />
+                                            BorderBrush="{DynamicResource main_lightgroud}" />
                                     <Border Background="#F5F7FA" />
 
                                     <StackPanel Orientation="Horizontal"
@@ -121,7 +125,7 @@
                                         <Button CommandParameter="{Binding}"
                                                 Command="{Binding DataContext.CreateLevelCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ItemsControl}}"
                                                 HorizontalAlignment="Left"
-                                                Style="{StaticResource PlusStyleButton}"
+                                                Style="{DynamicResource PlusStyleButton}"
                                                 ToolTip="创建分层"
                                                 Width="20"
                                                 Height="20"
@@ -130,12 +134,12 @@
                                         <Button HorizontalAlignment="Right"
                                                 Content="删除"
                                                 ToolTip="删除课程"
-                                                Style="{StaticResource MinusStyleButton}"
+                                                Style="{DynamicResource MinusStyleButton}"
                                                 Width="20"
                                                 Cursor="Hand"
                                                 CommandParameter="{Binding}"
                                                 Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource  AncestorType=ItemsControl,Mode=FindAncestor}}"
-                                                Foreground="{StaticResource local_red}"
+                                                Foreground="{DynamicResource local_red}"
                                                 Margin="5,0,10,0" />
                                     </StackPanel>
 
@@ -172,13 +176,13 @@
                                                                 CommandParameter="{Binding}"
                                                                 Foreground="#FF7D43"
                                                                 Command="{Binding DataContext.ModifyLevelCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
-                                                                Style="{StaticResource ModifyButtonStyle}" />
+                                                                Style="{DynamicResource ModifyButtonStyle}" />
                                                         <!--删除-->
                                                         <Button  Width="20"
                                                                  Height="20"
                                                                  Content="删除层"
                                                                  ToolTip="删除层"
-                                                                 Style="{StaticResource MinusEllipseButtonStyle}"
+                                                                 Style="{DynamicResource MinusEllipseButtonStyle}"
                                                                  CommandParameter="{Binding}"
                                                                  Command="{Binding DataContext.DeleteLevelCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                                                  Margin="5,5,0,5"

@@ -147,7 +147,63 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
                         model.OddCourse = oddCourse?.Name;
                         model.DualCourse = dualCourse?.Name;
 
-                        this.Rules.Add(model);
+                        var classRules = this.Rules.Where(r => r.ClassName.Equals(model.ClassName));
+                        if (classRules == null)
+                        {
+                            this.Rules.Add(model);
+                        }
+                        else
+                        {
+                            var hasOdd = classRules.Any(r =>
+                            {
+                                var isDual = false;
+                                var isOdd = false;
+
+                                if (r.DualCourse != null)
+                                {
+                                    isDual = r.DualCourse.Equals(model.OddCourse);
+                                }
+                                else if (r.OddCourse != null)
+                                {
+                                    isOdd = r.OddCourse.Equals(model.OddCourse);
+                                }
+
+                                if (isOdd || isDual)
+                                    return true;
+                                else
+                                    return false;
+                            });
+
+                            var hasDual = classRules.Any(r =>
+                            {
+                                var isDual = false;
+                                var isOdd = false;
+
+                                if (r.DualCourse != null)
+                                {
+                                    isDual = r.DualCourse.Equals(model.DualCourse);
+                                }
+                                else if (r.OddCourse != null)
+                                {
+                                    isOdd = r.OddCourse.Equals(model.DualCourse);
+                                }
+
+                                if (isOdd || isDual)
+                                    return true;
+                                else
+                                    return false;
+                            });
+
+                            if (hasOdd || hasDual)
+                            {
+                                this.ShowDialog("提示信息", "同班级单周或双周只能有一条规则!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                                return;
+                            }
+                            else
+                            {
+                                this.Rules.Add(model);
+                            }
+                        }
                     });
                 }
             };

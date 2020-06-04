@@ -29,6 +29,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
         public SystemCourseWindow()
         {
             InitializeComponent();
+
             this.Owner = Application.Current.MainWindow;
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<SystemCourseWindowModel>();
         }

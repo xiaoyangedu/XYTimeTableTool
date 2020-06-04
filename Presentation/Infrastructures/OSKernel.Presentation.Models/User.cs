@@ -36,6 +36,11 @@ namespace OSKernel.Presentation.Models
         /// </summary>
         public string MixKey { get; set; }
 
+        /// <summary>
+        /// 是否为年费会员
+        /// </summary>
+        public bool IsAnnual { get; set; }
+
         #region RSA
 
         /// <summary>

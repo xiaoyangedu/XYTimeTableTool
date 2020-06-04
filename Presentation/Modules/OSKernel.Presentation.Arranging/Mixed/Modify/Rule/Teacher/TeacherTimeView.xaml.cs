@@ -1,4 +1,5 @@
 ﻿using OSKernel.Presentation.Core;
+using OSKernel.Presentation.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.Teacher
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<TeacherTimeViewModel>();
+        }
+
+        private void Dg_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            UITeacher teacher = e.Row.DataContext as UITeacher;
+            if (teacher != null)
+            {
+                teacher.IsChecked = true;
+            }
         }
     }
 }

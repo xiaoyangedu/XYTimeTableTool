@@ -28,44 +28,68 @@
 
         <local:FilterView Grid.ColumnSpan="2" />
 
-        <ListBox Grid.Row="1"
-                 Name="source_list"
-                 DisplayMemberPath="Display"
-                 ItemsSource="{Binding ClassHours}"
-                 Margin="5">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=source_list}"
-                                           Command="{Binding DataContext.SourceCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{Binding SelectedAllListCommand}"
-                              Header="全选" />
-                </ContextMenu>
-            </ListBox.ContextMenu>
-        </ListBox>
+        <Grid Grid.Row="1"
+              Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Content="待选"
+                   Foreground="White"
+                   Background="{DynamicResource main_background}"
+                   HorizontalAlignment="Left" />
+            <ListBox Grid.Row="1"
+                     Name="source_list"
+                     DisplayMemberPath="Display"
+                     BorderThickness="0,1"
+                     BorderBrush="{DynamicResource main_background}"
+                     ItemsSource="{Binding ClassHours}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=source_list}"
+                                               Command="{Binding DataContext.SourceCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding SelectedAllListCommand}"
+                                  Header="全选" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </Grid>
 
-        <ListBox Grid.Row="1"
-                 Grid.Column="1"
-                 DisplayMemberPath="Display"
-                 Name="target_list"
-                 ItemsSource="{Binding TargetHours}"
-                 Margin="5">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=target_list}"
-                                           Command="{Binding DataContext.TargetCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{Binding ClearAllListCommand}"
-                              Header="清除" />
-                </ContextMenu>
-            </ListBox.ContextMenu>
-        </ListBox>
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Content="已选"
+                   Foreground="White"
+                   Background="{DynamicResource main_background}"
+                   HorizontalAlignment="Left" />
+            <ListBox DisplayMemberPath="Display"
+                     Name="target_list"
+                     BorderThickness="0,1"
+                     Grid.Row="1"
+                     BorderBrush="{DynamicResource main_background}"
+                     ItemsSource="{Binding TargetHours}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction CommandParameter="{Binding SelectedItem,ElementName=target_list}"
+                                               Command="{Binding DataContext.TargetCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type metro:MetroWindow}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding ClearAllListCommand}"
+                                  Header="清除" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </Grid>
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"

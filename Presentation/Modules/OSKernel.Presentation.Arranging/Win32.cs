@@ -10,7 +10,7 @@ namespace OSKernel.Presentation.Arranging
     public class Win32
     {
         public struct POINT { public Int32 X; public Int32 Y; }
-        //
+
         // During drag-and-drop operations, the position of the mouse cannot be
         // reliably determined through GetPosition. This is because control of
         // the mouse (possibly including capture) is held by the originating

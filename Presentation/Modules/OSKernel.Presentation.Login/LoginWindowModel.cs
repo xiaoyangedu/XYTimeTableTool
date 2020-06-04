@@ -2,10 +2,13 @@
 using GalaSoft.MvvmLight.Threading;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
+using OSKernel.Presentation.Core.Http.User;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.Models.Enums;
 using OSKernel.Presentation.Utilities;
+using OSKernel.Presentation.Utilities.XY.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,6 +32,8 @@ namespace OSKernel.Presentation.Login
         private string _userName;
 
         private bool _isRemember = true;
+
+        private bool _isRememberPassWord = false;
 
         private string usernameFile = "user.info";
 
@@ -238,6 +243,23 @@ namespace OSKernel.Presentation.Login
             }
         }
 
+        /// <summary>
+        /// 是否记住密码
+        /// </summary>
+        public bool IsRememberPassWord
+        {
+            get
+            {
+                return _isRememberPassWord;
+            }
+
+            set
+            {
+                _isRememberPassWord = value;
+                RaisePropertyChanged(() => IsRememberPassWord);
+            }
+        }
+
         public LoginWindowModel()
         {
             if (System.IO.File.Exists(usernameFile.CombineCurrentDirectory()))
@@ -259,7 +281,7 @@ namespace OSKernel.Presentation.Login
             string loginVersion = cfa.AppSettings.Settings["xy:login.version"].Value;
             string loginPath = $"{loginUrl}:{loginPort}";
 
-            OSHttpClient.Instance.SetLoginFactory(loginPath, loginVersion);
+            WebAPI.Instance.SetLoginFactory(loginPath, loginVersion);
 
             LoginWindow win = obj as LoginWindow;
             string password = win.pb_password.Password;
@@ -282,11 +304,24 @@ namespace OSKernel.Presentation.Login
                 usernameFile.CombineCurrentDirectory().SerializeObjectToJson(this.UserName);
             }
 
+            if (this.IsRememberPassWord)
+            {
+                // 记录密码
+                "password.info".CombineCurrentDirectory().SerializeObjectToJson(password);
+            }
+
             base.ShowLoading = true;
 
             Task.Run(() =>
             {
-                return OSHttpClient.Instance.Login(this.UserName, password);
+                var userInfo = new LoginInfo()
+                {
+                    user_name = this.UserName,
+                    password = password
+                };
+
+                return WebAPI.Instance.Login(userInfo);
+
             }).ContinueWith(r =>
             {
                 this.ShowLoading = false;
@@ -332,15 +367,21 @@ namespace OSKernel.Presentation.Login
                         // 1.生成密钥
                         List<string> keys = new List<string>();
 
-                        keys = XY.Common.Utilities.RSAUtil.GenerateSuiteKeys()?.ToList();
+                        keys = RSAUtil.GenerateSuiteKeys()?.ToList();
 
                         CacheManager.Instance.LoginUser.PublickKey = keys[0];
                         CacheManager.Instance.LoginUser.PrivateKey = keys[1];
 
                         key.CombineCurrentDirectory().SerializeObjectToJson(keys);
 
+                        var keyInfo = new KeyBodyInfo()
+                        {
+                            public_key = keys[0],
+                            secret_type = (int)SecretTypeEnum.RSA2
+                        };
+
                         // 2.绑定密钥
-                        var secret = OSHttpClient.Instance.SetSecret(keys[0], 0, CacheManager.Instance.LoginUser.AccessToken);
+                        var secret = WebAPI.Instance.SetSecret(keyInfo, CacheManager.Instance.LoginUser.AccessToken);
                         if (!secret.Item1)
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -358,13 +399,19 @@ namespace OSKernel.Presentation.Login
                     string version = cfa.AppSettings.Settings["xy:version"].Value;
                     string path = $"{url}:{port}";
 
-                    OSHttpClient.Instance.SetFactory(path, version, CacheManager.Instance.LoginUser.ID);
+                    WebAPI.Instance.SetFactory(path, version, CacheManager.Instance.LoginUser.ID);
 
                     lastAdress.CombineCurrentDirectory().SerializeObjectToJson(path);
 
                     #endregion
+                    
+                    var isAnnual = WebAPI.Instance.GetAnnual();
+                    if (isAnnual.Item1)
+                    {
+                        CacheManager.Instance.LoginUser.IsAnnual = isAnnual.Item2;
+                    }
 
-                    Messenger.Default.Send<string>("refresh");
+                    //Messenger.Default.Send<string>("refresh");
 
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
@@ -449,7 +496,13 @@ namespace OSKernel.Presentation.Login
                 return;
             }
 
-            OSHttpClient.Instance.SetSecret(PublicKey, (byte)this.SelectSecretType, CacheManager.Instance.LoginUser.AccessToken);
+            var keyInfo = new KeyBodyInfo()
+            {
+                public_key = PublicKey,
+                secret_type = (byte)this.SelectSecretType
+            };
+
+            WebAPI.Instance.SetSecret(keyInfo, CacheManager.Instance.LoginUser.AccessToken);
         }
 
         [InjectionMethod]

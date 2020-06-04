@@ -34,6 +34,7 @@
 
             <TextBlock Text="可用教室数"
                        VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
                        FontSize="15"
                        Opacity="0.7" />
 
@@ -41,6 +42,13 @@
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
                      Text="{Binding RoomLimit,UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="（0：表示不限）"
+                       Margin="5"
+                       Foreground="{StaticResource main_background}"
+                       VerticalAlignment="Center"
+                       FontSize="15"
+                       Opacity="0.7" />
 
         </StackPanel>
 

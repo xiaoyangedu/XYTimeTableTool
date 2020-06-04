@@ -54,6 +54,7 @@
                           Name="dg"
                           IsReadOnly="False"
                           CanUserAddRows="False"
+                          CellEditEnding="Dg_CellEditEnding"
                           ItemsSource="{Binding Teachers}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Width="auto">
@@ -107,7 +108,7 @@
                         <DataGridTemplateColumn Header="状态">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource ModifyButtonStyle}"
+                                    <Button Style="{DynamicResource ModifyButtonStyle}"
                                             Margin="5"
                                             Grid.Column="1"
                                             Width="20"
@@ -151,7 +152,7 @@
 
             <Rectangle Width="1"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <!--课位调整区域-->
             <xy:TwoStatusWeek Grid.Column="1"

@@ -20,50 +20,32 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
     /// </summary>
     public class SystemCourseWindowModel : CommonViewModel, IInitilize
     {
-        private List<UICourse> _systemCourses;
+        // 选考
+        private List<UICourse> _selectives;
+        // 学考
+        private List<UICourse> _academics;
 
-        /// <summary>
-        /// 系统内置课程
-        /// </summary>
-        public List<UICourse> SystemCourses
+        private bool _isAllChecked;
+
+        private bool _isAcademicCheckedAll;
+
+        private bool _isSelectiveCheckedAll;
+
+        public bool IsAllChecked
         {
             get
             {
-                return _systemCourses;
+                return _isAllChecked;
             }
 
             set
             {
-                _systemCourses = value;
-                RaisePropertyChanged(() => SystemCourses);
+                _isAllChecked = value;
+                RaisePropertyChanged(() => IsAllChecked);
+
+                this.IsAcademicCheckedAll = _isAllChecked;
+                this.IsSelectiveCheckedAll = _isAllChecked;
             }
-        }
-
-        public SystemCourseWindowModel()
-        {
-            this.SystemCourses = new List<UICourse>()
-            {
-                 new UICourse(){ IsChecked=true, Name="物理学考",ColorString="#1C86EE" },
-                 new UICourse(){ IsChecked=true, Name="物理选考",ColorString="#000EB4"},
-
-                 new UICourse(){ IsChecked=true, Name="化学学考",ColorString="#8B3E2F"},
-                 new UICourse(){ IsChecked=true, Name="化学选考",ColorString="#FF5D7A"},
-
-                 new UICourse(){ IsChecked=true, Name="生物学考",ColorString="#F22AD5" },
-                 new UICourse(){ IsChecked=true, Name="生物选考",ColorString="#A85C9D" },
-
-                 new UICourse(){ IsChecked=true, Name="历史学考",ColorString="#664AFF" },
-                 new UICourse(){ IsChecked=true, Name="历史选考",ColorString="#8896FF" },
-
-                 new UICourse(){ IsChecked=true, Name="地理学考",ColorString="#6FA896" },
-                 new UICourse(){ IsChecked=true, Name="地理选考",ColorString="#00B179" },
-
-                 new UICourse(){ IsChecked=true, Name="政治学考",ColorString="#44D820" },
-                 new UICourse(){ IsChecked=true, Name="政治选考",ColorString="#2AB907" },
-
-                 new UICourse(){ IsChecked=true, Name="技术学考",ColorString="#ED5D1C" },
-                 new UICourse(){ IsChecked=true, Name="技术选考",ColorString="#C63E00" },
-            };
         }
 
         public ICommand SaveCommand
@@ -90,6 +72,103 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
             }
         }
 
+        /// <summary>
+        /// 选考
+        /// </summary>
+        public List<UICourse> Selectives
+        {
+            get
+            {
+                return _selectives;
+            }
+
+            set
+            {
+                _selectives = value;
+                RaisePropertyChanged(() => Selectives);
+            }
+        }
+
+        /// <summary>
+        /// 学考
+        /// </summary>
+        public List<UICourse> Academics
+        {
+            get
+            {
+                return _academics;
+            }
+
+            set
+            {
+                _academics = value;
+                RaisePropertyChanged(() => Academics);
+            }
+        }
+
+        /// <summary>
+        /// 学考
+        /// </summary>
+        public bool IsAcademicCheckedAll
+        {
+            get
+            {
+                return _isAcademicCheckedAll;
+            }
+
+            set
+            {
+                _isAcademicCheckedAll = value;
+                RaisePropertyChanged(() => IsAcademicCheckedAll);
+
+                this.Academics.ForEach(a => a.IsChecked = _isAcademicCheckedAll);
+            }
+        }
+
+        /// <summary>
+        /// 选考
+        /// </summary>
+        public bool IsSelectiveCheckedAll
+        {
+            get
+            {
+                return _isSelectiveCheckedAll;
+            }
+
+            set
+            {
+                _isSelectiveCheckedAll = value;
+                RaisePropertyChanged(() => IsSelectiveCheckedAll);
+
+                this.Selectives.ForEach(a => a.IsChecked = _isSelectiveCheckedAll);
+            }
+        }
+
+        public SystemCourseWindowModel()
+        {
+            this.Academics = new List<UICourse>()
+            {
+                 new UICourse(){ IsChecked=false, Name="物理学考",ColorString="#1C86EE" },
+                 new UICourse(){ IsChecked=false, Name="化学学考",ColorString="#8B3E2F"},
+                 new UICourse(){ IsChecked=false, Name="生物学考",ColorString="#F22AD5" },
+                 new UICourse(){ IsChecked=false, Name="历史学考",ColorString="#664AFF" },
+                 new UICourse(){ IsChecked=false, Name="地理学考",ColorString="#6FA896" },
+                 new UICourse(){ IsChecked=false, Name="政治学考",ColorString="#44D820" },
+                 new UICourse(){ IsChecked=false, Name="技术学考",ColorString="#ED5D1C" },
+            };
+
+            this.Selectives = new List<UICourse>()
+            {
+                 new UICourse(){ IsChecked=false, Name="物理选考",ColorString="#000EB4"},
+                 new UICourse(){ IsChecked=false, Name="化学选考",ColorString="#FF5D7A"},
+                 new UICourse(){ IsChecked=false, Name="生物选考",ColorString="#A85C9D" },
+                 new UICourse(){ IsChecked=false, Name="历史选考",ColorString="#8896FF" },
+                 new UICourse(){ IsChecked=false, Name="地理选考",ColorString="#00B179" },
+                 new UICourse(){ IsChecked=false, Name="政治选考",ColorString="#2AB907" },
+                 new UICourse(){ IsChecked=false, Name="技术选考",ColorString="#C63E00" },
+            };
+        }
+
         [InjectionMethod]
         public void Initilize()
         {
@@ -98,40 +177,22 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
 
         void setColorCommand(object obj)
         {
-            return;
 
-            UICourse model = obj as UICourse;
-            var local = CommonDataManager.GetLocalCase(base.LocalID);
-
-            ColorDialog colorDialog = new ColorDialog();
-            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                SolidBrush sb = new SolidBrush(colorDialog.Color);
-                SolidColorBrush solidColorBrush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B));
-
-                var colorString = solidColorBrush.ToString();
-
-                model.ColorString = colorString;
-
-                var has = local.CourseColors.ContainsKey(model.ID);
-                if (!has)
-                {
-                    local.CourseColors.Add(model.ID, colorString);
-                }
-                else
-                {
-                    local.CourseColors[model.ID] = colorString;
-                }
-
-                // 保存方案
-                local.Serialize();
-            }
         }
 
         void save(object obj)
         {
             SystemCourseWindow window = obj as SystemCourseWindow;
-            window.Courses = this.SystemCourses.Where(sc => sc.IsChecked)?.ToList();
+
+            List<UICourse> selectCourses = new List<UICourse>();
+
+            var selects = this.Selectives.Where(sc => sc.IsChecked)?.ToList();
+            selectCourses.AddRange(selects);
+
+            var academics = this.Academics.Where(ad => ad.IsChecked)?.ToList();
+            selectCourses.AddRange(academics);
+
+            window.Courses = selectCourses;
             window.DialogResult = true;
         }
 

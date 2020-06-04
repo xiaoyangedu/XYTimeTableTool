@@ -25,6 +25,7 @@ using OSKernel.Presentation.Models.Result.Administrative;
 using System.Data;
 using System.Windows.Shapes;
 using System.Windows.Data;
+using OSKernel.Presentation.Core.Http.Table;
 
 namespace OSKernel.Presentation.Arranging.Administrative.Result
 {
@@ -54,6 +55,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
         private ResultAdjustmentModel _localAdjust;
         private ResultModel _localResult;
 
+        private List<PostionWithWarningInfo> warings = new List<PostionWithWarningInfo>();
 
         private string _teacherCourseString;
 
@@ -713,14 +715,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             }
             else
             {
-                var value = OSHttpClient.Instance.GetAdminResult(result.TaskID);
+                var value = WebAPI.Instance.GetAdminResult(result.TaskID);
                 if (!value.Item1)
                 {
-                    if (value.Item3.IndexOf("签名不正确") != -1)
+                    if (value.Item3.IndexOf("签名非法") != -1)
                     {
                         if (SignLogic.SignCheck())
                         {
-                            value = OSHttpClient.Instance.GetAdminResult(_taskID);
+                            value = WebAPI.Instance.GetAdminResult(_taskID);
                             if (value.Item1)
                             {
                                 _localResult = value.Item2;
@@ -1150,7 +1152,15 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
 
             var classID = targetModel.D_ClassID;
 
-            if (targetModel.Details?.Count() > 0)
+            if (targetModel.Details?.Count == 0)
+            {
+               var warning= warings.FirstOrDefault(w=>w.DayPeriod.Day== targetModel.DayPeriod.Day && w.DayPeriod.Period.Equals(targetModel.DayPeriod.Period));
+                if (warning != null)
+                {
+                    result = Tuple.Create(false, warning.WaringMessage);
+                }
+            }
+            else if (targetModel.Details?.Count > 0)
             {
                 if (!ShowCanNotDrag)
                     result = AdjustLogic.CanReplacePosition(base.LocalID, classID, sourceModel.Details, targetModel.Details, _localResult);
@@ -1158,10 +1168,13 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
 
             if (!result.Item1)
             {
-                var confirm = this.ShowDialog("提示信息", result.Item2, CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
-                if (confirm != CustomControl.Enums.DialogResultType.OK)
+                if (!string.IsNullOrEmpty(result.Item2))
                 {
-                    return;
+                    var confirm = this.ShowDialog("提示信息", result.Item2, CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
+                    if (confirm != CustomControl.Enums.DialogResultType.OK)
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -1230,7 +1243,9 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             if (!ShowCanNotDrag)
             {
                 // 可拖放区域
-                dayPeriods = AdjustLogic.CheckCanAdjustPosition(base.LocalID, model.D_ClassID, model.Details, _localResult);
+                var checkResult = AdjustLogic.CheckCanAdjustPosition(base.LocalID, model.D_ClassID, model.Details, _localResult);
+                dayPeriods = checkResult.Item1;
+                warings = checkResult.Item2;
                 // 可用课位
                 dayPeriods.ForEach(p =>
                 {

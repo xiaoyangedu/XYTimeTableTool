@@ -116,6 +116,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Dialog
                 if (excelResult.Item1)
                 {
                     this.ShowDialog("提示信息", "生成模板成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+                    FileHelper.OpenFilePath(saveDialog.FileName);
                 }
                 else
                 {

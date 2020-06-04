@@ -66,6 +66,10 @@ namespace OSKernel.Presentation.Models.Base
                     return $"{Course}-{Level}";
                 }
             }
+            set
+            {
+
+            }
         }
 
     }

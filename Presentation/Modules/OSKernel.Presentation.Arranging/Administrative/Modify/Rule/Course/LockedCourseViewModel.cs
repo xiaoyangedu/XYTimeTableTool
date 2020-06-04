@@ -3,6 +3,7 @@ using OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course.Model;
 using OSKernel.Presentation.Arranging.Administrative.Result;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.Models.Base;
@@ -547,7 +548,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
             _resultModel = base.LocalID.DeSerializeLocalResult<ResultModel>(taskID);
             if (_resultModel == null)
             {
-                var value = OSHttpClient.Instance.GetAdminResult(taskID);
+                var value = WebAPI.Instance.GetAdminResult(taskID);
                 if (value.Item1)
                 {
                     _resultModel = value.Item2;
@@ -940,7 +941,10 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
 
             this.Comments = CommonDataManager.GetAdminRuleComments(AdministrativeRuleEnum.LockedCourse);
 
-            this.Results = ResultDataManager.GetResults(base.LocalID);
+            var tempResults = ResultDataManager.GetResults(base.LocalID);
+
+            this.Results = tempResults.Where(r => r.IsUsed)?.ToList();
+
             var local = CommonDataManager.GetLocalCase(base.LocalID);
             _colors = local.CourseColors;
 

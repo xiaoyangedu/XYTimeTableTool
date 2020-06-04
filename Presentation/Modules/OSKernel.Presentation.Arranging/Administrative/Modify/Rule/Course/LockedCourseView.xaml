@@ -54,7 +54,7 @@
                      Margin="5"
                      Width="80"
                      Command="{Binding RefreshCommand}"
-                     Style="{StaticResource OpratorButtonStyle}">
+                     Style="{DynamicResource OpratorButtonStyle}">
             </Button>
 
         </StackPanel>

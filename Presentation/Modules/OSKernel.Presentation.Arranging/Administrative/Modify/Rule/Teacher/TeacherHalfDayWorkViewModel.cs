@@ -31,6 +31,14 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
             }
         }
 
+        public ICommand WeightChangedCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UITeacherHalfDayWork>(weightChanged);
+            }
+        }
+
         public List<UITeacherHalfDayWork> Rules
         {
             get
@@ -144,6 +152,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
 
             rule.Serialize(base.LocalID);
             this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.None);
+        }
+
+        void weightChanged(UITeacherHalfDayWork teacher)
+        {
+            teacher.IsChecked = true;
         }
 
         public override void BatchSetWeight(WeightTypeEnum weightEnum)

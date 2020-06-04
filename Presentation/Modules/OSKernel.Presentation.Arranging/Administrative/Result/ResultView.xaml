@@ -44,33 +44,50 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <!--<Button Content="查看"
-                                        Command="{Binding DataContext.ViewCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+
+                                <Button Content="分析"
+                                        Command="{Binding DataContext.AnalysisCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
+                                        Visibility="{Binding ShowNormalOption,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Width="40"
-                                        Margin="2" />-->
+                                        Margin="2" />
 
                                 <Button Content="调整"
                                         Command="{Binding DataContext.AdjustCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
+                                        Visibility="{Binding ShowNormalOption,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Width="40"
                                         Margin="2" />
+
                                 <Button Content="上传"
+                                        Visibility="{Binding ShowNormalOption,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Command="{Binding DataContext.UploadCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
                                         IsEnabled="{Binding DataContext.CanUpload,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         Width="40"
                                         Margin="2" />
+
                                 <Button Content="导出"
                                         Command="{Binding DataContext.ExportCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
+                                        Visibility="{Binding ShowNormalOption,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Width="40"
                                         Margin="2" />
+
                                 <Button Content="删除"
+                                        Visibility="{Binding ShowNormalOption,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
                                         Width="40"
                                         Margin="2" />
+
+                                <Button Content="预览"
+                                        Visibility="{Binding ShowPrecharge,Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Command="{Binding DataContext.PrechargeCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Width="40"
+                                        Margin="2" />
+
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -1,4 +1,5 @@
-﻿using OSKernel.Presentation.Core;
+﻿using OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour.Model;
+using OSKernel.Presentation.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,15 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.ClassHour
         {
             InitializeComponent();
             this.DataContext = CacheManager.Instance.UnityContainer.Resolve<ClassHourAverageViewModel>();
+        }
+
+        private void Dg_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            UIClassHourAverage average = e.Row.DataContext as UIClassHourAverage;
+            if (average != null)
+            {
+                average.IsChecked = true;
+            }
         }
     }
 }

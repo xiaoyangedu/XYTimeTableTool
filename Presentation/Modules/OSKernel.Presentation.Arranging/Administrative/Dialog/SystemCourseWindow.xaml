@@ -8,7 +8,7 @@
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
                    Title="系统内置课程"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    WindowStartupLocation="CenterOwner"
                    ResizeMode="CanResize"
                    SizeToContent="Height"
@@ -17,13 +17,19 @@
     <!--内置课程-->
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer>
-            <ItemsControl ItemsSource="{Binding SystemCourses}" HorizontalAlignment="Center">
+        <CheckBox Margin="15,5"
+                  Content="全选"
+                  IsChecked="{Binding IsAllChecked}" />
+
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding SystemCourses}"
+                          HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <CheckBox MinWidth="120"
@@ -109,19 +115,19 @@
         </ScrollViewer>
 
 
-        <xy:TitleBar Grid.Row="1"
+        <xy:TitleBar Grid.Row="2"
                      Title="系统内置科目，保存后可通过点击色块来修改科目颜色，便于在排课结果中区分科目。" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
-                    Grid.Row="2">
+                    Grid.Row="3">
 
             <Button Content="保存"
                     Margin="5"
                     IsDefault="True"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=win}"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Command="{Binding CancelCommand}"

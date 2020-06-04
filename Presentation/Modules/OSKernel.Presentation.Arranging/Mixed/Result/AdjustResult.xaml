@@ -21,7 +21,7 @@
             <Setter Property="FontSize"
                     Value="13" />
             <Setter Property="Foreground"
-                    Value="{StaticResource main_background}" />
+                    Value="{DynamicResource main_background}" />
             <Setter Property="Background"
                     Value="Transparent" />
             <Setter Property="Template">
@@ -52,28 +52,29 @@
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <RadioButton Style="{StaticResource switch_leftStyle}"
+            <RadioButton Style="{DynamicResource switch_leftStyle}"
                          Name="radio_grade"
                          Content="年级课表"
                          IsChecked="True"
                          Height="40"
                          Width="100" />
 
-            <RadioButton Style="{StaticResource switch_centerStyle}"
+            <RadioButton Style="{DynamicResource switch_centerStyle}"
                          Name="radio_Class"
                          Content="班级列表"
                          Height="40"
                          Width="100" />
 
-            <RadioButton Style="{StaticResource switch_rightStyle}"
+            <RadioButton Style="{DynamicResource switch_rightStyle}"
                          Name="radio_teacher"
                          Content="教师课表"
+                         IsChecked="{Binding TeacherReportChecked}"
                          Height="40"
                          Width="100" />
         </StackPanel>
 
         <Rectangle Height="1"
-                   Fill="{StaticResource CB_Separation}"
+                   Fill="{DynamicResource CB_Separation}"
                    VerticalAlignment="Bottom" />
 
         <!--年级课表-->
@@ -86,8 +87,8 @@
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <!--调整课位-->
@@ -98,12 +99,12 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <Rectangle Fill="{StaticResource main_lightgroud}" />
+                <Rectangle Fill="{DynamicResource main_lightgroud}" />
 
                 <TextBlock Text="*基础数据发生更改当前结果任意调整(不做校验)!"
                            VerticalAlignment="Center"
                            Margin="10,0"
-                           Foreground="{StaticResource local_red}"
+                           Foreground="{DynamicResource local_red}"
                            Visibility="{Binding ShowCanNotDrag,Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <StackPanel HorizontalAlignment="Right"
@@ -112,25 +113,25 @@
 
                     <Border Background="White"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Visibility="Collapsed"
                             Width="20"
                             Height="20"
                             Margin="2"
                             ToolTip="空白" />
 
-                    <Border Background="{StaticResource main_lightgroud}"
+                    <Border Background="{DynamicResource main_lightgroud}"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Visibility="Collapsed"
                             Width="20"
                             Height="20"
                             Margin="2"
                             ToolTip="可调整位置" />
 
-                    <Border Background="{StaticResource week_forbid}"
+                    <Border Background="{DynamicResource week_forbid}"
                             BorderThickness="1"
-                            BorderBrush="{StaticResource Button.Disabled.Border}"
+                            BorderBrush="{DynamicResource Button.Disabled.Border}"
                             Visibility="Collapsed"
                             Width="20"
                             Height="20"
@@ -142,7 +143,7 @@
                 <!--课位-->
                 <xy:AdjustResultWeek Grid.Row="1"
                                      Background="White"
-                                     Periods="{Binding Results}" />              
+                                     Periods="{Binding Results}" />
 
             </Grid>
 
@@ -170,15 +171,15 @@
                                             <Grid MinHeight="50"
                                                   Margin="5">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30"/>
+                                                    <ColumnDefinition Width="30" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <!--拖拽背景色-->
-                                                <Border BorderBrush="{StaticResource main_lightgroud}"
+                                                <Border BorderBrush="{DynamicResource main_lightgroud}"
                                                         Background="White"
                                                         BorderThickness="2"
                                                         Grid.ColumnSpan="2" />
-                                                <Rectangle Fill="{StaticResource main_lightgroud}"
+                                                <Rectangle Fill="{DynamicResource main_lightgroud}"
                                                            MouseMove="Rectangle_MouseMove"
                                                            Cursor="Hand"
                                                            MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" />
@@ -219,20 +220,20 @@
                                             <TextBlock Margin="10,5">
                                             <Run Text="班级:" />
                                             <Run Text="{Binding ClassName}"
-                                                 Foreground="{StaticResource main_background}" />
+                                                 Foreground="{DynamicResource main_background}" />
                                             </TextBlock>
                                             <!--原始-->
                                             <TextBlock Margin="5">
                                             <Run Text="原始:" />   
                                             <Run Text="{Binding StartClassHour.CourseName}"
-                                                 Foreground="{StaticResource local_green}" />
+                                                 Foreground="{DynamicResource local_green}" />
                                             </TextBlock>
 
                                             <!--目标-->
                                             <TextBlock Margin="5">
                                               <Run Text="目标:" />
                                             <Run Text="{Binding EndClassHour.CourseName}"
-                                                 Foreground="{StaticResource local_red}" />
+                                                 Foreground="{DynamicResource local_red}" />
                                             </TextBlock>
 
                                             <!--调整类型-->
@@ -277,7 +278,7 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <Rectangle Fill="{StaticResource main_lightgroud}" />
+            <Rectangle Fill="{DynamicResource main_lightgroud}" />
 
             <ComboBox Width="150"
                       MaxWidth="300"
@@ -308,8 +309,8 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="1">
@@ -330,9 +331,10 @@
             <Rectangle Width="1"
                        Grid.Row="1"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
-            <Grid Grid.Column="1" Grid.Row="1">
+            <Grid Grid.Column="1"
+                  Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
@@ -388,7 +390,7 @@
 
                 <Button Grid.Column="1"
                         Grid.Row="1"
-                        Style="{StaticResource OpratorButtonStyle}"
+                        Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding AssignCommand}"
                         Content=">>"
                         Width="50"
@@ -412,7 +414,9 @@
                 </DataGrid>
             </Grid>
 
-            <Rectangle Fill="{StaticResource main_lightgroud}" Height="30" Grid.ColumnSpan="3"/>
+            <Rectangle Fill="{DynamicResource main_lightgroud}"
+                       Height="30"
+                       Grid.ColumnSpan="3" />
 
             <xy:TitleBar Grid.Row="2"
                          Grid.ColumnSpan="3"
@@ -427,7 +431,7 @@
                  Margin="15"
                  Width="60"
                  HorizontalAlignment="Left"
-                 Style="{StaticResource OpratorButtonStyle}"
+                 Style="{DynamicResource OpratorButtonStyle}"
                  Visibility="{Binding ShowRefreshButton,Converter={StaticResource BooleanToVisibilityConverter}}" />
 
     </Grid>

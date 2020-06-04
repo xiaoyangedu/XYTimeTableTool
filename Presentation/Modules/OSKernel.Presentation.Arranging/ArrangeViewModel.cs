@@ -6,6 +6,7 @@ using OSKernel.Presentation.Arranging.Mixed.Modify.Views.Model;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.EventArgs;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.Models;
@@ -32,8 +33,6 @@ namespace OSKernel.Presentation.Arranging
 {
     public class ArrangeViewModel : CommonViewModel
     {
-        private UIElement _currentView;
-
         private bool _showFirstPanel = true;
 
         private bool _showSecondPanel;
@@ -42,13 +41,15 @@ namespace OSKernel.Presentation.Arranging
 
         private string _secondBarTitle;
 
+        private Case _selectCase;
+
+        private UIElement _currentView;
+
         private ObservableCollection<Case> _cases;
 
         private ListCollectionView _caseCollectionView;
 
         private ObservableCollection<Case> _runCases;
-
-        private Case _selectCase;
 
         public ICommand SecondReturnCommand
         {
@@ -103,6 +104,14 @@ namespace OSKernel.Presentation.Arranging
             get
             {
                 return new RelayCommand(arrangeCommand);
+            }
+        }
+
+        public ICommand AnalysisCommand
+        {
+            get
+            {
+                return new RelayCommand(analysisCommand);
             }
         }
 
@@ -288,7 +297,7 @@ namespace OSKernel.Presentation.Arranging
                     args.Model.ShowLoading = true;
                     Task.Run(() =>
                     {
-                        return OSKernel.Presentation.Core.Http.OSHttpClient.Instance.GetErroInfo(args.Model.Task.TaskID);
+                        return WebAPI.Instance.GetErroInfo(args.Model.Task.TaskID);
                     }).ContinueWith(r =>
                     {
                         args.Model.ShowLoading = false;
@@ -312,11 +321,11 @@ namespace OSKernel.Presentation.Arranging
 
                 case CaseEventArgs.EventTypeEnum.Difficulty:
 
-                    var difficult = OSKernel.Presentation.Core.Http.OSHttpClient.Instance.GetDifficultLog(args.Model.Task.TaskID);
+                    var difficult = WebAPI.Instance.GetDifficultLog(args.Model.Task.TaskID);
 
                     if (!difficult.Item1)
                     {
-                        this.ShowDialog("提示信息", difficult.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                        this.ShowDialog("提示信息", difficult.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
                     }
 
                     break;
@@ -348,9 +357,6 @@ namespace OSKernel.Presentation.Arranging
             // 2.像缓存中添加
             this.Cases.Add(newCase);
             this.CommonDataManager.LocalCases.Add(newCase);
-
-            // 原始目录
-            var path = $"{CacheManager.Instance.GetDataPath()}\\{model.LocalID}";
 
             if (newCase.CaseType == CaseTypeEnum.Mixed)
             {
@@ -386,7 +392,7 @@ namespace OSKernel.Presentation.Arranging
                     patternAlgoRule.SerializePatternAlgo(newCase.LocalID);
                     newCase.LocalID.Serialize(patternParam);
 
-                    // 3.将模式文件反序列化-并存入缓存中  TODO
+                    // 3.将模式文件反序列化-并存入缓存中
                     var newPatternPattern = newCase.LocalID.DeSerialize<object>();
                     var newPatternRule = newCase.LocalID.DeSerializePatternRule();
                     var newPatternAlgo = newCase.LocalID.DeSerializePatternAlgo();
@@ -396,7 +402,27 @@ namespace OSKernel.Presentation.Arranging
                     PatternDataManager.AddRule(newCase.LocalID, newPatternRule);
                     PatternDataManager.AddCase(newCase.LocalID, newPatternCase);
                     PatternDataManager.AddPatternParam(newCase.LocalID, newPatternPattern);
+                }
 
+                var cl = model.LocalID.DeSerializeCL();
+                if (cl != null)
+                {
+                    CommonDataManager.AddMixedCase(newCase.LocalID, cl);
+                    cl.Serialize(newCase.LocalID);
+                }
+
+                var rule = model.LocalID.DeSerializeMixedRule();
+                if (rule != null)
+                {
+                    CommonDataManager.AddMixedRule(newCase.LocalID, rule);
+                    rule.Serialize(newCase.LocalID);
+                }
+
+                var algo = model.LocalID.DeSerializeMixedAlgo();
+                if (algo != null)
+                {
+                    CommonDataManager.AddMixedAlgoRule(newCase.LocalID, algo);
+                    algo.Serialize(newCase.LocalID);
                 }
 
                 #endregion
@@ -412,12 +438,7 @@ namespace OSKernel.Presentation.Arranging
                 }
 
                 #endregion
-            }
 
-            #region 复制方案
-
-            if (newCase.CaseType == CaseTypeEnum.Administrative)
-            {
                 var cp = model.LocalID.DeSerializeCP();
                 if (cp != null)
                 {
@@ -439,31 +460,6 @@ namespace OSKernel.Presentation.Arranging
                     algo.Serialize(newCase.LocalID);
                 }
             }
-            else if (newCase.CaseType == CaseTypeEnum.Mixed)
-            {
-                var cl = model.LocalID.DeSerializeCL();
-                if (cl != null)
-                {
-                    CommonDataManager.AddMixedCase(newCase.LocalID, cl);
-                    cl.Serialize(newCase.LocalID);
-                }
-
-                var rule = model.LocalID.DeSerializeMixedRule();
-                if (rule != null)
-                {
-                    CommonDataManager.AddMixedRule(newCase.LocalID, rule);
-                    rule.Serialize(newCase.LocalID);
-                }
-
-                var algo = model.LocalID.DeSerializeMixedAlgo();
-                if (algo != null)
-                {
-                    CommonDataManager.AddMixedAlgoRule(newCase.LocalID, algo);
-                    algo.Serialize(newCase.LocalID);
-                }
-            }
-
-            #endregion
         }
 
         void DeleteOperation(Case model)
@@ -514,7 +510,7 @@ namespace OSKernel.Presentation.Arranging
             }
             else
             {
-                this.ShowSecondArrangeButton = false;
+                this.ShowSecondArrangeButton = true;
             }
 
             // 刷新是否显示二级排课按钮
@@ -530,6 +526,11 @@ namespace OSKernel.Presentation.Arranging
 
         void ResultOperation(object model)
         {
+            if (this.ShowSecondArrangeButton)
+            {
+                this.ShowSecondArrangeButton = false;
+            }
+
             Case caseUI = model as Case;
 
             this.SecondBarTitle = $"排课结果  {caseUI.Name}({caseUI.CaseType.GetLocalDescription()})";
@@ -600,7 +601,26 @@ namespace OSKernel.Presentation.Arranging
         {
             // 默认启动自动排课
             var model = CommonDataManager.GetLocalCase(base.LocalID);
-            this.StartArrang(model);
+            // 是否获取价格
+            var isGetPrice = !CacheManager.Instance.LoginUser.IsAnnual;
+            // 我要排课
+            this.StartArrang(model, isGetPrice);
+        }
+
+        void analysisCommand()
+        {
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
+
+            if (local.CaseType == CaseTypeEnum.Administrative)
+            {
+                Analysis.Data.Administrative.HostWindow administrativeWindow = new Analysis.Data.Administrative.HostWindow(local.Name);
+                administrativeWindow.ShowDialog();
+            }
+            else if (local.CaseType == CaseTypeEnum.Mixed)
+            {
+                Analysis.Data.Mixed.HostWindow mixedWindow = new Analysis.Data.Mixed.HostWindow(local.Name);
+                mixedWindow.ShowDialog();
+            }
         }
 
         void createResult(Case model)
@@ -614,8 +634,12 @@ namespace OSKernel.Presentation.Arranging
                 CreateTime = DateTime.Now,
                 LocalID = model.LocalID,
                 Name = $"{model.Name}-{model.Task?.TaskID}-{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}",
-                TaskID = model.Task.TaskID
+                TaskID = model.Task.TaskID,
             };
+
+            // 如果是年费会员,
+            result.IsUsed = CacheManager.Instance.LoginUser.IsAnnual;
+            result.RaiseChanged();
 
             cases.Add(result);
 
@@ -657,251 +681,45 @@ namespace OSKernel.Presentation.Arranging
 
         void Start(Case model)
         {
-            //if (CacheManager.Instance.LoginUser.UserName.Equals("未知用户"))
-            //{
-            //    model.IsStart = false;
-            //    Login.LoginWindow login = new Login.LoginWindow();
-            //    login.ShowDialog();
-            //    return;
-            //}
-
             model.ShowLoading = true;
-            Task.Run(() =>
+
+            if (CacheManager.Instance.LoginUser.IsAnnual)
             {
-                // 获取价格
-                return Core.Http.OSHttpClient.Instance.GetPrice(CacheManager.Instance.LoginUser.AccessToken);
-
-            }).ContinueWith(r =>
+                this.StartLogic(model, false);
+            }
+            else
             {
-                model.ShowLoading = false;
-
-                if (!r.Result.Item1)
-                {
-                    // 获取最新价格
-                    //if (r.Result.Item3?.IndexOf("非法或过期的令牌") == -1)
-                    //{
-                    //    model.IsStart = false;
-                    //    this.ShowDialog("提示信息", "获取价格失败!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
-                    //}
-                    this.ShowDialog("提示信息", "获取价格失败!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
-                    model.IsStart = false;
-                }
-                else
-                {
-                    // 价格
-                    var priceInfo = r.Result.Item2;
-
-                    if (model.CaseType == CaseTypeEnum.Administrative)
-                    {
-                        var adminAlgoRule = CommonDataManager.GetAminAlgoRule(model.LocalID);
-                        var adminRule = CommonDataManager.GetAminRule(model.LocalID);
-                        var cp = CommonDataManager.GetCPCase(model.LocalID);
-
-                        // 指定是否自动
-                        cp.IsAuto = model.IsAuto;
-
-                        // 排课费用估算
-                        var classCount = cp.Classes.Count;
-                        var price = (priceInfo.cpprice * classCount) / 100.00;
-
-                        // 最大金额1000元
-                        if (price > 1000)
-                            price = 1000;
-
-                        GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            ConfirmPriceWindow confrimPrice = new ConfirmPriceWindow(price);
-                            confrimPrice.ShowDialog();
-
-                            if (!confrimPrice.DialogResult.Value)
-                            {
-                                model.IsStart = false;
-                                return;
-                            }
-
-                            model.ShowLoading = true;
-                            Task.Run(() =>
-                            {
-                                return Core.Http.OSHttpClient.Instance.CreateXZB(new Core.Http.CPTransfer()
-                                {
-                                    algo = adminAlgoRule,
-                                    cp = cp,
-                                    rule = adminRule
-                                });
-                            }).ContinueWith(rr =>
-                            {
-                                if (!rr.Result.Item1)
-                                {
-                                    model.ShowLoading = false;
-                                    if (rr.Result.Item3.IndexOf("签名不正确") == -1)
-                                    {
-                                        model.IsStart = false;
-                                        model.Task = null;
-                                        model.Serialize();
-                                        this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
-                                    }
-                                    else
-                                    {
-                                        if (SignLogic.SignCheck())
-                                        {
-                                            model.ShowLoading = true;
-                                            Task.Run(() =>
-                                            {
-                                                return Core.Http.OSHttpClient.Instance.CreateXZB(new Core.Http.CPTransfer()
-                                                {
-                                                    algo = adminAlgoRule,
-                                                    cp = cp,
-                                                    rule = adminRule
-                                                });
-                                            }).ContinueWith((rrr) =>
-                                            {
-                                                if (!rrr.Result.Item1)
-                                                {
-                                                    model.ShowLoading = false;
-                                                    model.IsStart = false;
-                                                    model.Task = null;
-                                                    model.Serialize();
-                                                    this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
-                                                }
-                                                else
-                                                {
-                                                    this.startCaseModel(model, rrr.Result.Item2);
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    this.startCaseModel(model, rr.Result.Item2);
-                                }
-                            });
-                        });
-
-
-                    }
-                    else
-                    {
-                        var mixedAlgoRule = base.GetCLAlgoRule(model.LocalID);
-                        var mixedRule = base.GetClRule(model.LocalID);
-                        var cl = base.GetClCase(model.LocalID);
-                        cl.IsAuto = model.IsAuto;
-
-                        // 排课费用估算
-                        var studentCount = cl.Students.Count;
-                        var price = (priceInfo.clprice * studentCount) / 100.00;
-
-                        // 最大金额1000元
-                        if (price > 2000)
-                            price = 2000;
-
-                        GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            ConfirmPriceWindow confrimPrice = new ConfirmPriceWindow(price);
-                            confrimPrice.ShowDialog();
-
-                            if (!confrimPrice.DialogResult.Value)
-                            {
-                                model.ShowLoading = false;
-                                model.IsStart = false;
-                                return;
-                            }
-
-
-                            model.ShowLoading = true;
-                            Task.Run(() =>
-                            {
-                                return Core.Http.OSHttpClient.Instance.CreateJXB(new Core.Http.CLTransfer()
-                                {
-                                    algo = mixedAlgoRule,
-                                    cl = cl,
-                                    rule = mixedRule
-                                });
-                            }).ContinueWith(rr =>
-                            {
-                                if (!rr.Result.Item1)
-                                {
-                                    model.ShowLoading = false;
-                                    if (rr.Result.Item3.IndexOf("签名不正确") == -1)
-                                    {
-                                        model.IsStart = false;
-                                        model.Task = null;
-                                        model.Serialize();
-                                        this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
-                                    }
-                                    else
-                                    {
-                                        if (SignLogic.SignCheck())
-                                        {
-                                            model.ShowLoading = true;
-                                            Task.Run(() =>
-                                            {
-                                                return Core.Http.OSHttpClient.Instance.CreateJXB(new Core.Http.CLTransfer()
-                                                {
-                                                    algo = mixedAlgoRule,
-                                                    cl = cl,
-                                                    rule = mixedRule
-                                                });
-
-                                            }).ContinueWith(rrr =>
-                                            {
-                                                if (!rrr.Result.Item1)
-                                                {
-                                                    model.ShowLoading = false;
-                                                    model.IsStart = false;
-                                                    model.Task = null;
-                                                    model.Serialize();
-                                                    this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
-                                                }
-                                                else
-                                                {
-                                                    this.startCaseModel(model, rrr.Result.Item2);
-                                                }
-                                            });
-
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    this.startCaseModel(model, rr.Result.Item2);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
+                this.StartLogic(model, true);
+            }
         }
 
-        void StartArrang(Case model)
+        void StartLogic(Case model, bool isGetPrice)
         {
-            //if (CacheManager.Instance.LoginUser.UserName.Equals("未知用户"))
-            //{
-            //    model.IsStart = false;
-            //    Login.LoginWindow login = new Login.LoginWindow();
-            //    login.ShowDialog();
-            //    return;
-            //}
-            model.IsStart = true;
-            model.ShowLoading = true;
-            Task.Run(() =>
+            if (isGetPrice)
             {
-                // 获取价格
-                return Core.Http.OSHttpClient.Instance.GetPrice(CacheManager.Instance.LoginUser.AccessToken);
-
-            }).ContinueWith(r =>
-            {
-                model.ShowLoading = false;
-
-                if (!r.Result.Item1)
+                Task.Run(() =>
                 {
-                    this.ShowDialog("提示信息", "获取价格失败!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
-                    model.IsStart = false;
-                }
-                else
-                {
-                    model.IsAuto = true;
+                    return WebAPI.Instance.GetPrice(CacheManager.Instance.LoginUser.AccessToken);
 
+                }).ContinueWith(r =>
+                {
+                    model.ShowLoading = false;
+
+                    if (!r.Result.Item1)
+                    {
+                        if (r.Result.Item3.IndexOf("签名非法") == -1)
+                        {
+                            model.IsStart = false;
+                            model.Task = null;
+                            model.Serialize();
+                            this.ShowDialog("提示信息", r.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                            return;
+                        }
+                        else
+                        {
+                            SignLogic.SignCheck();
+                        }
+                    }
                     // 价格
                     var priceInfo = r.Result.Item2;
 
@@ -916,7 +734,7 @@ namespace OSKernel.Presentation.Arranging
 
                         // 排课费用估算
                         var classCount = cp.Classes.Count;
-                        var price = (priceInfo.cpprice * classCount) / 100.00;
+                        var price = (priceInfo.cp_price * classCount) / 100.00;
 
                         // 最大金额1000元
                         if (price > 1000)
@@ -936,7 +754,7 @@ namespace OSKernel.Presentation.Arranging
                             model.ShowLoading = true;
                             Task.Run(() =>
                             {
-                                return Core.Http.OSHttpClient.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
                                 {
                                     algo = adminAlgoRule,
                                     cp = cp,
@@ -947,12 +765,15 @@ namespace OSKernel.Presentation.Arranging
                                 if (!rr.Result.Item1)
                                 {
                                     model.ShowLoading = false;
-                                    if (rr.Result.Item3.IndexOf("签名不正确") == -1)
+                                    if (rr.Result.Item3.IndexOf("签名非法") == -1)
                                     {
                                         model.IsStart = false;
                                         model.Task = null;
                                         model.Serialize();
-                                        this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                        {
+                                            this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        });
                                     }
                                     else
                                     {
@@ -961,7 +782,7 @@ namespace OSKernel.Presentation.Arranging
                                             model.ShowLoading = true;
                                             Task.Run(() =>
                                             {
-                                                return Core.Http.OSHttpClient.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                                return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
                                                 {
                                                     algo = adminAlgoRule,
                                                     cp = cp,
@@ -975,12 +796,14 @@ namespace OSKernel.Presentation.Arranging
                                                     model.IsStart = false;
                                                     model.Task = null;
                                                     model.Serialize();
-                                                    this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                                    GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                                    {
+                                                        this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                                    });
                                                 }
                                                 else
                                                 {
                                                     this.startCaseModel(model, rrr.Result.Item2);
-                                                    SecondReturnCommand.Execute(null);
                                                 }
                                             });
                                         }
@@ -989,12 +812,9 @@ namespace OSKernel.Presentation.Arranging
                                 else
                                 {
                                     this.startCaseModel(model, rr.Result.Item2);
-                                    SecondReturnCommand.Execute(null);
                                 }
                             });
                         });
-
-
                     }
                     else
                     {
@@ -1005,7 +825,7 @@ namespace OSKernel.Presentation.Arranging
 
                         // 排课费用估算
                         var studentCount = cl.Students.Count;
-                        var price = (priceInfo.clprice * studentCount) / 100.00;
+                        var price = (priceInfo.cl_price * studentCount) / 100.00;
 
                         // 最大金额1000元
                         if (price > 2000)
@@ -1023,10 +843,11 @@ namespace OSKernel.Presentation.Arranging
                                 return;
                             }
 
+
                             model.ShowLoading = true;
                             Task.Run(() =>
                             {
-                                return Core.Http.OSHttpClient.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
                                 {
                                     algo = mixedAlgoRule,
                                     cl = cl,
@@ -1037,8 +858,7 @@ namespace OSKernel.Presentation.Arranging
                                 if (!rr.Result.Item1)
                                 {
                                     model.ShowLoading = false;
-
-                                    if (rr.Result.Item3.IndexOf("签名不正确") == -1)
+                                    if (rr.Result.Item3.IndexOf("签名非法") == -1)
                                     {
                                         model.IsStart = false;
                                         model.Task = null;
@@ -1052,7 +872,7 @@ namespace OSKernel.Presentation.Arranging
                                             model.ShowLoading = true;
                                             Task.Run(() =>
                                             {
-                                                return Core.Http.OSHttpClient.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                                return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
                                                 {
                                                     algo = mixedAlgoRule,
                                                     cl = cl,
@@ -1072,7 +892,6 @@ namespace OSKernel.Presentation.Arranging
                                                 else
                                                 {
                                                     this.startCaseModel(model, rrr.Result.Item2);
-                                                    SecondReturnCommand.Execute(null);
                                                 }
                                             });
 
@@ -1082,13 +901,528 @@ namespace OSKernel.Presentation.Arranging
                                 else
                                 {
                                     this.startCaseModel(model, rr.Result.Item2);
-                                    SecondReturnCommand.Execute(null);
                                 }
                             });
                         });
                     }
+                });
+            }
+            else
+            {
+                if (model.CaseType == CaseTypeEnum.Administrative)
+                {
+                    var adminAlgoRule = CommonDataManager.GetAminAlgoRule(model.LocalID);
+                    var adminRule = CommonDataManager.GetAminRule(model.LocalID);
+                    var cp = CommonDataManager.GetCPCase(model.LocalID);
+
+                    // 指定是否自动
+                    cp.IsAuto = model.IsAuto;
+
+                    model.ShowLoading = true;
+
+                    Task.Run(() =>
+                    {
+                        return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                        {
+                            algo = adminAlgoRule,
+                            cp = cp,
+                            rule = adminRule
+                        });
+                    }).ContinueWith(rr =>
+                    {
+                        if (!rr.Result.Item1)
+                        {
+                            model.ShowLoading = false;
+                            if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                            {
+                                model.IsStart = false;
+                                model.Task = null;
+                                model.Serialize();
+                                this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                            }
+                            else
+                            {
+                                if (SignLogic.SignCheck())
+                                {
+                                    model.ShowLoading = true;
+                                    Task.Run(() =>
+                                    {
+                                        return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                        {
+                                            algo = adminAlgoRule,
+                                            cp = cp,
+                                            rule = adminRule
+                                        });
+                                    }).ContinueWith((rrr) =>
+                                    {
+                                        if (!rrr.Result.Item1)
+                                        {
+                                            model.ShowLoading = false;
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            this.startCaseModel(model, rrr.Result.Item2);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.startCaseModel(model, rr.Result.Item2);
+                        }
+                    });
+
+
                 }
-            });
+                else
+                {
+                    var mixedAlgoRule = base.GetCLAlgoRule(model.LocalID);
+                    var mixedRule = base.GetClRule(model.LocalID);
+                    var cl = base.GetClCase(model.LocalID);
+                    cl.IsAuto = model.IsAuto;
+
+                    model.ShowLoading = true;
+                    Task.Run(() =>
+                    {
+                        return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                        {
+                            algo = mixedAlgoRule,
+                            cl = cl,
+                            rule = mixedRule
+                        });
+                    }).ContinueWith(rr =>
+                    {
+                        if (!rr.Result.Item1)
+                        {
+                            model.ShowLoading = false;
+                            if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                            {
+                                model.IsStart = false;
+                                model.Task = null;
+                                model.Serialize();
+                                this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                            }
+                            else
+                            {
+                                if (SignLogic.SignCheck())
+                                {
+                                    model.ShowLoading = true;
+                                    Task.Run(() =>
+                                    {
+                                        return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                        {
+                                            algo = mixedAlgoRule,
+                                            cl = cl,
+                                            rule = mixedRule
+                                        });
+
+                                    }).ContinueWith(rrr =>
+                                    {
+                                        if (!rrr.Result.Item1)
+                                        {
+                                            model.ShowLoading = false;
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            this.startCaseModel(model, rrr.Result.Item2);
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.startCaseModel(model, rr.Result.Item2);
+                        }
+                    });
+                }
+            }
+
+        }
+
+        void StartArrang(Case model, bool isGetPrice)
+        {
+            model.IsStart = true;
+            model.ShowLoading = true;
+
+            if (isGetPrice)
+            {
+                Task.Run(() =>
+                {
+                    return WebAPI.Instance.GetPrice(CacheManager.Instance.LoginUser.AccessToken);
+
+                }).ContinueWith(r =>
+                {
+                    model.ShowLoading = false;
+
+                    if (!r.Result.Item1)
+                    {
+                        this.ShowDialog("提示信息", "获取价格失败!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                        model.IsStart = false;
+                    }
+                    else
+                    {
+                        model.IsAuto = true;
+
+                        // 价格
+                        var priceInfo = r.Result.Item2;
+
+                        if (model.CaseType == CaseTypeEnum.Administrative)
+                        {
+                            var adminAlgoRule = CommonDataManager.GetAminAlgoRule(model.LocalID);
+                            var adminRule = CommonDataManager.GetAminRule(model.LocalID);
+                            var cp = CommonDataManager.GetCPCase(model.LocalID);
+
+                            // 指定是否自动
+                            cp.IsAuto = model.IsAuto;
+
+                            // 排课费用估算
+                            var classCount = cp.Classes.Count;
+                            var price = (priceInfo.cp_price * classCount) / 100.00;
+
+                            // 最大金额1000元
+                            if (price > 1000)
+                                price = 1000;
+
+                            GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                ConfirmPriceWindow confrimPrice = new ConfirmPriceWindow(price);
+                                confrimPrice.ShowDialog();
+
+                                if (!confrimPrice.DialogResult.Value)
+                                {
+                                    model.IsStart = false;
+                                    return;
+                                }
+
+                                model.ShowLoading = true;
+                                Task.Run(() =>
+                                {
+                                    return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                    {
+                                        algo = adminAlgoRule,
+                                        cp = cp,
+                                        rule = adminRule
+                                    });
+                                }).ContinueWith(rr =>
+                                {
+                                    if (!rr.Result.Item1)
+                                    {
+                                        model.ShowLoading = false;
+                                        if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                                        {
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            if (SignLogic.SignCheck())
+                                            {
+                                                model.ShowLoading = true;
+                                                Task.Run(() =>
+                                                {
+                                                    return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                                    {
+                                                        algo = adminAlgoRule,
+                                                        cp = cp,
+                                                        rule = adminRule
+                                                    });
+                                                }).ContinueWith((rrr) =>
+                                                {
+                                                    if (!rrr.Result.Item1)
+                                                    {
+                                                        model.ShowLoading = false;
+                                                        model.IsStart = false;
+                                                        model.Task = null;
+                                                        model.Serialize();
+                                                        this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                                    }
+                                                    else
+                                                    {
+                                                        this.startCaseModel(model, rrr.Result.Item2);
+                                                        SecondReturnCommand.Execute(null);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.startCaseModel(model, rr.Result.Item2);
+                                        SecondReturnCommand.Execute(null);
+                                    }
+                                });
+                            });
+
+
+                        }
+                        else
+                        {
+                            var local = CommonDataManager.GetLocalCase(base.LocalID);
+                            if (local.Pattern != Models.Enums.PatternTypeEnum.None)
+                            {
+                                this.ShowDialog("提示信息", "请移除排课模式，“我要排课”将启动自动排课形式。 ", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                                model.IsStart = false;
+                                return;
+                            }
+
+                            var mixedAlgoRule = base.GetCLAlgoRule(model.LocalID);
+                            var mixedRule = base.GetClRule(model.LocalID);
+                            var cl = base.GetClCase(model.LocalID);
+                            cl.IsAuto = model.IsAuto;
+
+                            // 排课费用估算
+                            var studentCount = cl.Students.Count;
+                            var price = (priceInfo.cl_price * studentCount) / 100.00;
+
+                            // 最大金额1000元
+                            if (price > 2000)
+                                price = 2000;
+
+                            GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                ConfirmPriceWindow confrimPrice = new ConfirmPriceWindow(price);
+                                confrimPrice.ShowDialog();
+
+                                if (!confrimPrice.DialogResult.Value)
+                                {
+                                    model.ShowLoading = false;
+                                    model.IsStart = false;
+                                    return;
+                                }
+
+                                model.ShowLoading = true;
+                                Task.Run(() =>
+                                {
+                                    return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                    {
+                                        algo = mixedAlgoRule,
+                                        cl = cl,
+                                        rule = mixedRule
+                                    });
+                                }).ContinueWith(rr =>
+                                {
+                                    if (!rr.Result.Item1)
+                                    {
+                                        model.ShowLoading = false;
+
+                                        if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                                        {
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            if (SignLogic.SignCheck())
+                                            {
+                                                model.ShowLoading = true;
+                                                Task.Run(() =>
+                                                {
+                                                    return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                                    {
+                                                        algo = mixedAlgoRule,
+                                                        cl = cl,
+                                                        rule = mixedRule
+                                                    });
+
+                                                }).ContinueWith(rrr =>
+                                                {
+                                                    if (!rrr.Result.Item1)
+                                                    {
+                                                        model.ShowLoading = false;
+                                                        model.IsStart = false;
+                                                        model.Task = null;
+                                                        model.Serialize();
+                                                        this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                                    }
+                                                    else
+                                                    {
+                                                        this.startCaseModel(model, rrr.Result.Item2);
+                                                        SecondReturnCommand.Execute(null);
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.startCaseModel(model, rr.Result.Item2);
+                                        SecondReturnCommand.Execute(null);
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            }
+            else
+            {
+                model.IsAuto = true;
+                model.ShowLoading = true;
+
+                if (model.CaseType == CaseTypeEnum.Administrative)
+                {
+                    var adminAlgoRule = CommonDataManager.GetAminAlgoRule(model.LocalID);
+                    var adminRule = CommonDataManager.GetAminRule(model.LocalID);
+                    var cp = CommonDataManager.GetCPCase(model.LocalID);
+
+                    // 指定是否自动
+                    cp.IsAuto = model.IsAuto;
+
+                    Task.Run(() =>
+                    {
+                        return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                        {
+                            algo = adminAlgoRule,
+                            cp = cp,
+                            rule = adminRule
+                        });
+                    }).ContinueWith(rr =>
+                    {
+                        if (!rr.Result.Item1)
+                        {
+                            model.ShowLoading = false;
+                            if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                            {
+                                model.IsStart = false;
+                                model.Task = null;
+                                model.Serialize();
+                                this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                            }
+                            else
+                            {
+                                if (SignLogic.SignCheck())
+                                {
+                                    model.ShowLoading = true;
+                                    Task.Run(() =>
+                                    {
+                                        return WebAPI.Instance.CreateXZB(new Core.Http.CPTransfer()
+                                        {
+                                            algo = adminAlgoRule,
+                                            cp = cp,
+                                            rule = adminRule
+                                        });
+                                    }).ContinueWith((rrr) =>
+                                    {
+                                        if (!rrr.Result.Item1)
+                                        {
+                                            model.ShowLoading = false;
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            this.startCaseModel(model, rrr.Result.Item2);
+                                            SecondReturnCommand.Execute(null);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.startCaseModel(model, rr.Result.Item2);
+                            SecondReturnCommand.Execute(null);
+                        }
+                    });
+                }
+                else
+                {
+                    var local = CommonDataManager.GetLocalCase(base.LocalID);
+                    if (local.Pattern != Models.Enums.PatternTypeEnum.None)
+                    {
+                        this.ShowDialog("提示信息", "请移除排课模式，“我要排课”将启动自动排课形式。 ", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                        model.IsStart = false;
+                        return;
+                    }
+
+                    var mixedAlgoRule = base.GetCLAlgoRule(model.LocalID);
+                    var mixedRule = base.GetClRule(model.LocalID);
+                    var cl = base.GetClCase(model.LocalID);
+                    cl.IsAuto = model.IsAuto;
+
+                    model.ShowLoading = true;
+
+                    Task.Run(() =>
+                    {
+                        return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                        {
+                            algo = mixedAlgoRule,
+                            cl = cl,
+                            rule = mixedRule
+                        });
+                    }).ContinueWith(rr =>
+                    {
+                        if (!rr.Result.Item1)
+                        {
+                            model.ShowLoading = false;
+
+                            if (rr.Result.Item3.IndexOf("签名非法") == -1)
+                            {
+                                model.IsStart = false;
+                                model.Task = null;
+                                model.Serialize();
+                                this.ShowDialog("提示信息", rr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                            }
+                            else
+                            {
+                                if (SignLogic.SignCheck())
+                                {
+                                    model.ShowLoading = true;
+                                    Task.Run(() =>
+                                    {
+                                        return WebAPI.Instance.CreateJXB(new Core.Http.CLTransfer()
+                                        {
+                                            algo = mixedAlgoRule,
+                                            cl = cl,
+                                            rule = mixedRule
+                                        });
+
+                                    }).ContinueWith(rrr =>
+                                    {
+                                        if (!rrr.Result.Item1)
+                                        {
+                                            model.ShowLoading = false;
+                                            model.IsStart = false;
+                                            model.Task = null;
+                                            model.Serialize();
+                                            this.ShowDialog("提示信息", rrr.Result.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Error);
+                                        }
+                                        else
+                                        {
+                                            this.startCaseModel(model, rrr.Result.Item2);
+                                            SecondReturnCommand.Execute(null);
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.startCaseModel(model, rr.Result.Item2);
+                            SecondReturnCommand.Execute(null);
+                        }
+                    });
+                }
+            }
         }
 
         void Stop(Case model)
@@ -1099,7 +1433,7 @@ namespace OSKernel.Presentation.Arranging
 
                 Task.Run(() =>
                 {
-                    return Core.Http.OSHttpClient.Instance.GetStateByTaskID(model.Task.TaskID);
+                    return WebAPI.Instance.GetStateByTaskID(model.Task.TaskID);
 
                 }).ContinueWith(r =>
                 {
@@ -1108,18 +1442,18 @@ namespace OSKernel.Presentation.Arranging
                     var value = r.Result;
                     if (!value.Item1)
                     {
-                        if (value.Item3.IndexOf("签名不正确") != -1)
+                        if (value.Item3.IndexOf("签名非法") != -1)
                         {
                             if (SignLogic.SignCheck())
                             {
-                                value = Core.Http.OSHttpClient.Instance.GetStateByTaskID(model.Task.TaskID);
+                                value = WebAPI.Instance.GetStateByTaskID(model.Task.TaskID);
                             }
                         }
                     }
 
                     if (value.Item2 == MissionStateEnum.Waiting)
                     {
-                        var cancel = Core.Http.OSHttpClient.Instance.Cancel(model.Task.TaskID);
+                        var cancel = WebAPI.Instance.Cancel(model.Task.TaskID);
                         if (cancel.Item1)
                         {
                             model.StopRefresh();
@@ -1133,14 +1467,14 @@ namespace OSKernel.Presentation.Arranging
 
                             GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                this.ShowDialog("提示信息", cancel.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                                this.ShowDialog("提示信息", cancel.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                             });
 
                         }
                     }
                     else if (value.Item2 == MissionStateEnum.Started)
                     {
-                        var stop = Core.Http.OSHttpClient.Instance.Stop(model.Task.TaskID);
+                        var stop = WebAPI.Instance.Stop(model.Task.TaskID);
                         if (stop.Item1)
                         {
                             model.IsStart = false;
@@ -1154,7 +1488,7 @@ namespace OSKernel.Presentation.Arranging
 
                             GalaSoft.MvvmLight.Threading.DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                this.ShowDialog("提示信息", stop.Item2, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                                this.ShowDialog("提示信息", stop.Item3, CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
                             });
                         }
                     }

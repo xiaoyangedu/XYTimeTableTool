@@ -117,7 +117,7 @@
 
                 </StackPanel>
 
-                <Button Style="{StaticResource OpratorButtonStyle}"
+                <Button Style="{DynamicResource OpratorButtonStyle}"
                         Command="{Binding SaveCommand}"
                         HorizontalAlignment="Right"
                         Grid.ColumnSpan="8"
@@ -125,14 +125,14 @@
                         Content="保存"
                         Width="70"
                         Height="30"
-                        Margin="5,5,25,5" />
+                        Margin="5" />
             </Grid>
 
             <!--课位调整-->
-            <ScrollViewer Grid.Row="1">
-                <Grid Margin="0,0,0,10"
+            <ScrollViewer Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid Margin="0,0,0,15"
                       Background="White">
-                    <Grid Margin="10">
+                    <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
                             <RowDefinition Height="*" />
@@ -150,7 +150,7 @@
 
                         <!--列头-->
                         <Border BorderThickness="1,1,1,1"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="课节"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -159,8 +159,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="1"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown1"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期一"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -169,8 +170,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="2"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown2"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期二"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -179,8 +181,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="3"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown3"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期三"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -189,8 +192,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="4"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown4"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期四"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -199,8 +203,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="5"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown5"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期五"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -209,8 +214,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="6"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown6"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期六"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -219,8 +225,9 @@
                         <Border BorderThickness="0,1,1,1"
                                 Grid.Column="7"
                                 Cursor="Hand"
+                                Background="Transparent"
                                 MouseLeftButtonDown="Border_MouseLeftButtonDown7"
-                                BorderBrush="{StaticResource CB_Separation}">
+                                BorderBrush="{DynamicResource CB_Separation}">
                             <TextBlock Text="星期日"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center" />
@@ -250,7 +257,7 @@
                                                 Cursor="Hand"
                                                 Background="Transparent"
                                                 MouseLeftButtonDown="Border_norml_MouseLeftButtonDown"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <Grid>
                                                 <TextBlock Text="{Binding PeriodString}"
                                                            Margin="15,5"
@@ -264,8 +271,9 @@
                                                 Visibility="Collapsed"
                                                 Name="border_am"
                                                 Cursor="Hand"
+                                                Background="Transparent"
                                                 MouseLeftButtonDown="Border_norml_MouseLeftButtonDown"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
@@ -282,7 +290,7 @@
                                                             Margin="0,0,5,0"
                                                             VerticalAlignment="Center">
                                                     <!--加-->
-                                                    <Button Style="{StaticResource PlusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource PlusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.InsertTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="新增" />
@@ -291,7 +299,7 @@
                                                                Opacity="0.7"
                                                                Margin="2" />
                                                     <!--减-->
-                                                    <Button Style="{StaticResource MinusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource MinusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.DeleteTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="删除" />
@@ -305,8 +313,9 @@
                                                 Visibility="Collapsed"
                                                 Name="border_pm"
                                                 Cursor="Hand"
+                                                Background="Transparent"
                                                 MouseLeftButtonDown="Border_norml_MouseLeftButtonDown"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
@@ -323,7 +332,7 @@
                                                             Margin="0,0,5,0"
                                                             VerticalAlignment="Center">
                                                     <!--加-->
-                                                    <Button Style="{StaticResource PlusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource PlusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.InsertTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="新增" />
@@ -332,7 +341,7 @@
                                                                Opacity="0.7"
                                                                Margin="2" />
                                                     <!--减-->
-                                                    <Button Style="{StaticResource MinusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource MinusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.DeleteTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="删除" />
@@ -347,7 +356,7 @@
                                                 Name="border_zx"
                                                 Cursor="Hand"
                                                 MouseLeftButtonDown="Border_norml_MouseLeftButtonDown"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
@@ -364,7 +373,7 @@
                                                             Margin="0,0,5,0"
                                                             VerticalAlignment="Center">
                                                     <!--加-->
-                                                    <Button Style="{StaticResource PlusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource PlusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.InsertTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="新增" />
@@ -373,7 +382,7 @@
                                                                Opacity="0.7"
                                                                Margin="2" />
                                                     <!--减-->
-                                                    <Button Style="{StaticResource MinusEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource MinusEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.DeleteTimeCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="删除" />
@@ -386,7 +395,7 @@
                                         <Border BorderThickness="1,0,1,1"
                                                 Visibility="Collapsed"
                                                 Name="border_break"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
@@ -403,7 +412,7 @@
                                                             Margin="0,0,5,0"
                                                             VerticalAlignment="Center">
                                                     <!--上移-->
-                                                    <Button Style="{StaticResource UpEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource UpEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.PreviousCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="上移" />
@@ -412,7 +421,7 @@
                                                                Opacity="0.7"
                                                                Margin="2" />
                                                     <!--下移-->
-                                                    <Button Style="{StaticResource DownEllipseButtonStyle}"
+                                                    <Button Style="{DynamicResource DownEllipseButtonStyle}"
                                                             CommandParameter="{Binding}"
                                                             Command="{Binding DataContext.DownCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                                             ToolTip="下移" />
@@ -427,56 +436,56 @@
                                                 Visibility="Collapsed"
                                                 Panel.ZIndex="1"
                                                 Name="border_forbid"
-                                                Background="{StaticResource week_forbid}"
-                                                BorderBrush="{StaticResource CB_Separation}" />
+                                                Background="{DynamicResource week_forbid}"
+                                                BorderBrush="{DynamicResource CB_Separation}" />
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="1"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsMondayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="2"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsTuesdayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="3"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsWednesdayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="4"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsThursdayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="5"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsFridayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="6"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsSaturdayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                         <Border BorderThickness="0,0,1,1"
                                                 Grid.Column="7"
-                                                BorderBrush="{StaticResource CB_Separation}">
+                                                BorderBrush="{DynamicResource CB_Separation}">
                                             <CheckBox IsChecked="{Binding IsSundayChecked}"
-                                                      Style="{StaticResource timeCheckBox}" />
+                                                      Style="{DynamicResource timeCheckBox}" />
                                         </Border>
 
                                     </Grid>

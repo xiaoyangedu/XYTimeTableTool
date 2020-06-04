@@ -59,7 +59,9 @@ namespace OSKernel.Presentation.Arranging.Mixed.Pattern
         [InjectionMethod]
         public void Initilize()
         {
-            this.Results = ResultDataManager.GetResults(base.LocalID);
+            var tempResults = ResultDataManager.GetResults(base.LocalID);
+
+            this.Results = tempResults.Where(r => r.IsUsed)?.ToList();
         }
     }
 }

@@ -120,6 +120,14 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
             }
         }
 
+        public ICommand DeleteAllCourseCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand(deleteAllCourse);
+            }
+        }
+
         public CourseViewModel()
         {
             this.Courses = new ObservableCollection<UICourse>();
@@ -228,7 +236,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
                             this.Courses.Add(course);
 
-                            var hasColor = local.CourseColors.ContainsKey(c);
+                            var hasColor = local.CourseColors.ContainsKey(course.ID);
                             if (!hasColor)
                             {
                                 local.CourseColors.Add(course.ID, "#000000");
@@ -256,8 +264,6 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
                 UICourse uiCourse = obj as UICourse;
                 this.Courses.Remove(uiCourse);
-                local.CourseColors.Remove(uiCourse.ID);
-                local.Serialize();
 
                 _toDeleteCourses.Add(uiCourse);
                 this.RaisePropertyChanged(() => ShowCreateLevel);
@@ -349,15 +355,23 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void saveCommand()
         {
+            var cl = base.GetClCase(base.LocalID);
+            var rule = base.GetClRule(base.LocalID);
+            var algo = base.GetCLAlgoRule(base.LocalID);
+            var local = CommonDataManager.GetLocalCase(base.LocalID);
+            var isPatern = local.Pattern != Models.Enums.PatternTypeEnum.None ? true : false;
+
             if (_toDeleteCourses.Count > 0)
             {
-                MixedDataHelper.CourseChanged(_toDeleteCourses, base.LocalID, CommonDataManager);
+                MixedDataHelper.CourseChanged(_toDeleteCourses, base.LocalID, rule, algo, cl, isPatern);
                 _toDeleteCourses.Clear();
+                GalaSoft.MvvmLight.Messaging.Messenger.Default.Send("clearPreselections");
             }
             if (_toDeleteLevels.Count > 0)
             {
-                MixedDataHelper.LevelChanged(_toDeleteLevels, base.LocalID, CommonDataManager);
+                MixedDataHelper.LevelChanged(_toDeleteLevels, base.LocalID, rule, algo, cl, isPatern);
                 _toDeleteLevels.Clear();
+                GalaSoft.MvvmLight.Messaging.Messenger.Default.Send("clearPreselections");
             }
 
             var has = this.Courses.Any(c =>
@@ -386,7 +400,6 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 }
             }
 
-            var cl = base.GetClCase(base.LocalID);
             cl.Courses.Clear();
 
             foreach (var c in this.Courses)
@@ -430,9 +443,6 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
             // 3.保存
             base.Serialize(cl, LocalID);
-
-            // 4.保存本地方案
-            var local = CommonDataManager.GetLocalCase(base.LocalID);
             local.Serialize();
 
             this.ShowDialog("提示信息", "保存成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
@@ -614,6 +624,27 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 }
             };
             window.ShowDialog();
+        }
+
+        void deleteAllCourse()
+        {
+            var confirm = this.ShowDialog("提示信息", "确认删除全部课程?", CustomControl.Enums.DialogSettingType.OkAndCancel, CustomControl.Enums.DialogType.Warning);
+            if (confirm == CustomControl.Enums.DialogResultType.OK)
+            {
+                foreach (var c in this.Courses)
+                {
+                    _toDeleteCourses.Add(c);
+                }
+                this.Courses.Clear();
+
+                var rule = base.GetClRule(base.LocalID);
+                var algo = base.GetCLAlgoRule(base.LocalID);
+                var cl = base.GetClCase(base.LocalID);
+                var local = CommonDataManager.GetLocalCase(base.LocalID);
+                var isPatern = local.Pattern != Models.Enums.PatternTypeEnum.None ? true : false;
+
+                MixedDataHelper.CourseChanged(_toDeleteCourses, base.LocalID, rule, algo, cl, isPatern);
+            }
         }
 
         public void Refresh()

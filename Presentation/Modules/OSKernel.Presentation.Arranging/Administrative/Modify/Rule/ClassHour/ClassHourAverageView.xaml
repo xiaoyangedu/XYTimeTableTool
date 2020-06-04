@@ -35,6 +35,7 @@
                       Name="dg"
                       IsReadOnly="False"
                       CanUserAddRows="False"
+                      CellEditEnding="Dg_CellEditEnding"
                       ItemsSource="{Binding Rules}"
                       ColumnHeaderHeight="65">
                 <DataGrid.Columns>

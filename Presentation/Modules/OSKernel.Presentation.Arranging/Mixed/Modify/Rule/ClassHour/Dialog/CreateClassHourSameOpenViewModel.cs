@@ -124,7 +124,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Rule.Teacher.Dialog
                     var results = cl.GetClasses(course.ID);
                     results?.ForEach(r =>
                     {
-                        r.IsChecked = true;
+                        //r.IsChecked = true;
                         this.Classes.Add(r);
                     });
                 }

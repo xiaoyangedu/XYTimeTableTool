@@ -83,12 +83,12 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void setRule(object obj)
         {
-            var mixRule = CommonDataManager.GetMixedRule(base.LocalID);
-
             UIRule rule = obj as UIRule;
             HostView ruleWindow = new HostView(rule.RuleEnum);
             ruleWindow.Closed += (s, arg) =>
             {
+                var mixRule = base.GetClRule(base.LocalID);
+
                 switch (rule.RuleEnum)
                 {
                     case Models.Enums.MixedRuleEnum.AmPmClassHour:
@@ -137,14 +137,11 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
 
         void setAlgo(object obj)
         {
-            // 算法规则
-            var algoRule = CommonDataManager.GetMixedAlgoRule(base.LocalID);
-
             UIAlgoRule algo = obj as UIAlgoRule;
-
             HostView algoWindow = new HostView(algo.RuleEnum);
             algoWindow.Closed += (s, arg) =>
             {
+                var algoRule = base.GetCLAlgoRule(base.LocalID);// CommonDataManager.GetMixedAlgoRule(base.LocalID);
                 switch (algo.RuleEnum)
                 {
                     case Models.Enums.MixedAlgoRuleEnum.ClassHourRequiredStartingTime:
@@ -526,7 +523,7 @@ namespace OSKernel.Presentation.Arranging.Mixed.Modify.Views
                 Name = "多个课时有多个优先开始时间",
                 Category = Models.Enums.RuleCategoryEnum.ClassHour,
                 RuleEnum = Models.Enums.MixedAlgoRuleEnum.ClassHoursRequiredStartingTimes,
-                Record = mixedRule.ClassHourRequiredStartingTimes.Count,
+                Record = mixedRule.ClassHoursRequiredStartingTimes.Count,
                 Comment = CommonDataManager.GetMixedAlgoComments(Models.Enums.MixedAlgoRuleEnum.ClassHoursRequiredStartingTimes)
             });
 

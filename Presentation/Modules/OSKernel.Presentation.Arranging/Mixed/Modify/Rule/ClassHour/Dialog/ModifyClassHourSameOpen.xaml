@@ -11,7 +11,7 @@
                    x:Name="main"
                    mc:Ignorable="d"
                    Title="调整班级课时"
-                   Style="{StaticResource MetroWindowStyle}"
+                   Style="{DynamicResource MetroWindowStyle}"
                    ResizeMode="CanResize"
                    WindowStartupLocation="CenterOwner">
     <metro:MetroWindow.Resources>
@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Background="{StaticResource main_lightgroud}"
+                <Border Background="{DynamicResource main_lightgroud}"
                         Margin="1">
                     <TextBlock Margin="5"
                                VerticalAlignment="Center"
@@ -34,7 +34,7 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="{StaticResource main_lightgroud}"
+                        Background="{DynamicResource main_lightgroud}"
                         Margin="1" />
 
                 <ItemsControl Grid.Column="1"
@@ -66,7 +66,7 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Background="{StaticResource main_lightgroud}"
+                <Border Background="{DynamicResource main_lightgroud}"
                         Margin="1">
                     <TextBlock Margin="5"
                                VerticalAlignment="Center"
@@ -76,7 +76,7 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="{StaticResource CB_Separation}"
+                        Background="{DynamicResource CB_Separation}"
                         Margin="1" />
 
                 <ItemsControl Grid.Column="1"
@@ -136,7 +136,7 @@
 
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Classes}"
-                          ItemTemplateSelector="{StaticResource CheckBoxSelector}">
+                          ItemTemplateSelector="{DynamicResource CheckBoxSelector}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel />
@@ -148,7 +148,7 @@
         <Rectangle Height="1"
                    Grid.Row="1"
                    VerticalAlignment="Top"
-                   Fill="{StaticResource main_lightgroud}" />
+                   Fill="{DynamicResource main_lightgroud}" />
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
@@ -160,7 +160,7 @@
                     CommandParameter="{Binding ElementName=main}"
                     Command="{Binding SaveCommand}"
                     IsDefault="True"
-                    Style="{StaticResource OpratorButtonStyle}" />
+                    Style="{DynamicResource OpratorButtonStyle}" />
 
             <Button Content="取消"
                     Name="btn_cancel"

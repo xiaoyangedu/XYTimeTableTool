@@ -98,6 +98,11 @@ namespace OSKernel.Presentation.Models.Base
             }
         }
 
+        /// <summary>
+        /// 课时数
+        /// </summary>
+        public int Lessons { get; set; }
+
         public UIClass()
         {
             this.Courses = new ObservableCollection<UIClassCourse>();
@@ -128,6 +133,26 @@ namespace OSKernel.Presentation.Models.Base
         public void RaiseChanged()
         {
             this.RaisePropertyChanged(() => TeacherString);
+        }
+
+        public void RaiseLessons()
+        {
+            this.RaisePropertyChanged(() => TotalClassHours);
+        }
+
+        /// <summary>
+        /// 总课时数
+        /// </summary>
+        public int TotalClassHours
+        {
+            get
+            {
+                return this.Courses.Sum(c => c.Lessons);
+            }
+            set
+            {
+
+            }
         }
     }
 }

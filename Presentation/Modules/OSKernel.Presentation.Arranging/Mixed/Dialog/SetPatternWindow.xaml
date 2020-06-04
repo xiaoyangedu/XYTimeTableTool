@@ -12,7 +12,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Dialog"
                    xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                   Style="{StaticResource MetroWindowStyle}">
+                   Style="{DynamicResource MetroWindowStyle}">
     <!--设置模式窗口-->
     <Grid>
         <!--第一层-->
@@ -34,14 +34,14 @@
                      Margin="1" />
 
             <Rectangle Width="1"
-                       Fill="{StaticResource CB_Separation}"
+                       Fill="{DynamicResource CB_Separation}"
                        HorizontalAlignment="Right" />
 
             <Rectangle Height="1"
                        Grid.Row="1"
                        Grid.ColumnSpan="2"
                        VerticalAlignment="Top"
-                       Fill="{StaticResource CB_Separation}" />
+                       Fill="{DynamicResource CB_Separation}" />
 
             <!--承载区域-->
             <ScrollViewer  Grid.Column="1">
@@ -57,7 +57,7 @@
                     <Label Content="参数"
                            Width="60"
                            Height="30"
-                           Background="{StaticResource main_lightgroud}"
+                           Background="{DynamicResource main_lightgroud}"
                            VerticalContentAlignment="Center"
                            HorizontalContentAlignment="Center"
                            Margin="0,5,0,0"
@@ -70,7 +70,7 @@
                            Width="60"
                            Height="30"
                            Grid.Row="2"
-                           Background="{StaticResource main_lightgroud}"
+                           Background="{DynamicResource main_lightgroud}"
                            VerticalContentAlignment="Center"
                            HorizontalContentAlignment="Center"
                            Margin="0,5,0,0"
@@ -89,7 +89,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button  Content="编辑"
-                                                 Style="{StaticResource SettingButtonStyle}"
+                                                 Style="{DynamicResource SettingButtonStyle}"
                                                  CommandParameter="{Binding}"
                                                  Command="{Binding DataContext.SetOperationCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                  Width="20" 
@@ -114,7 +114,7 @@
                          Margin="2"
                          Command="{Binding SaveCommand}"
                          CommandParameter="{Binding ElementName=win}"
-                         Style="{StaticResource OpratorButtonStyle}" />
+                         Style="{DynamicResource OpratorButtonStyle}" />
 
                 <Button  Content="取消"
                          Command="{Binding CancelCommand}"

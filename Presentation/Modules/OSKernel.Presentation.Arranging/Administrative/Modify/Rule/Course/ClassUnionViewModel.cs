@@ -124,7 +124,24 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Course
                         CourseID = win.SelectCourse.ID,
                         CourseName = win.SelectCourse.Name,
                     };
-                    this.Rules.Add(model);
+
+                    var has = this.Rules.Any(r =>
+                      {
+                          return r.Classes.Count == model.Classes.Count
+                              && r.Classes.All(rc =>
+                               {
+                                   return model.Classes.Any(mc => mc.ID.Equals(rc.ID) && mc.CourseID.Equals(rc.CourseID));
+                               });
+                      });
+
+                    if (!has)
+                    {
+                        this.Rules.Add(model);
+                    }
+                    else
+                    {
+                        this.ShowDialog("提示信息", "存在相同的规则!", CustomControl.Enums.DialogSettingType.OnlyOkButton, CustomControl.Enums.DialogType.Warning);
+                    }
                 }
             };
             win.ShowDialog();

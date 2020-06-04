@@ -1,0 +1,63 @@
+﻿<metro:MetroWindow x:Class="OSKernel.Presentation.Arranging.Mixed.Dialog.SetStudentPreselectionWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:OSKernel.Presentation.Arranging.Mixed.Dialog"
+                   xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+                   Style="{DynamicResource MetroWindowStyle}"
+                   WindowStartupLocation="CenterOwner"
+                   ResizeMode="CanResize"
+                   MaxHeight="400"
+                   MaxWidth="600"
+                   SizeToContent="WidthAndHeight"
+                   Name="win"
+                   mc:Ignorable="d">
+    <!--学生志愿-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Preselections}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding IsChecked}"
+                                  Content="{Binding Display}"
+                                  Margin="10" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <xy:TitleBar Grid.Row="1"
+                     Title="如果科目下有多个层,同科目下只能选择一个层。" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2">
+
+            <Button Content="保存"
+                    Margin="5"
+                    IsDefault="True"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Style="{DynamicResource OpratorButtonStyle}" />
+
+            <Button Content="取消"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=win}"
+                    Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

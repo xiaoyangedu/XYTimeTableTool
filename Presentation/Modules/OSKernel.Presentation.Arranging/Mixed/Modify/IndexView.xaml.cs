@@ -16,8 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Unity;
-using XYKernel.Application.OS.Models.Xml.MixedClass;
-using XYKernel.Application.OS.Data.MixedClass;
 using XYKernel.OS.Common.Models.Pattern.Base;
 using System.IO;
 using System.Xml.Serialization;

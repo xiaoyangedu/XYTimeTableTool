@@ -38,6 +38,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="OptionMarkFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -47,6 +48,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="MenuRadioButtonStyle" TargetType="{x:Type RadioButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>

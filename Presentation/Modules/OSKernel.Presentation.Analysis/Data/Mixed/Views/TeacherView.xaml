@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="OSKernel.Presentation.Analysis.Data.Mixed.Views.TeacherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:OSKernel.Presentation.Analysis.Data.Mixed.Views"
+             xmlns:xy="clr-namespace:OSKernel.Presentation.CustomControl;assembly=OSKernel.Presentation.CustomControl"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <!--教师-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <xy:TitleBar Title="教师分析主要是针对以教师为维度的数据分析，详情如下：" />
+
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding TeacherAnalysis}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="序号" Binding="{Binding NO}"/>
+                <DataGridTextColumn Header="教师"
+                                    Binding="{Binding Teacher.Name}"
+                                    Width="25*" />
+                <DataGridTextColumn Header="班级"
+                                    Binding="{Binding ClassDisplay}"
+                                    Width="25*" />
+                <DataGridTextColumn Header="课时"
+                                    Binding="{Binding HourDisplay}"
+                                    Width="25*" />
+                <DataGridTextColumn Header="连排数"
+                                    Width="25*"
+                                    Binding="{Binding Continous}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

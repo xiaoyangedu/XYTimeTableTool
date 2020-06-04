@@ -8,9 +8,11 @@
              d:DesignHeight="450"
              d:DesignWidth="800">
     <!--版本信息-->
-    <Grid>
+    <Grid Background="White">
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center">
+
+            <Image Source="{DynamicResource icon_qrcode}" Width="150"/>
 
             <TextBlock Text="{Binding Version}"
                        Opacity="0.7"

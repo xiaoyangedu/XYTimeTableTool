@@ -37,8 +37,6 @@ namespace OSKernel.Presentation.Models
 
         private string _runTimeString;
 
-        private string _autoRunTimeString;
-
         private Enums.MissionStateEnum _taskStatus = Enums.MissionStateEnum.Creating;
 
         /// <summary>

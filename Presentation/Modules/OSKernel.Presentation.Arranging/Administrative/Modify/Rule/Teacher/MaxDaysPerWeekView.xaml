@@ -37,6 +37,7 @@
                       Name="dg"
                       IsReadOnly="False"
                       CanUserAddRows="False"
+                      CellEditEnding="Dg_CellEditEnding"
                       ItemsSource="{Binding Rules}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">

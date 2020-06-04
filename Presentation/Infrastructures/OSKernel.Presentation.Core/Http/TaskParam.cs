@@ -29,11 +29,11 @@ namespace OSKernel.Presentation.Core.Http
         /// <summary>
         /// 任务状态
         /// </summary>
-        public byte state { get; set; }
+        public string state { get; set; }
 
         /// <summary>
         /// 任务模式
         /// </summary>
-        public byte mode { get; set; }
+        public string mode { get; set; }
     }
 }

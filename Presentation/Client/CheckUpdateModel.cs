@@ -9,6 +9,7 @@ using System.Windows.Input;
 using OSKernel.Presentation.Utilities;
 using OSKernel.Presentation.Models;
 using OSKernel.Presentation.Core;
+using XYKernel.Presentation.Core;
 
 namespace Client
 {
@@ -58,7 +59,7 @@ namespace Client
 
             if (!System.IO.File.Exists(CommonPath.ClientUpdate.CombineCurrentDirectory()))
             {
-                //LogManager.Logger.Warn($"没有找到 {CommonPath.ClientUpdate.CombineCurrentDirectory()}");
+                LogManager.Logger.Warn($"没有找到 {CommonPath.ClientUpdate.CombineCurrentDirectory()}");
                 return;
             }
 
@@ -87,7 +88,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                //LogManager.Logger.Warn($"下载版本信息失败:{ex.Message}");
+                LogManager.Logger.Warn($"下载版本信息失败:{ex.Message}");
             }
         }
 
@@ -153,7 +154,7 @@ namespace Client
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
-                //LogManager.Logger.Info($"升级：创建临时路径{_tempPath}");
+                LogManager.Logger.Info($"升级：创建临时路径{_tempPath}");
             }
             _filePath = Path.Combine(_tempPath, _serviceUpdate.Path);
 
@@ -161,11 +162,11 @@ namespace Client
             try
             {
                 Path.Combine(_tempPath, "source.info").FileSerialize(System.Environment.CurrentDirectory);
-                //LogManager.Logger.Info($"升级：修改路径{Path.Combine(_tempPath, "source.info")} To {System.Environment.CurrentDirectory}");
+                LogManager.Logger.Info($"升级：修改路径{Path.Combine(_tempPath, "source.info")} To {System.Environment.CurrentDirectory}");
             }
             catch (Exception ex)
             {
-                //LogManager.Logger.Warn(ex.Message);
+                LogManager.Logger.Warn(ex.Message);
 
                 StatusMessage = "升级失败!详细请查看日志!";
                 RaisePropertyChanged(() => StatusMessage);
@@ -187,7 +188,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                //LogManager.Logger.Warn(ex.Message);
+                LogManager.Logger.Warn(ex.Message);
 
                 StatusMessage = "升级失败!详细请查看日志!";
                 RaisePropertyChanged(() => StatusMessage);
@@ -223,7 +224,7 @@ namespace Client
                 var isTrue = ZipHelper.Decompress(_tempPath, _filePath, out erroMessage);
                 if (!isTrue)
                 {
-                    //LogManager.Logger.Warn(erroMessage);
+                    LogManager.Logger.Warn(erroMessage);
                     MessageBox.Show(erroMessage);
                     return;
                 }
@@ -236,7 +237,7 @@ namespace Client
 
                 this.PursueEnable = true;
 
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(1000);
 
                 Process process = new Process();
                 process.StartInfo.FileName = _tempPath + "\\Update.exe";
@@ -281,8 +282,9 @@ namespace Client
 
         void Close(object win)
         {
+            // 取消窗口不升级
             Window loginWindow = win as Window;
-            loginWindow.Close();
+            loginWindow.DialogResult = true;
         }
     }
 }

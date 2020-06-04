@@ -134,16 +134,19 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
                 var selectClasses = this.Classes.Where(c => c.IsChecked);
                 if (selectClasses != null)
                 {
-                    var groups = (from c in selectClasses
-                                  from cc in c.Courses
-                                  from sc in cp.Courses
-                                  where sc.ID.Equals(cc.CourseID)
-                                  select new UICourse()
-                                  {
-                                      ID = cc.CourseID,
-                                      Lessons = cc.Lessons,
-                                      Name = sc.Name,
-                                  })?.GroupBy(c => c.ID);
+                    // 所有课程
+                    var tempCourses = (from c in selectClasses
+                                       from cc in c.Courses
+                                       from sc in cp.Courses
+                                       where sc.ID.Equals(cc.CourseID)
+                                       select new UICourse()
+                                       {
+                                           ID = cc.CourseID,
+                                           Lessons = cc.Lessons,
+                                           Name = sc.Name,
+                                       })?.ToList();
+
+                    var groups = tempCourses?.GroupBy(c => c.ID);
 
                     if (groups != null)
                     {
@@ -151,7 +154,12 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
                         foreach (var c in groups)
                         {
                             var course = c.FirstOrDefault();
-                            courses.Add(course);
+
+                            var hasSameLesson = c.ToList().All(cc => cc.Lessons == course.Lessons);
+                            if (hasSameLesson)
+                            {
+                                courses.Add(course);
+                            }
                         }
 
                         _sourceCourses = courses.ToList();
@@ -278,14 +286,18 @@ namespace OSKernel.Presentation.Arranging.Administrative.Dialog
             var oddCourse = this.OddCourses.FirstOrDefault(fd => fd.IsChecked);
             var dualCourse = this.DualCourses.FirstOrDefault(fd => fd.IsChecked);
 
-            CreateOddDualWeek win = obj as CreateOddDualWeek;
-            //win.IsSave = true;
-            win.OddCourse = oddCourse;
-            win.DualCourse = dualCourse;
-            win.SelectClasses = this.Classes.Where(c => c.IsChecked)?.ToList();
-            win.DialogResult = true;
-
-            //this.ShowDialog("提示信息", "保存成功!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+            if (oddCourse == null && dualCourse == null)
+            {
+                this.ShowDialog("提示信息", "请选择单周或双周所上课程!", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+            }
+            else
+            {
+                CreateOddDualWeek win = obj as CreateOddDualWeek;
+                win.OddCourse = oddCourse;
+                win.DualCourse = dualCourse;
+                win.SelectClasses = this.Classes.Where(c => c.IsChecked)?.ToList();
+                win.DialogResult = true;
+            }
         }
 
         void cancel(object obj)

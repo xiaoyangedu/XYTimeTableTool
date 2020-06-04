@@ -31,6 +31,15 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
             }
         }
 
+        public ICommand WeightChangedCommand
+        {
+            get
+            {
+                return new GalaSoft.MvvmLight.Command.RelayCommand<UIMaxHoursDaily>(weightChanged);
+            }
+        }
+
+
         public List<UIMaxHoursDaily> Rules
         {
             get
@@ -166,6 +175,11 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher
 
             rule.Serialize(base.LocalID);
             this.ShowDialog("提示信息", "保存成功", CustomControl.Enums.DialogSettingType.NoButton, CustomControl.Enums.DialogType.None);
+        }
+
+        void weightChanged(UIMaxHoursDaily maxHoursDaily)
+        {
+            maxHoursDaily.IsChecked = true;
         }
 
         public override void BatchSetWeight(WeightTypeEnum weightEnum)

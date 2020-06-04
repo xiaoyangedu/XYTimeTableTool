@@ -98,18 +98,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="XY.Common, Version=2.5.0.0, Culture=neutral, PublicKeyToken=b23983cedf27e712, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Dlls\XY.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="XYKernel.Application.OS.Data">
-      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="XYKernel.Application.OS.DataValidation">
-      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.DataValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="XYKernel.Application.OS.Models">
-      <HintPath>..\..\..\Dlls\XYKernel.Application.OS.Models.dll</HintPath>
+    <Reference Include="XYKernel.OS.Common, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\XYKernel.OS.Common.1.1.0\lib\netstandard2.0\XYKernel.OS.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +373,10 @@
       <DependentUpon>CourseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Administrative\Modify\Views\CourseViewModel.cs" />
+    <Compile Include="Administrative\Result\PrechargeResultWindow.xaml.cs">
+      <DependentUpon>PrechargeResultWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Administrative\Result\PrechargeResultWindowModel.cs" />
     <Compile Include="Administrative\Result\ResultExtend.cs" />
     <Compile Include="Administrative\Result\AdjustLogic.cs" />
     <Compile Include="Administrative\Result\AdjustResult.xaml.cs">
@@ -411,6 +405,9 @@
     <Compile Include="Dialog\SetCapacityWindow.xaml.cs">
       <DependentUpon>SetCapacityWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialog\ShowImageWindow.xaml.cs">
+      <DependentUpon>ShowImageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DragDropAdorner.cs" />
     <Compile Include="Mixed\CLExtend.cs" />
     <Compile Include="Mixed\Dialog\BatchTeacherWindow.xaml.cs">
@@ -438,6 +435,10 @@
       <DependentUpon>SetPatternWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mixed\Dialog\SetPatternWindowModel.cs" />
+    <Compile Include="Mixed\Dialog\SetStudentPreselectionWindow.xaml.cs">
+      <DependentUpon>SetStudentPreselectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Dialog\SetStudentPreselectionWindowModel.cs" />
     <Compile Include="Mixed\Dialog\StatisticStudentSelectionWindow.xaml.cs">
       <DependentUpon>StatisticStudentSelectionWindow.xaml</DependentUpon>
     </Compile>
@@ -712,6 +713,9 @@
       <DependentUpon>CompressionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mixed\Pattern\CompressionViewModel.cs" />
+    <Compile Include="Mixed\Pattern\Data\DataProcessing.cs" />
+    <Compile Include="Mixed\Pattern\Data\DataValidationResultInfo.cs" />
+    <Compile Include="Mixed\Pattern\Data\ModelValidation.cs" />
     <Compile Include="Mixed\Pattern\ExtractionView.xaml.cs">
       <DependentUpon>ExtractionView.xaml</DependentUpon>
     </Compile>
@@ -759,6 +763,10 @@
     <Compile Include="Administrative\Result\AdjustResultConverter.cs" />
     <Compile Include="Mixed\Result\AdjustResultConverter.cs" />
     <Compile Include="Mixed\Result\AdjustResultViewModel.cs" />
+    <Compile Include="Mixed\Result\PrechargeResultWindow.xaml.cs">
+      <DependentUpon>PrechargeResultWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mixed\Result\PrechargeResultWindowModel.cs" />
     <Compile Include="Mixed\Result\ResultDetailsView.xaml.cs">
       <DependentUpon>ResultDetailsView.xaml</DependentUpon>
     </Compile>
@@ -784,6 +792,7 @@
     </Compile>
     <Compile Include="RuleExtend.cs" />
     <Compile Include="SignLogic.cs" />
+    <Compile Include="Utilities\TextTrmmingShowToolTip.cs" />
     <Compile Include="Utilities\TimeOperation.cs" />
     <Compile Include="Win32.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -1058,6 +1067,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Administrative\Result\PrechargeResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Administrative\Result\ResultDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1073,6 +1086,10 @@
     <Page Include="Dialog\SetCapacityWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialog\ShowImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Mixed\Dialog\BatchTeacherWindow.xaml">
       <SubType>Designer</SubType>
@@ -1099,6 +1116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Mixed\Dialog\SetPatternWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mixed\Dialog\SetStudentPreselectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1406,6 +1427,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Mixed\Result\PrechargeResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mixed\Result\ResultDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1416,10 +1441,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\XYKernel.OS.Common\XYKernel.OS.Common.csproj">
-      <Project>{0854a627-a0e6-493d-ab31-f3ded37a6540}</Project>
-      <Name>XYKernel.OS.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.Core\OSKernel.Presentation.Core.csproj">
       <Project>{459E774C-1A09-4008-8CDF-765B467EACEA}</Project>
       <Name>OSKernel.Presentation.Core</Name>
@@ -1427,6 +1448,10 @@
     <ProjectReference Include="..\..\Infrastructures\OSKernel.Presentation.CustomControl\OSKernel.Presentation.CustomControl.csproj">
       <Project>{c6a51b32-2a75-4b14-bd16-dca0c32dd470}</Project>
       <Name>OSKernel.Presentation.CustomControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OSKernel.Presentation.Analysis\OSKernel.Presentation.Analysis.csproj">
+      <Project>{032f044c-2d72-4578-8e68-cbb3d6c82120}</Project>
+      <Name>OSKernel.Presentation.Analysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\OSKernel.Presentation.Login\OSKernel.Presentation.Login.csproj">
       <Project>{281d2716-edda-47bf-ac04-4e017433c315}</Project>

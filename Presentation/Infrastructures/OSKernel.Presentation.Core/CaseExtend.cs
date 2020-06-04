@@ -27,7 +27,7 @@ namespace OSKernel.Presentation.Core
             string path = CacheManager.Instance.GetDataPath();
             string localPath = $"{path}\\{model.LocalID}\\{model.LocalID}.local";
 
-            model.LocalPath = $"{CommonPath.Data}{model.LocalID}\\{model.LocalID}.local";
+            model.LocalPath = $"{CommonPath.DefaultData}\\{model.LocalID}\\{model.LocalID}.local";
 
             localPath.SerializeObjectToJson(model);
         }
@@ -259,7 +259,7 @@ namespace OSKernel.Presentation.Core
                 return null;
         }
 
-        public static List<T> DeSerializeCourseFrame<T>(this string localID, long taskID,string className="") where T : class
+        public static List<T> DeSerializeCourseFrame<T>(this string localID, long taskID, string className = "") where T : class
         {
             string path = CacheManager.Instance.GetDataPath();
             string resultPath = $"{path}\\{localID}\\Tasks\\{taskID}\\{taskID}{className}.adjustCourseFrame";
@@ -272,7 +272,7 @@ namespace OSKernel.Presentation.Core
                 return null;
         }
 
-        public static void SerializeCourseFrame<T>(this List<T> courseFrames, string localID, long taskID,string className="")
+        public static void SerializeCourseFrame<T>(this List<T> courseFrames, string localID, long taskID, string className = "")
         {
             string path = CacheManager.Instance.GetDataPath();
             string resultPath = $"{path}\\{localID}\\Tasks\\{taskID}\\{taskID}{className}.adjustCourseFrame";
@@ -310,5 +310,25 @@ namespace OSKernel.Presentation.Core
         }
 
         #endregion
+
+        /// <summary>
+        /// 获取可用课位数
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int GetAvaliablePositions(this XYKernel.OS.Common.Models.Mixed.CLCase model)
+        {
+            return model.Positions.Where(p => p.Position != XYKernel.OS.Common.Enums.Position.AB && p.Position != XYKernel.OS.Common.Enums.Position.Noon && p.Position != XYKernel.OS.Common.Enums.Position.PB).Count(p => p.IsSelected);
+        }
+
+        /// <summary>
+        /// 获取可用课位数
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int GetAvaliablePositions(this XYKernel.OS.Common.Models.Administrative.CPCase model)
+        {
+            return model.Positions.Where(p => p.Position != XYKernel.OS.Common.Enums.Position.AB && p.Position != XYKernel.OS.Common.Enums.Position.Noon && p.Position != XYKernel.OS.Common.Enums.Position.PB).Count(p => p.IsSelected);
+        }
     }
 }

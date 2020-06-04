@@ -168,7 +168,15 @@
                                           Width="80"
                                           Margin="5"
                                           SelectedValuePath="Value"
-                                          SelectedValue="{Binding Weight}" />
+                                          SelectedValue="{Binding Weight}">
+                                    <activity:Interaction.Triggers>
+                                        <activity:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand PassEventArgsToCommand="False"
+                                                                CommandParameter="{Binding}"
+                                                                Command="{Binding DataContext.WeightChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                        </activity:EventTrigger>
+                                    </activity:Interaction.Triggers>
+                                </ComboBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>

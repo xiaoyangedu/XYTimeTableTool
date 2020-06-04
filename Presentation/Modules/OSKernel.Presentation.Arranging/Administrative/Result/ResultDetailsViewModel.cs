@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using OSKernel.Presentation.Core;
 using OSKernel.Presentation.Core.Http;
+using OSKernel.Presentation.Core.Http.Table;
 using OSKernel.Presentation.Core.ViewModel;
 using OSKernel.Presentation.CustomControl;
 using OSKernel.Presentation.Models.Base;
@@ -501,15 +502,15 @@ namespace OSKernel.Presentation.Arranging.Administrative.Result
             var cp = CommonDataManager.GetCPCase(base.LocalID);
             _courses = cp.Courses;
 
-            var value = OSHttpClient.Instance.GetAdminResult(result.TaskID);
+            var value = WebAPI.Instance.GetAdminResult(result.TaskID);
 
             if (!value.Item1)
             {
-                if (value.Item3.IndexOf("签名不正确") != -1)
+                if (value.Item3.IndexOf("签名非法") != -1)
                 {
                     if (SignLogic.SignCheck())
                     {
-                        value = OSHttpClient.Instance.GetAdminResult(result.TaskID);
+                        value = WebAPI.Instance.GetAdminResult(result.TaskID);
                     }
                 }
             }

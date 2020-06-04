@@ -235,16 +235,6 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"
                                 Grid.Row="1" />
-                        <!--<RepeatButton x:Name="PART_LineUpButton"
-                                          Command="{x:Static ScrollBar.LineUpCommand}"
-                                          IsEnabled="{TemplateBinding IsMouseOver}"
-                                          Style="{StaticResource ScrollBarButton}">
-                                <Path x:Name="ArrowTop"
-                                      Data="M 0,4 C0,4 0,6 0,6 0,6 3.5,2.5 3.5,2.5 3.5,2.5 7,6 7,6 7,6 7,4 7,4 7,4 3.5,0.5 3.5,0.5 3.5,0.5 0,4 0,4 z"
-                                      Fill="{StaticResource ScrollBar.Static.Glyph}"
-                                      Margin="3,4,3,3"
-                                      Stretch="Uniform" />
-                            </RepeatButton>-->
                         <Track x:Name="PART_Track"
                                IsDirectionReversed="true"
                                IsEnabled="{TemplateBinding IsMouseOver}"
@@ -261,17 +251,6 @@
                                 <Thumb Style="{StaticResource ScrollBarThumbVertical}" />
                             </Track.Thumb>
                         </Track>
-                        <!--<RepeatButton x:Name="PART_LineDownButton"
-                                          Command="{x:Static ScrollBar.LineDownCommand}"
-                                          IsEnabled="{TemplateBinding IsMouseOver}"
-                                          Grid.Row="2"
-                                          Style="{StaticResource ScrollBarButton}">
-                                <Path x:Name="ArrowBottom"
-                                      Data="M 0,2.5 C0,2.5 0,0.5 0,0.5 0,0.5 3.5,4 3.5,4 3.5,4 7,0.5 7,0.5 7,0.5 7,2.5 7,2.5 7,2.5 3.5,6 3.5,6 3.5,6 0,2.5 0,2.5 z"
-                                      Fill="{StaticResource ScrollBar.Static.Glyph}"
-                                      Margin="3,4,3,3"
-                                      Stretch="Uniform" />
-                            </RepeatButton>-->
                     </Grid>
                     <ControlTemplate.Triggers>
                         <EventTrigger RoutedEvent="MouseEnter">
@@ -290,7 +269,7 @@
                                 <Storyboard>
                                     <DoubleAnimation Storyboard.TargetName="PART_Track"
                                                      Storyboard.TargetProperty="Opacity"
-                                                     To="0.5"
+                                                     To="0.7"
                                                      Duration="0:0:0.8" />
                                 </Storyboard>
                             </BeginStoryboard>
@@ -324,16 +303,6 @@
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         Background="{TemplateBinding Background}"
                                         Grid.Column="1" />
-                                <!--<RepeatButton x:Name="PART_LineLeftButton"
-                                              Command="{x:Static ScrollBar.LineLeftCommand}"
-                                              IsEnabled="{TemplateBinding IsMouseOver}"
-                                              Style="{StaticResource ScrollBarButton}">
-                                    <Path x:Name="ArrowLeft"
-                                          Data="M 3.18,7 C3.18,7 5,7 5,7 5,7 1.81,3.5 1.81,3.5 1.81,3.5 5,0 5,0 5,0 3.18,0 3.18,0 3.18,0 0,3.5 0,3.5 0,3.5 3.18,7 3.18,7 z"
-                                          Fill="{StaticResource ScrollBar.Static.Glyph}"
-                                          Margin="3"
-                                          Stretch="Uniform" />
-                                </RepeatButton>-->
                                 <Track x:Name="PART_Track"
                                        Grid.Column="1"
                                        IsEnabled="{TemplateBinding IsMouseOver}">
@@ -349,17 +318,6 @@
                                         <Thumb Style="{StaticResource ScrollBarThumbHorizontal}" />
                                     </Track.Thumb>
                                 </Track>
-                                <!--<RepeatButton x:Name="PART_LineRightButton"
-                                              Grid.Column="2"
-                                              Command="{x:Static ScrollBar.LineRightCommand}"
-                                              IsEnabled="{TemplateBinding IsMouseOver}"
-                                              Style="{StaticResource ScrollBarButton}">
-                                    <Path x:Name="ArrowRight"
-                                          Data="M 1.81,7 C1.81,7 0,7 0,7 0,7 3.18,3.5 3.18,3.5 3.18,3.5 0,0 0,0 0,0 1.81,0 1.81,0 1.81,0 5,3.5 5,3.5 5,3.5 1.81,7 1.81,7 z"
-                                          Fill="{StaticResource ScrollBar.Static.Glyph}"
-                                          Margin="3"
-                                          Stretch="Uniform" />
-                                </RepeatButton>-->
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <EventTrigger RoutedEvent="MouseEnter">
@@ -378,7 +336,7 @@
                                         <Storyboard>
                                             <DoubleAnimation Storyboard.TargetName="PART_Track"
                                                              Storyboard.TargetProperty="Opacity"
-                                                             To="0"
+                                                             To="0.7"
                                                              Duration="0:0:0.8" />
                                         </Storyboard>
                                     </BeginStoryboard>

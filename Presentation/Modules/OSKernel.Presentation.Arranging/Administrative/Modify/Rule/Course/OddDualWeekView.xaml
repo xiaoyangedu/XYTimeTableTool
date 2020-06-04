@@ -32,7 +32,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <Button Style="{StaticResource OpratorButtonStyle}"
+            <Button Style="{DynamicResource OpratorButtonStyle}"
                     Content="创建单双周课程"
                     Command="{Binding CreateCommand}"
                     Margin="2" />
@@ -53,7 +53,7 @@
                                         Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource MinusEllipseButtonStyle}"
+                            <Button Style="{DynamicResource MinusEllipseButtonStyle}"
                                     CommandParameter="{Binding}"
                                     Command="{Binding DataContext.DeleteRuleCommand,RelativeSource={RelativeSource  AncestorType=DataGrid}}" />
                         </DataTemplate>

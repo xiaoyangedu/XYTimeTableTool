@@ -125,7 +125,7 @@ namespace OSKernel.Presentation.Arranging.Administrative.Modify.Rule.Teacher.Dia
                     var results = cp.GetClasses(course.ID);
                     results?.ForEach(r =>
                     {
-                        r.IsChecked = true;
+                        //r.IsChecked = true;
                         this.Classes.Add(r);
                     });
                 }
